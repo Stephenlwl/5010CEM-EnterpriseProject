@@ -1,0 +1,22 @@
+.profile-settings-frame {
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #000000;
+    border-radius: 5px;
+}
+
+h3 {
+    margin-bottom: 20px;
+    font-family: 'Arial Narrow Bold', sans-serif;
+}
+
+li, h2 {
+    font-family: instrunment serif;
+}
+
+li a:hover {
+    border-radius: 10px;
+    background-color: #7EACB5;
+    color: #252525;
+}
+
