@@ -1,0 +1,24 @@
+.container{
+    margin: auto;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #f8f9fa;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1);
+}
+
+.container-borderframe{
+    border: 1px solid #000000;
+    margin: 10px;  
+    padding: 20px;  
+}
+
+.container-borderframe label{
+    color: #112D4E;
+    font-weight: bold;
+}
+
+.container-borderframe p{
+    color: #666666;
+    opacity: 80%;
+}
+
