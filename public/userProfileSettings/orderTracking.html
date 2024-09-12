@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Tracking</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="../css/orderTracking.css">
+    <link rel="stylesheet" href="../css/publicDefault.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Orders & Tracking</h1>
+        <h2 class="text-center mb-4">Order Tracking</h2>
+        <hr>
+
+        <div class="container-borderframe">
+            <div class="row mb-4 align-items-center">
+                <div class="col-sm-3">
+                    <h4>Current Order Status</h4>
+                </div>
+                <div class="col-sm-6">
+                    <label class="form-label status current-status-highlight">Ready to Pickup</label>
+                </div>
+                <div class="col-sm-3 text-end">
+                    <label class="form-label fw-semibold">Self-Pickup</label>
+                </div>
+            </div>
+
+            <div class="order_status_frame">
+                <div class="row text-center">
+                    <div class="col-sm-2">
+                        <i class="bi bi-bag-check"></i>
+                        <p>Order Placed</p>
+                    </div>
+                    <div class="col-sm-2">
+                        <i class="bi bi-gear"></i>
+                        <p>Preparing</p>
+                    </div>
+                    <div class="col-sm-2">
+                        <i class="bi bi-cup"></i>
+                        <p>Crafting</p>
+                    </div>
+                    <div class="col-sm-2">
+                        <i class="bi bi-box-seam"></i>
+                        <p>Packing</p>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="current-status-highlight">
+                            <i class="bi bi-shop"></i>
+                            <p>Ready to Pickup</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <i class="bi bi-truck"></i>
+                        <p>Delivered</p>
+                    </div>
+                </div>
+            </div>
+            
+            <hr>
+            <div class="row mb-3 align-items-center">
+                <div class="col-sm-8">
+                    <label class="form-label">Order ID: 000013</label>
+                    <p>8 Sept 2024 - 13:50</p>
+                </div>
+                <div class="col-sm-4 text-end">
+                    <label>Receipt</label>
+                    <button type="submit" class="btn btn-primary me-2">Print</button>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-3">
+                    <label for="order_type" class="form-label">Order Type:</label>
+                    <p>Self-Pickup</p>
+                </div>
+                <div class="col-sm-3">
+                    <label for="pickup-at" class="form-label">Pickup At:</label>
+                    <p>Sunway Velocity</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3 mt-4">
+                    <a href="#">View Order Details</a>
+                </div>
+                <div class="col-sm-9 text-end">
+                    <label for="order_total" class="form-label">Total:</label>
+                    <h3>RM 33.50</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
