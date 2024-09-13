@@ -54,12 +54,13 @@ main {
 
 .left-section {
     width: 50%;
-    background: url('loginbackground.jpg') no-repeat center center;
+    background: url('../img/loginpic.jpg') no-repeat center center;
     background-size: cover;
     padding: 50px;
     color: #fff;
     border: 1px solid red;
     background-color: #000;
+    opacity: 70%;
 }
 
 
