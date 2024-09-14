@@ -73,3 +73,20 @@ h1, h2 {
     border-radius: 20px;
     padding: 5px 10px;
 }
+
+.form-label {
+    font-size: 0.875rem;
+}
+
+p {
+    margin-bottom: 0.5rem;
+}
+
+h4 {
+    font-size: 1.25rem; 
+}
+
+.btn-sm {
+    padding: 0.25rem 0.5rem; 
+    font-size: 0.875rem; 
+}

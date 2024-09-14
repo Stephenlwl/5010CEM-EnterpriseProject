@@ -5,8 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Page</title>
     <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/login.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="css/publicDefault.css">
 </head>
 <body>
 
@@ -17,8 +19,8 @@
     <main class="d-flex">
         <section class="left-section d-none d-lg-flex flex-column justify-content-center align-items-center text-center bg-dark text-white p-5">
             <div class="hero-text">
-                <h1>WELCOME LOGIN</h1>
-                <p>LOGIN</p>
+                <h1>Welcome to Our Platform!</h1>
+                <p>Log in to access your account and explore.</p>
             </div>
         </section>
         
@@ -28,7 +30,7 @@
                 <h2 class="text-center mb-4">Login</h2>
                 <button class="btn btn-outline-dark btn-block mb-3">Continue with Google</button>
                 <button class="btn btn-primary btn-block mb-3">Continue with Twitter</button>
-                <p class="text-center">---------------------------------- OR ----------------------------------</p>
+                <p class="separator text-center"><span>OR</span></p>
 
                 <form action="#">
                     <div class="form-group">

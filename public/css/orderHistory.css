@@ -1,0 +1,46 @@
+.container {
+    margin: auto;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #f8f9fa;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+.container-borderframe {
+    border: 1px solid #000000;
+    margin: 20px 0;  
+    padding: 20px;  
+    border-radius: 10px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+.container-borderframe label {
+    color: #112D4E;
+    font-weight: bold;
+}
+
+.container-borderframe p {
+    color: #666666;
+    opacity: 80%;
+}
+
+h1, h2 {
+    color: #112D4E;
+}
+
+.form-label {
+    font-size: 0.875rem;
+}
+
+p {
+    margin-bottom: 0.5rem;
+}
+
+h4 {
+    font-size: 1.25rem; 
+}
+
+.btn-sm {
+    padding: 0.25rem 0.5rem; 
+    font-size: 0.875rem; 
+}

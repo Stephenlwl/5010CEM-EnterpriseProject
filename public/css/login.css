@@ -9,36 +9,6 @@ body {
     background-color: #f4f4f4;
 }
 
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 50px;
-    background-color: #e0e0e0;
-}
-
-header nav {
-    display: flex;
-    flex-grow: 1; /* Ensures the navigation takes up available space */
-    justify-content: space-between; /* Space between left nav and right header */
-}
-
-header nav .left-nav, header nav .right-nav {
-    display: flex;
-    gap: 20px; /* Adjusts space between individual menu items */
-}
-
-header nav ul {
-    list-style: none;
-    display: flex;
-    gap: 20px; /* Space between items */
-}
-
-header nav ul li a {
-    text-decoration: none;
-    color: #000;
-}
-
 .logo {
     font-size: 24px;
     font-weight: bold;
@@ -47,42 +17,54 @@ header nav ul li a {
     margin: 0 100px; /* Adjust spacing around the logo */
 }
 
-main {
-    display: flex;
-    height: 100vh;
-}
-
 .left-section {
-    width: 50%;
+    position: relative; /* let the text can be positioned absolutely */
     background: url('../img/loginpic.jpg') no-repeat center center;
     background-size: cover;
-    padding: 50px;
-    color: #fff;
-    border: 1px solid red;
-    background-color: #000;
-    opacity: 70%;
+    color: #f5f5f5;
+    overflow: hidden; /* let the pseudo-element doesn't overflow */
+    flex: 1;
 }
 
+/* create a pseudo-element to apply the blur effect to the background image */
+.left-section::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: inherit;
+    filter: blur(2px); /* the blur level*/
+    z-index: 1; /* let the blur effect is behind the text */
+}
 
+.left-section .hero-text {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -120%);
+    z-index: 2; /* make sure the text is above the blur effect */
+    text-align: center;
+}
 
-
+/* Apply 3D text effect */
 .left-section .hero-text h1 {
     font-size: 48px;
-    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(252, 238, 124, 0.8); 
 }
 
 .left-section .hero-text p {
     font-size: 18px;
     line-height: 1.5;
+    text-shadow: 1px 1px 2px rgba(252, 238, 124, 0.8); 
 }
 
 .right-section {
-    width: 50%;
     padding: 50px;
     background-color: #fff;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    flex: 1;
+    overflow-y: auto;
 }
 
 .login-form {
@@ -152,4 +134,26 @@ input[type="text"], input[type="password"] {
     border-radius: 5px;
     cursor: not-allowed;
     opacity: 0.6;
+}
+
+.separator {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: #333; 
+    font-family: 'Instrument Serif', serif; 
+    margin: 20px 0; 
+}
+
+.separator::before,
+.separator::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #ccc; 
+    margin: 0 10px; 
+}
+
+.separator span {
+    padding: 0 10px;
+    background: #fff; 
 }
