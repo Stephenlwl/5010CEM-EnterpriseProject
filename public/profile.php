@@ -37,22 +37,22 @@
                             <ul class="nav nav-pills flex-column">
                                 <label for="profile">Account Information</label>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="userProfileSettings/editProfile.html" target="profile-iframe">Edit Profile</a>
+                                    <a class="nav-link profile-settings-nav" href="userProfileSettings/editProfile.html" target="profile-iframe">Edit Profile</a>
                                 </li>
                                 <label for="profile">Delivery</label>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="userProfileSettings/deliveryAddress.html" target="profile-iframe">Delivery Address</a>
+                                    <a class="nav-link profile-settings-nav" href="userProfileSettings/deliveryAddress.html" target="profile-iframe">Delivery Address</a>
                                 </li>
                                 <label for="profile">Orders & Tracking</label>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="userProfileSettings/orderTracking.html" target="profile-iframe">Order Tracking</a>
+                                    <a class="nav-link profile-settings-nav" href="userProfileSettings/orderTracking.html" target="profile-iframe">Order Tracking</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="userProfileSettings/orderHistory.html" target="profile-iframe">Order History</a>
+                                    <a class="nav-link profile-settings-nav" href="userProfileSettings/orderHistory.html" target="profile-iframe">Order History</a>
                                 </li>
                                 <label for="profile">Favorite & Preference</label>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="userProfileSettings/favoriteList.html" target="profile-iframe">Favorite List</a>
+                                    <a class="nav-link profile-settings-nav" href="userProfileSettings/favoriteList.html" target="profile-iframe">Favorite List</a>
                                 </li>
                             </ul>
                         </div>

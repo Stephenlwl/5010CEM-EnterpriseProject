@@ -10,8 +10,12 @@ h3 {
     font-family: 'Arial Narrow Bold', sans-serif;
 }
 
-li, h2 {
+li, h2, .nav-link {
     font-family: instrunment serif;
+}
+
+.profile-settings-nav {
+    color: #424874 !important;
 }
 
 li a:hover {
