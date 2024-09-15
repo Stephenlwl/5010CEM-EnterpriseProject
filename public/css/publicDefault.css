@@ -64,3 +64,7 @@ main {
     display: flex;
     height: 100vh;
 }
+
+footer .bgcolor{
+    background-color: #9DB2BF !important ;
+}
