@@ -13,8 +13,8 @@
 </head>
 <body>
 
-    <?php $IPATH = $_SERVER["DOCUMENT_ROOT"]."/public/inc/";
-        include($IPATH."nav.html"); 
+    <?php $IPATH = $_SERVER["DOCUMENT_ROOT"]."/RimberioCafeWebsite/5010CEM-EnterpriseProject/public/inc/";
+        include($IPATH."nav.php"); 
     ?>
 
     <main class="d-flex">
@@ -27,7 +27,7 @@
         
         <section class="right-section d-flex flex-column justify-content-center align-items-center p-5 bg-white">
             <div class="login-form w-100" style="max-width: 400px;">
-                <p class="text-right">Don't have an account? <a href="signup.html">Sign up</a></p>
+                <p class="text-right">Don't have an account? <a href="signup.php">Sign up</a></p>
                 <h2 class="text-center mb-4">Login</h2>
                 <button class="btn btn-outline-dark btn-block mb-3">Continue with Google</button>
                 <button class="btn btn-primary btn-block mb-3">Continue with Twitter</button>
