@@ -17,14 +17,13 @@ header {
     background-color: #6B8A7A;
     position: sticky;
     top: 0;
-    overflow: hidden;
     box-shadow: 5px 8px 5px rgba(0, 0, 0, 0.1) ;
     z-index: 1000 !important;
 }
 
 header nav {
     display: flex;
-    flex-grow: 1; /* Ensures the navigation takes up available space */
+    flex-grow: 2; /* Ensures the navigation takes up available space */
     justify-content: space-between; /* Space between left nav and right header */
 }
 
@@ -67,4 +66,15 @@ main {
 
 footer .bgcolor{
     background-color: #9DB2BF !important ;
+}
+
+header nav ul li:hover .dropdown-menu {
+    display: block; 
+    background-color: #7AB2B2;
+    color: #EEF7FF;
+}
+
+header nav ul li .dropdown-menu a:hover {
+    background-color: #2f6b77; 
+    color: #252525; 
 }

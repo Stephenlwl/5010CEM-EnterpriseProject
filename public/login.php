@@ -13,8 +13,8 @@
 </head>
 <body>
 
-    <?php $IPATH = $_SERVER["DOCUMENT_ROOT"]."/public/inc/";
-        include($IPATH."nav.html"); 
+    <?php $IPATH = $_SERVER["DOCUMENT_ROOT"]."/RimberioCafeWebsite/5010CEM-EnterpriseProject/public/inc/";
+        include($IPATH."nav.php"); 
     ?>
 
     <main class="d-flex">
