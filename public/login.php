@@ -13,8 +13,8 @@
 </head>
 <body>
 
-    <?php $IPATH = $_SERVER["DOCUMENT_ROOT"]."/public/inc/";
-        include($IPATH."nav.html"); 
+    <?php $IPATH = $_SERVER["DOCUMENT_ROOT"]."/RimberioCafeWebsite/5010CEM-EnterpriseProject/public/inc/";
+        include($IPATH."nav.php"); 
     ?>
 
     <main class="d-flex">
@@ -27,15 +27,19 @@
         
         <section class="right-section d-flex flex-column justify-content-center align-items-center p-5 bg-white">
             <div class="login-form w-100" style="max-width: 400px;">
-                <p class="text-right">Don't have an account? <a href="signup.html">Sign up</a></p>
+                <p class="text-right">Don't have an account? <a href="signup.php">Sign up</a></p>
                 <h2 class="text-center mb-4">Login</h2>
-                <button class="btn btn-outline-dark btn-block mb-3">Continue with Google</button>
-                <button class="btn btn-primary btn-block mb-3">Continue with Twitter</button>
+                
+                <button class="google-btn">
+    <img src="https://cdn1.iconfinder.com/data/icons/google-s-logo/150/Google_Icons-09-512.png" alt="Google Logo" width="20px" height="20px">
+    Continue with Google
+</button>
+
                 <p class="separator text-center"><span>OR</span></p>
 
                 <form action="#">
                     <div class="form-group">
-                        <label for="email">User name</label>
+                        <label for="email">Username</label>
                         <input type="text" class="form-control" id="email" name="email" required>
                     </div>
 
@@ -55,7 +59,6 @@
                     <button type="submit" class="btn btn-success btn-block">Sign in</button>
                 </form>
 
-                <p class="text-center mt-4">Don't have an account? <a href="#">Sign up</a></p>
             </div>
         </section>
     </main>

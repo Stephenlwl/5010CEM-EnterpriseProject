@@ -1,0 +1,94 @@
+<?php
+session_start();
+
+// Ensure session variables are set
+// if (!isset($_SESSION['username'])) {
+//     header('Location: login.php'); // Redirect to login page instead of editProfile.php
+//     exit();
+// }
+
+require_once '../auth/config/database.php';
+require_once '../auth/models/user.php';
+
+// Database connection
+$database = new Database_Auth();
+$db = $database->getConnection();
+
+// testing purpose only should remove after testing
+$_SESSION['UserID'] = 1;
+
+// Fetch user data
+$UserID = $_SESSION['UserID'];
+$query = "SELECT * FROM users WHERE UserID = :UserID";
+$stmt = $db->prepare($query);
+$stmt->bindParam(':UserID', $UserID, PDO::PARAM_INT); // Bind UserID as an integer
+$stmt->execute();
+$userData = $stmt->fetch(PDO::FETCH_ASSOC);
+
+// Check if user data exists
+if (!$userData) {
+    echo "User data not found.";
+    exit();
+}
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Riberio Cafe Profile Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="../css/publicDefault.css">
+    <link rel="stylesheet" href="../css/editProfile.css">
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Account Information</h1>
+        <h2 class="text-center mb-4">Edit Profile</h2>
+        <hr>
+        <form>
+            <div class="row mb-3">
+                <div class="col-sm-6">
+                    <label for="name" class="form-label">Name:</label>
+                    <input type="text" id="name" name="name" value="<?php echo htmlspecialchars($userData['Username']); ?>" class="form-control">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-sm-6">
+                    <label for="email" class="form-label">Email:</label>
+                    <input type="email" id="email" value="<?php echo htmlspecialchars($userData['Email']); ?>" class="form-control">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-sm-6">
+                    <label for="phone" class="form-label">Phone Number:</label>
+                    <input type="tel" id="phone" name="phone" value="<?php echo htmlspecialchars($userData['PhoneNumber']); ?>" class="form-control">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-sm-6">
+                    <label for="current-password" class="form-label">Current Password:</label>
+                    <input type="password" id="current-password" name="current-password" class="form-control">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-sm-6">
+                    <label for="new-password" class="form-label">New Password:</label>
+                    <input type="password" id="new-password" name="new-password" class="form-control">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <button type="submit" class="btn btn-primary me-2">Save Changes</button>
+                    <button type="reset" class="btn btn-danger">Cancel</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>
