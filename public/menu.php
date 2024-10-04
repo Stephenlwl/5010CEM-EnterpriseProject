@@ -51,7 +51,7 @@
                                 </li>
                                 <label for="profile">Favorite & Preference</label>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="userProfileSettings/favoriteList.html" target="profile-iframe">Favorite List</a>
+                                    <a class="nav-link" href="userProfileSettings/favouriteList.html" target="profile-iframe">Favorite List</a>
                                 </li>
                             </ul>
                         </div>
