@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -13,7 +14,7 @@
 </head>
 
 <body>
-    <?php $IPATH = $_SERVER["DOCUMENT_ROOT"]."/RimberioCafeWebsite/5010CEM-EnterpriseProject/public/inc/";
+<?php $IPATH = $_SERVER["DOCUMENT_ROOT"]."/RimberioCafeWebsite/5010CEM-EnterpriseProject/public/inc/";
         include($IPATH."nav.php"); 
     ?>
     
@@ -21,7 +22,7 @@
         <div class="container mt-5">
             <div class="row">
                 <!--Account Settings Sidebar -->
-                <div class="col-sm-4">
+                <div class="col-sm-2">
                     <h3><u>MENU</u></h3>
                     <div class="profile-settings-frame">
                         <h3>My Account</h3>
@@ -36,18 +37,18 @@
                             <ul class="nav nav-pills flex-column">
                                 <label for="profile">Account Information</label>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="userProfileSettings/editProfile.php" target="profile-iframe">Edit Profile</a>
+                                    <a class="nav-link" href="menu/coffee.php" target="profile-iframe">Edit Profile</a>
                                 </li>
                                 <label for="profile">Delivery</label>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="userProfileSettings/deliveryAddress.php" target="profile-iframe">Delivery Address</a>
+                                    <a class="nav-link" href="" target="profile-iframe">Delivery Address</a>
                                 </li>
                                 <label for="profile">Orders & Tracking</label>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="userProfileSettings/orderTracking.php" target="profile-iframe">Order Tracking</a>
+                                    <a class="nav-link" href="" target="profile-iframe">Order Tracking</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="userProfileSettings/orderHistory.php" target="profile-iframe">Order History</a>
+                                    <a class="nav-link" href="" target="profile-iframe">Order History</a>
                                 </li>
                                 <label for="profile">Favorite & Preference</label>
                                 <li class="nav-item">
@@ -58,13 +59,14 @@
                     </div>
                 </div>
                 <!--dynamic right screen -->
-                <div class="col-sm-8 d-flex" style="height: 100vh;">
+                <div class="col-sm-10 d-flex" style="height: 100vh;">
                     <iframe width="100%" height="100%" src="userProfileSettings/editProfile.php" frameborder="0" name="profile-iframe" style="flex-grow: 1;"></iframe>
                 </div>
             </div>
         </div>
     </main>
-
+<!-- footer -->
+<?php include($IPATH."footer.html"); ?>
 
 </body>
 
