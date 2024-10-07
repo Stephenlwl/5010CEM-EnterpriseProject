@@ -54,12 +54,12 @@ if (!$userData) {
         <h4>Saved Addresses</h4>
         
         <?php
-        if ($UserID) {
             $query = "SELECT * FROM Address WHERE UserID = :UserID";
             $stmt = $db->prepare($query);
             $stmt->bindParam(':UserID', $UserID);
             $stmt->execute();
 
+        if ($stmt->rowCount() > 0) {
             // Loop through each address and display it
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 echo '
@@ -82,7 +82,9 @@ if (!$userData) {
                 </div>';
             }
         } else {
-            echo '<p class="text-center">No addresses found.</p>';
+            echo '<div class="alert alert-warning text-center" role="alert">
+                    No addresses have been created yet! To ensure smooth order deliveries, please add an Address .
+                </div>';
         }
         ?>
 
