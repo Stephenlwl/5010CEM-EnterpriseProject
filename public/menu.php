@@ -64,7 +64,8 @@
             </div>
         </div>
     </main>
-
+    <!-- footer -->
+    <?php include($IPATH."footer.html"); ?>
 
 </body>
 

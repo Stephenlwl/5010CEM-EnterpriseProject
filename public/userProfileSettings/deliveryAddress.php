@@ -1,3 +1,37 @@
+<?php
+session_start();
+
+// Ensure session variables are set
+// if (!isset($_SESSION['username'])) {
+//     header('Location: login.php'); // Redirect to login page instead of editProfile.php
+//     exit();
+// }
+
+require_once '../auth/config/database.php';
+require_once '../auth/models/user.php';
+
+// Database connection
+$database = new Database_Auth();
+$db = $database->getConnection();
+
+// testing purpose only should remove after testing
+$_SESSION['UserID'] = 1;
+
+// Fetch user data
+$UserID = $_SESSION['UserID'];
+$query = "SELECT * FROM users WHERE UserID = :UserID";
+$stmt = $db->prepare($query);
+$stmt->bindParam(':UserID', $UserID, PDO::PARAM_INT); // Bind UserID as an integer
+$stmt->execute();
+$userData = $stmt->fetch(PDO::FETCH_ASSOC);
+
+// Check if user data exists
+if (!$userData) {
+    echo "User data not found.";
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,6 +43,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="../css/publicDefault.css">
     <link rel="stylesheet" href="../css/deliveryAddress.css">
+    <script src="js/deliveryAddress.js"></script>
 </head>
 
 <body>
@@ -17,35 +52,119 @@
         <h2 class="text-center mb-4">Delivery Address</h2>
         <hr>
         <h4>Saved Addresses</h4>
-        <div class="container-borderframe">
-            <div class="row mb-3">
-                <div class="col-sm-8">
-                    <label for="address_name" class="form-label">Home</label>
-                    <p>1234 Home St.</p>
-                    <p>Home City, Home State 12345</p>
-                </div>
-                <div class="col-sm-4">
-                    <button type="submit" class="btn btn-warning me-2">Edit</button>
-                    <button type="reset" class="btn btn-danger">Delete</button>
-                </div>
-            </div>
-        </div>
-        <div class="container-borderframe">
-            <div class="row mb-3">
-                <div class="col-sm-8">
-                    <label for="address_name" class="form-label">Home</label>
-                    <p>1234 Home St.</p>
-                    <p>Home City, Home State 12345</p>
-                </div>
-                <div class="col-sm-4">
-                    <button type="submit" class="btn btn-warning me-2">Edit</button>
-                    <button type="reset" class="btn btn-danger">Delete</button>
-                </div>
-            </div>
-        </div>
+        
+        <?php
+        if ($UserID) {
+            $query = "SELECT * FROM Address WHERE UserID = :UserID";
+            $stmt = $db->prepare($query);
+            $stmt->bindParam(':UserID', $UserID);
+            $stmt->execute();
+
+            // Loop through each address and display it
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                echo '
+                <div class="container-borderframe">
+                    <div class="row mb-3">
+                        <div class="col-sm-8">
+                            <label for="address_name" class="form-label">' . htmlspecialchars($row['AddressName']) . '</label>
+                            <p>' . htmlspecialchars($row['Address1']) . '</p>
+                            <p>' . htmlspecialchars($row['Address2']) . '</p>
+                            <p>' . htmlspecialchars($row['PostalCode']) . ', ' . htmlspecialchars($row['State']) . '</p>
+                        </div>
+                        <div class="col-sm-4">
+                            <button type="button" class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#editAddressModal" 
+                            data-id="' . $row['AddressID'] . '" data-name="' . htmlspecialchars($row['AddressName']) . '" 
+                            data-address1="' . htmlspecialchars($row['Address1']) . '" data-address2="' . htmlspecialchars($row['Address2']) . '" 
+                            data-postal="' . htmlspecialchars($row['PostalCode']) . '" data-state="' . htmlspecialchars($row['State']) . '">Edit</button>
+                            <button type="button" class="btn btn-danger" onclick="deleteAddress(' . $row['AddressID'] . ')">Delete</button>
+                        </div>
+                    </div>
+                </div>';
+            }
+        } else {
+            echo '<p class="text-center">No addresses found.</p>';
+        }
+        ?>
+
         <br>
-        <button type="submit" class="btn btn-primary me-2 mx-auto">+ Add New Address</button>
+        <button type="button" class="btn btn-primary me-2 mx-auto" data-bs-toggle="modal" data-bs-target="#addAddressModal">+ Add New Address</button>
     </div>
+
+    <!-- Edit Address Modal -->
+    <div class="modal fade" id="editAddressModal" tabindex="-1" aria-labelledby="editAddressModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editAddressModalLabel">Edit Address</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editAddressForm">
+                        <input type="hidden" id="editAddressID" name="address_id" value="<?php isset($_GET['edit_address_id'])?>">
+                        <div class="mb-3">
+                            <label for="editAddressName" class="form-label">Address Name</label>
+                            <input type="text" class="form-control" id="editAddressName" name="address_name" value="<?php if(isset($_GET['edit_address_id']) && $_GET['edit_address_id'] == $row['AddressID']) { echo htmlspecialchars($row['AddressName']); } ?>" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editAddress1" class="form-label">Address Line 1</label>
+                            <input type="text" class="form-control" id="editAddress1" name="address1" value="<?php if(isset($_GET['edit_address_id']) && $_GET['edit_address_id'] == $row['AddressID']) { echo htmlspecialchars($row['Address1']); } ?>" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editAddress2" class="form-label">Address Line 2</label>
+                            <input type="text" class="form-control" id="editAddress2" name="address2" value="<?php if(isset($_GET['edit_address_id']) && $_GET['edit_address_id'] == $row['AddressID']) { echo htmlspecialchars($row['Address2']); } ?>">
+                        </div>
+                        <div class="mb-3">
+                            <label for="editPostalCode" class="form-label">Postal Code</label>
+                            <input type="text" class="form-control" id="editPostalCode" name="postal_code" value="<?php if(isset($_GET['edit_address_id']) && $_GET['edit_address_id'] == $row['AddressID']) { echo htmlspecialchars($row['PostalCode']); } ?>" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editState" class="form-label">State</label>
+                            <input type="text" class="form-control" id="editState" name="state" value="<?php if(isset($_GET['edit_address_id']) && $_GET['edit_address_id'] == $row['AddressID']) { echo htmlspecialchars($row['State']); } ?>" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Add Address Modal -->
+    <div class="modal fade" id="addAddressModal" tabindex="-1" aria-labelledby="addAddressModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addAddressModalLabel">Add New Address</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addAddressForm">
+                        <div class="mb-3">
+                            <label for="addAddressName" class="form-label">Address Name</label>
+                            <input type="text" class="form-control" id="addAddressName" name="address_name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="addAddress1" class="form-label">Address Line 1</label>
+                            <input type="text" class="form-control" id="addAddress1" name="address1" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="addAddress2" class="form-label">Address Line 2</label>
+                            <input type="text" class="form-control" id="addAddress2" name="address2">
+                        </div>
+                        <div class="mb-3">
+                            <label for="addPostalCode" class="form-label">Postal Code</label>
+                            <input type="text" class="form-control" id="addPostalCode" name="postal_code" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="addState" class="form-label">State</label>
+                            <input type="text" class="form-control" id="addState" name="state" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add Address</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>   
 </body>
 
 </html>
