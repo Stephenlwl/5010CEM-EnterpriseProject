@@ -13,7 +13,7 @@
 </head>
 <body>
 
-    <?php $IPATH = $_SERVER["DOCUMENT_ROOT"]."/public/inc/";
+    <?php $IPATH = $_SERVER["DOCUMENT_ROOT"]."/RimberioCafeWebsite/5010CEM-EnterpriseProject/public/inc/";
         include($IPATH."nav.html"); 
     ?>
 
