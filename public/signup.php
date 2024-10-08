@@ -14,7 +14,7 @@
 <body>
 
     <?php $IPATH = $_SERVER["DOCUMENT_ROOT"]."/RimberioCafeWebsite/5010CEM-EnterpriseProject/public/inc/";
-        include($IPATH."nav.html"); 
+        include($IPATH."nav.php"); 
     ?>
 
     <main class="d-flex">
