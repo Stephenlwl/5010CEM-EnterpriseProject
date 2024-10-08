@@ -9,23 +9,20 @@ require_once '../auth/models/user.php';
 $database = new Database_Auth();
 $db = $database->getConnection();
 
-// For testing purposes (should be removed in production)
-$_SESSION['user_id'] = 1;
-
 // Fetch user ID from session
-$user_id = $_SESSION['user_id'];
+$UserID = $_SESSION['user_id'];
 
 // Query to fetch order details based on the user
 $query = "SELECT o.OrderID, o.OrderStatus, o.CreatedAt AS OrderDate, r.ReceiptID, r.TotalPrice, r.PaymentType, r.ReceiveMethod, a.AddressName 
           FROM `Order` o 
           INNER JOIN Receipt r ON o.ReceiptID = r.ReceiptID
           LEFT JOIN Address a ON r.AddressID = a.AddressID AND r.ReceiveMethod <> 'Pickup'  -- Exclude Pickup orders (temporary placed)
-          WHERE r.UserID = :user_id
+          WHERE r.UserID = :UserID
           ORDER BY o.CreatedAt DESC
           LIMIT 10";  // show the 10 most recent orders
 
 $stmt = $db->prepare($query);
-$stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT); 
+$stmt->bindParam(':UserID', $UserID, PDO::PARAM_INT); 
 $stmt->execute();
 $order_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -52,36 +49,36 @@ $order_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <h1 class="text-center">Orders & Tracking</h1>
         <h2 class="text-center mb-4">Order History</h2>
         <hr>
-        <div class="row">
-            <div class="col-sm-4">
-                <label for="month" class="form-label">Filter by Month:</label>
-                <select class="form-select" id="month">
-                    <option selected>All</option>
-                    <option>January</option>
-                    <option>February</option>
-                    <option>March</option>
-                    <option>April</option>
-                    <option>May</option>
-                    <option>June</option>
-                    <option>July</option>
-                    <option>August</option>
-                    <option>September</option>
-                    <option>October</option>
-                    <option>November</option>
-                    <option>December</option>
-                </select>
-            </div>
-            <div class="col-sm-4">
-                <label for="receiveMethod" class="form-label">Filter by Receive Method:</label>
-                <select class="form-select" id="month">
-                    <option selected>All</option>
-                    <option>Delivery</option>
-                    <option>Pickup</option>
-                </select>
-            </div>
-        </div>
-
         <?php if (!empty($order_data)): ?>
+            <div class="row">
+                <div class="col-sm-4">
+                    <label for="month" class="form-label">Filter by Month:</label>
+                    <select class="form-select" id="month">
+                        <option selected>All</option>
+                        <option>January</option>
+                        <option>February</option>
+                        <option>March</option>
+                        <option>April</option>
+                        <option>May</option>
+                        <option>June</option>
+                        <option>July</option>
+                        <option>August</option>
+                        <option>September</option>
+                        <option>October</option>
+                        <option>November</option>
+                        <option>December</option>
+                    </select>
+                </div>
+                <div class="col-sm-4">
+                    <label for="receiveMethod" class="form-label">Filter by Receive Method:</label>
+                    <select class="form-select" id="month">
+                        <option selected>All</option>
+                        <option>Delivery</option>
+                        <option>Pickup</option>
+                    </select>
+                </div>
+            </div>
+            
             <?php foreach ($order_data as $order): ?>
                 <div class="container-borderframe p-3 mb-3">
                     <div class="row">
@@ -121,7 +118,9 @@ $order_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 </div>
             <?php endforeach; ?>
         <?php else: ?>
-            <p class="text-center">No orders found.</p>
+            <div class="alert alert-warning text-center" role="alert">
+                No orders have been made yet.
+            </div>
         <?php endif; ?>
     </div>
 

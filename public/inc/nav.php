@@ -1,10 +1,4 @@
 <?php
-// Ensure session variables are set
-// if (!isset($_SESSION['username'])) {
-//     header('Location: login.php'); // Redirect to login page instead of editProfile.php
-//     exit();
-// }
-
 require_once 'auth/config/database.php';
 require_once 'auth/models/user.php';
 
@@ -12,22 +6,18 @@ require_once 'auth/models/user.php';
 $database = new Database_Auth();
 $db = $database->getConnection();
 
-// testing purpose only should remove after testing
-$_SESSION['UserID'] = 1;
-
 // Fetch user data
-$UserID = $_SESSION['UserID'];
-$query = "SELECT * FROM users WHERE UserID = :UserID";
-$stmt = $db->prepare($query);
-$stmt->bindParam(':UserID', $UserID, PDO::PARAM_INT); // Bind UserID as an integer
-$stmt->execute();
-$userData = $stmt->fetch(PDO::FETCH_ASSOC);
-
-// Check if user data exists
-if (!$userData) {
-    echo "User data not found.";
-    exit();
+if (isset($_SESSION['user_id'])) {
+    $UserID = $_SESSION['user_id'];
+    $query = "SELECT * FROM users WHERE UserID = :UserID";
+    $stmt = $db->prepare($query);
+    $stmt->bindParam(':UserID', $UserID, PDO::PARAM_INT); // Bind UserID as an integer
+    $stmt->execute();
+    $userData = $stmt->fetch(PDO::FETCH_ASSOC);
+} else {
+    $userData = null;
 }
+
 ?>
 <header>
     <nav class="navbar navbar-expand-lg">
@@ -60,7 +50,7 @@ if (!$userData) {
                     <li class="nav-item">
                         <a class="nav-link" href="#">Cart</a>
                     </li>
-                    <?php if (isset($userData)): ?>
+                    <?php if (isset($userData) != null): ?>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <span class="bi bi-person-circle"> </span><?php echo htmlspecialchars($userData['Username']); ?>
@@ -71,7 +61,7 @@ if (!$userData) {
                             </ul>
                         </li>
                     <?php else: ?>
-                        <li class="nav-item"><a class="nav-link" href="../login.php"><span class="bi bi-box-arrow-in-right"></span>Login</a></li>
+                        <li class="nav-item"><a class="nav-link" href="login.php"><span class="bi bi-box-arrow-in-right"></span> Login</a></li>
                     <?php endif; ?>
                 </ul>
             </div>

@@ -41,8 +41,8 @@
 
                 <form id="login-form" onsubmit="userLogin(event)">
                         <div class="mb-3">
-                            <label for="username" class="form-label">Username:</label>
-                            <input type="text" id="username" name="username" class="form-control" placeholder="Enter username" required>
+                            <label for="email" class="form-label">Email:</label>
+                            <input type="email" id="email" name="email" class="form-control" placeholder="Enter email" required>
                         </div>
                         <div class="mb-3">
                             <label for="password" class="form-label">Password:</label>

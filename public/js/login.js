@@ -46,18 +46,18 @@ function showPasswordAdmin() {
 }
 
 function userLogin(event) {
-    event.preventDefault();  // Prevent the form from submitting the traditional way
+    event.preventDefault(); 
 
-    // Get the username and password from the form inputs
-    const username = document.getElementById("username").value;
+    // Get the email and password from the form inputs
+    const email = document.getElementById("email").value; 
     const password = document.getElementById("password").value;
     const captchaResponse = grecaptcha.getResponse();
 
     document.getElementById("error-message").style.color = "red";
 
-    // Check for empty username or password
-    if (username === "" || username == null) {
-        document.getElementById("error-message").innerText = "Please don't leave the username empty.";
+    // Check for empty email or password
+    if (email === "" || email == null) {
+        document.getElementById("error-message").innerText = "Please don't leave the email empty.";
         return;
     }
 
@@ -72,9 +72,9 @@ function userLogin(event) {
     }
 
     // Prepare the data to send
-    const loginData = {username: username, password: password};
+    const loginData = {email: email, password: password};
 
-    fetch('../auth/objects/login.php', {
+    fetch('auth/objects/login.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -87,7 +87,7 @@ function userLogin(event) {
         return response.json();
     }).then(data => {
         if (data.success) {
-            alert("Login Successfully! Welcome back " + username + "!");
+            alert("Login Successfully! Welcome back " + data.username + " !");
             window.location.href = "profile.php";
         } else {
             document.getElementById("error-message").innerText = data.message;

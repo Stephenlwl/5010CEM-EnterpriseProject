@@ -28,7 +28,6 @@ class User {
         // Sanitize input
         $this->username = htmlspecialchars(strip_tags($this->username));
         $this->email = htmlspecialchars(strip_tags($this->email));
-        $this->password = htmlspecialchars(strip_tags($this->password));
 
         // Bind values
         $stmt->bindParam(":username", $this->username);
@@ -47,20 +46,27 @@ class User {
     }
 
     public function checkCredentials($email, $password) {
+        // Update the query to use Email instead of Username
         $query = "SELECT * FROM " . $this->table_name . " WHERE Email = :email LIMIT 1";
         $stmt = $this->conn->prepare($query);
+        // Bind the email parameter
         $stmt->bindParam(':email', $email);
         $stmt->execute();
-
+    
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if ($user && password_verify($password, $user['password'])) {
-            return $user['user_id'];
+    
+        // Check if user exists and verify the password
+        if ($user && password_verify($password, $user['Password'])) {
+            return [
+                'UserID' => $user['UserID'],
+                'Username' => $user['Username'],
+            ];        
         } else {
-            return false;
+            return false; 
         }
     }
-
+    
+    
     public function updateName($id, $newName) {
         $query = "UPDATE " . $this->table_name . " SET Username = :Username, UserUpdatedAt = NOW() WHERE UserID = :UserID";
         $stmt = $this->conn->prepare($query);
