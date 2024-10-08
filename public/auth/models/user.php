@@ -62,10 +62,10 @@ class User {
     }
 
     public function updateName($id, $newName) {
-        $query = "UPDATE " . $this->table_name . " SET Username = :username, UserUpdatedAt = NOW() WHERE UserID = :user_id";
+        $query = "UPDATE " . $this->table_name . " SET Username = :Username, UserUpdatedAt = NOW() WHERE UserID = :UserID";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':Username', $newName);
-        $stmt->bindParam(':user_id', $id);
+        $stmt->bindParam(':UserID', $id);
 
         if ($stmt->execute()) {
             return true;
@@ -74,34 +74,10 @@ class User {
     }
     
     public function updatePassword($id, $newPassword) {
-        $query = "UPDATE " . $this->table_name . " SET Password = :password, UserUpdatedAt = NOW() WHERE UserID = :user_id";
+        $query = "UPDATE " . $this->table_name . " SET Password = :Password, UserUpdatedAt = NOW() WHERE UserID = :UserID";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':Password', $newPassword);
-        $stmt->bindParam(':user_id', $id);
-
-        if ($stmt->execute()) {
-            return true;
-        }
-        return false;
-    }
-
-    public function updateEmail($id, $newEmail) {
-        $query = "UPDATE " . $this->table_name . " SET Email = :email, UserUpdatedAt = NOW() WHERE UserID = :user_id";
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':Email', $newEmail);
-        $stmt->bindParam(':user_id', $id);
-
-        if ($stmt->execute()) {
-            return true;
-        }
-        return false;
-    }
-
-    public function updatePhone($id, $newPhone) {
-        $query = "UPDATE " . $this->table_name . " SET PhoneNumber = :phone_no, UserUpdatedAt = NOW() WHERE UserID = :user_id";
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':PhoneNumber', $newPhone);
-        $stmt->bindParam(':user_id', $id);
+        $stmt->bindParam(':UserID', $id);
 
         if ($stmt->execute()) {
             return true;
@@ -110,10 +86,10 @@ class User {
     }
 
     public function updateAddress($id, $newAddress) {
-        $query = "UPDATE " . $this->table_name . " SET Address = :address, UserUpdatedAt = NOW() WHERE UserID = :user_id";
+        $query = "UPDATE " . $this->table_name . " SET Address = :Address, UserUpdatedAt = NOW() WHERE UserID = :UserID";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':Address', $newAddress);
-        $stmt->bindParam(':user_id', $id);
+        $stmt->bindParam(':UserID', $id);
 
         if ($stmt->execute()) {
             return true;

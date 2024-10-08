@@ -41,8 +41,10 @@ if (!$userData) {
     <title>Riberio Cafe Profile Page</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/publicDefault.css">
     <link rel="stylesheet" href="../css/editProfile.css">
+    <script src="js/editProfile.js"></script>
 </head>
 
 <body>
@@ -50,35 +52,41 @@ if (!$userData) {
         <h1 class="text-center">Account Information</h1>
         <h2 class="text-center mb-4">Edit Profile</h2>
         <hr>
-        <form>
+        <form id="editProfileForm">
             <div class="row mb-3">
                 <div class="col-sm-6">
                     <label for="name" class="form-label">Name:</label>
-                    <input type="text" id="name" name="name" value="<?php echo htmlspecialchars($userData['Username']); ?>" class="form-control">
+                    <input type="text" id="username" name="username" value="<?php echo htmlspecialchars($userData['Username']); ?>" class="form-control">
                 </div>
             </div>
             <div class="row mb-3">
-                <div class="col-sm-6">
+                <div class="col-sm-5">
                     <label for="email" class="form-label">Email:</label>
-                    <input type="email" id="email" value="<?php echo htmlspecialchars($userData['Email']); ?>" class="form-control">
+                    <input type="email" id="email" value="<?php echo htmlspecialchars($userData['Email']); ?>" class="form-control" readonly>
+                </div>
+                <div class="col-sm-5 text-muted">    
+                    <p class="mt-4 text-warning"><i class="bi bi-exclamation-triangle-fill"></i> Cannot change email</p>
                 </div>
             </div>
             <div class="row mb-3">
                 <div class="col-sm-6">
                     <label for="phone" class="form-label">Phone Number:</label>
-                    <input type="tel" id="phone" name="phone" value="<?php echo htmlspecialchars($userData['PhoneNumber']); ?>" class="form-control">
+                    <input type="tel" id="phone_no" name="phone" value="<?php echo htmlspecialchars($userData['PhoneNumber']); ?>" class="form-control" readonly>
+                </div>
+                <div class="col-sm-5 text-muted">    
+                    <p class="mt-4 text-warning"><i class="bi bi-exclamation-triangle-fill"></i> Cannot change phone number</p>
                 </div>
             </div>
             <div class="row mb-3">
                 <div class="col-sm-6">
-                    <label for="current-password" class="form-label">Current Password:</label>
-                    <input type="password" id="current-password" name="current-password" class="form-control">
+                    <label for="current_password" class="form-label">Current Password:</label>
+                    <input type="text" id="current_password" name="current_password" class="form-control">
                 </div>
             </div>
             <div class="row mb-3">
                 <div class="col-sm-6">
-                    <label for="new-password" class="form-label">New Password:</label>
-                    <input type="password" id="new-password" name="new-password" class="form-control">
+                    <label for="new_password" class="form-label">New Password:</label>
+                    <input type="text" id="new_password" name="new_password" class="form-control">
                 </div>
             </div>
             <div class="row">

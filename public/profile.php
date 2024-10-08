@@ -44,6 +44,7 @@ if (!$userData) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <link rel="stylesheet" href="css/publicDefault.css">
+    <!-- <script src="userProfileSettings/js/editProfile.js"></script> -->
     <style>
         body {
             display: flex;
@@ -107,7 +108,7 @@ if (!$userData) {
                                 </li>
                                 <label for="profile">Favorite & Preference</label>
                                 <li class="nav-item">
-                                    <a class="nav-link profile-settings-nav" href="userProfileSettings/favoriteList.php" target="profile-iframe">Favorite List</a>
+                                    <a class="nav-link profile-settings-nav" href="userProfileSettings/favouriteList.php" target="profile-iframe">Favorite List</a>
                                 </li>
                             </ul>
                         </div>

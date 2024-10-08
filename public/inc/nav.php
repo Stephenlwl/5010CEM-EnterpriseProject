@@ -43,7 +43,7 @@ if (!$userData) {
                 <!-- Left-side navigation links -->
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Home</a>
+                        <a class="nav-link" href="mainpage.php">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">About Us</a>
@@ -71,7 +71,7 @@ if (!$userData) {
                             </ul>
                         </li>
                     <?php else: ?>
-                        <li class="nav-item"><a class="nav-link" href="login.php"><span class="bi bi-box-arrow-in-right"></span>Login</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../login.php"><span class="bi bi-box-arrow-in-right"></span>Login</a></li>
                     <?php endif; ?>
                 </ul>
             </div>
