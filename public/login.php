@@ -10,6 +10,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <link rel="stylesheet" href="css/publicDefault.css">
+    <script src="js/login.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 <body>
 
@@ -31,32 +33,29 @@
                 <h2 class="text-center mb-4">Login</h2>
                 
                 <button class="google-btn">
-    <img src="https://cdn1.iconfinder.com/data/icons/google-s-logo/150/Google_Icons-09-512.png" alt="Google Logo" width="20px" height="20px">
-    Continue with Google
-</button>
+                    <img src="https://cdn1.iconfinder.com/data/icons/google-s-logo/150/Google_Icons-09-512.png" alt="Google Logo" width="20px" height="20px">
+                        Continue with Google
+                </button>
 
                 <p class="separator text-center"><span>OR</span></p>
 
-                <form action="#">
-                    <div class="form-group">
-                        <label for="email">Username</label>
-                        <input type="text" class="form-control" id="email" name="email" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="password" class="form-control" id="password" name="password" required>
-                    </div>
-
-                    <div class="form-group d-flex justify-content-between align-items-center">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="hide">
-                            <label class="form-check-label" for="hide">Hide</label>
+                <form id="login-form" onsubmit="userLogin(event)">
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Username:</label>
+                            <input type="text" id="username" name="username" class="form-control" placeholder="Enter username" required>
                         </div>
-                        <a href="#">Forgot your password?</a>
-                    </div>
-
-                    <button type="submit" class="btn btn-success btn-block">Sign in</button>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password:</label>
+                            <input type="password" id="password" name="password" class="form-control" placeholder="Enter password" required>
+                        </div>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" id="flexSwitchCheckChecked" type="checkbox" onclick="showPassword()"><small>Show Password</small>
+                        </div>
+                        <br>
+                        <div class="g-recaptcha" data-sitekey="6LeO394pAAAAAIfJUVp5Z0c_cOdR-xVFsEn_mDYD"></div>
+                        <br>
+                        <button type="submit" class="btn btn-primary">Log In</button>
+                        <div id="error-message" class="mt-2 text-danger"></div>
                 </form>
 
             </div>
