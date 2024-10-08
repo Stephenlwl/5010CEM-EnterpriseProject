@@ -74,29 +74,25 @@ if (isset($_SESSION['user_id'])) {
 
                         <button class="btn btn-secondary d-lg-none mb-3" type="button" data-bs-toggle="collapse"
                             data-bs-target="#profile-nav" aria-expanded="false" aria-controls="profile-nav">
-                            Account Settings
+                            Menu
                         </button>
 
                         <div id="profile-nav" class="collapse d-lg-block">
                             <ul class="nav nav-pills flex-column">
-                                <label for="profile">Account Information</label>
+                                <label for="profile">Coffee</label>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="menu/coffee.php" target="profile-iframe">Edit Profile</a>
+                                    <a class="nav-link" href="menu/coffeeMenu.php" target="profile-iframe">coffee</a>
                                 </li>
-                                <label for="profile">Delivery</label>
+                                <label for="profile">Desserts</label>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="" target="profile-iframe">Delivery Address</a>
+                                    <a class="nav-link" href="menu/dessertMenu.php" target="profile-iframe">Desserts</a>
                                 </li>
-                                <label for="profile">Orders & Tracking</label>
+                                <label for="profile">Goodies</label>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="" target="profile-iframe">Order Tracking</a>
-                                </li>
+                                    <a class="nav-link" href="" target="profile-iframe">Goodies</a>
+                                <label for="profile">Favorite List</label>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="" target="profile-iframe">Order History</a>
-                                </li>
-                                <label for="profile">Favorite & Preference</label>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="userProfileSettings/favoriteList.php" target="profile-iframe">Favorite List</a>
+                                    <a class="nav-link" href="" target="profile-iframe">Favorites</a>
                                 </li>
                             </ul>
                         </div>
@@ -109,8 +105,8 @@ if (isset($_SESSION['user_id'])) {
             </div>
         </div>
     </main>
-    <!-- footer -->
-    <?php include($IPATH."footer.html"); ?>
+<!-- footer -->
+<?php include($IPATH."footer.html"); ?>
 
 </body>
 
