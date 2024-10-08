@@ -1,0 +1,96 @@
+/* Global Styles */
+html, body {
+    height: 100%;
+    overflow: hidden;
+    scroll-behavior: smooth;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    margin: 0;
+}
+
+/* Scroll Container */
+.scroll-container {
+    height: 100vh;
+    overflow-y: scroll; /* Allow vertical scrolling */
+    scroll-snap-type: y mandatory; /* Snap to each section */
+    scroll-behavior: smooth; /* Smooth scroll */
+}
+
+
+section {
+    height: 100vh; /* Full viewport height */
+    scroll-snap-align: start; /* Each section aligns with the start */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+}
+
+/* Hero Section */
+.hero {
+    background: url('hero-image.jpg') no-repeat center center/cover;
+    color: rgb(51, 30, 132);
+}
+
+.hero h1 {
+    font-size: 4rem;
+}
+
+.hero p {
+    font-size: 1.5rem;
+}
+
+.btn {
+    background-color: #ff6347;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    font-size: 1.2rem;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+/* Features Section */
+.features {
+    background-color: #f4f4f4;
+}
+
+.features h2 {
+    font-size: 3rem;
+    margin-bottom: 30px;
+}
+
+.feature-box {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.feature-item {
+    background-color: white;
+    padding: 20px;
+    width: 30%;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* About Section */
+.about {
+    background-color: #1f7fde;
+}
+
+.about h2 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+}
+
+/* Footer (Optional) */
+footer {
+    background-color: #333;
+    color: white;
+    padding: 1rem;
+    text-align: center;
+}
