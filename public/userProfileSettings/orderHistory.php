@@ -88,7 +88,7 @@ $order_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         </div>
                         <div class="col-4 col-sm-4 text-end">
                             <label>Receipt</label>
-                            <button type="submit" class="btn btn-primary btn-sm me-2">Print</button>
+                            <button type="button" class="btn btn-primary btn-sm me-2" onclick="window.open('print_receipt.php?receipt_id=<?= $order['ReceiptID'] ?>', '_blank')">Print</button>
                         </div>
                     </div>
                     <hr>

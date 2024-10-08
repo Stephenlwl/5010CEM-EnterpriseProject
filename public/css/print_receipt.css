@@ -1,0 +1,29 @@
+body { 
+    margin: 20px; 
+    font-family: 'Helvetica Neue', "Roboto", 'Open Sans', sans-serif;
+}
+
+.receipt-header { 
+    text-align: center; 
+}
+
+.receipt-table { 
+    width: 100%; 
+    border-collapse: collapse; 
+    margin-top: 20px; 
+}
+
+.receipt-table th, .receipt-table td { 
+    border: 1px solid #ddd; 
+    padding: 8px; 
+}
+
+
+.receipt-table th { 
+    background-color: #f8f9fa; 
+}
+
+.footer { 
+    margin-top: 30px; 
+    text-align: center; 
+}
