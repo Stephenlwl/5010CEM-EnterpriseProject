@@ -2,14 +2,12 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('editProfileForm').addEventListener('submit', function (e) {
         e.preventDefault();
 
-        const username = document.getElementById("username").value;
-        const current_password = document.getElementById("current_password").value;
-        const new_password = document.getElementById("new_password").value;
+        const formData = new FormData(this);
 
         // Perform AJAX request to submit form data
         fetch('../auth/objects/profile.php', {
             method: "POST",
-            body: username,current_password,new_password
+            body: formData,
         })
         .then(response => {
             if (!response.ok) {
@@ -21,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (data.success) {
                 // Handle success message or redirection
                 alert(data.message);
-                location.reload();
+                window.parent.location.reload();
             } else {
                 // Handle error message
                 alert(data.message);

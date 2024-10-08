@@ -15,6 +15,7 @@ $response = array('success' => false, 'message' => '');
 
 ob_start();
 // Check if form is submitted
+error_log(print_r($_POST, true));
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     try {
         $database = new Database_Auth();
@@ -27,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             throw new Exception('User not logged in');
         }
 
-        // Fftch current user data
+        // Fetch current user data
         $query = "SELECT Username, Password FROM users WHERE UserID = :UserID";
         $stmt = $db->prepare($query);
         $stmt->bindParam(':UserID', $userId);
@@ -52,8 +53,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Check if new name is different from current name
         if (!empty($newName) && $newName !== $userData['Username']) {
             if ($user->updateName($userId, $newName)) {
-                $response['success'] = true;
-                $response['message'] = 'Name updated successfully';
                 $nameUpdated = true;
             } else {
                 throw new Exception('Failed to update name');
@@ -71,8 +70,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // hash the new password
                 $newPasswordHashed = password_hash($newPassword, PASSWORD_DEFAULT);
                 if ($user->updatePassword($userId, $newPasswordHashed)) {
-                    $response['success'] = true;
-                    $response['message'] = 'Password updated successfully';
                     $passwordUpdated = true;
                 } else {
                     throw new Exception('Failed to update password');
@@ -88,11 +85,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($nameUpdated && $passwordUpdated) {
             $response['success'] = true;
             $response['message'] = 'Profile name and password updated successfully';
-        }
-        // check if no changes were submitted
-        if (!$response['success']) {
+        } else if ($nameUpdated) {
+            $response['success'] = true;
+            $response['message'] = 'Name updated successfully';
+        } else if ($passwordUpdated) {
+            $response['success'] = true;
+            $response['message'] = 'Password updated successfully';
+        } else {
             throw new Exception('No changes submitted');
         }
+
     } catch (Exception $e) {
         $response['message'] = $e->getMessage();
     }

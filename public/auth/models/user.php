@@ -84,19 +84,6 @@ class User {
         }
         return false;
     }
-
-    public function updateAddress($id, $newAddress) {
-        $query = "UPDATE " . $this->table_name . " SET Address = :Address, UserUpdatedAt = NOW() WHERE UserID = :UserID";
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':Address', $newAddress);
-        $stmt->bindParam(':UserID', $id);
-
-        if ($stmt->execute()) {
-            return true;
-        }
-        return false;
-    }
-
 }
 
 ?>
