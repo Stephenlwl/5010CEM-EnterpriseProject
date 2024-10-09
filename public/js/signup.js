@@ -172,9 +172,31 @@ function accountValidation() {
     return !usernameError && !passwordError && !emailError && password === confirm_password;
 }
 
-function verifyOTP() {
 
-    const otp_inp = document.getElementById("otp").value;
+document.querySelectorAll('.otp-input').forEach((input, index, inputs) => {
+    input.addEventListener('input', () => {
+        // Move to the next input if current input is filled
+        if (input.value.length === 1 && index < inputs.length - 1) {
+            inputs[index + 1].focus();
+        }
+        
+        // Move to the previous input if the current input is empty and it's not the first input
+        if (input.value.length === 0 && index > 0) {
+            inputs[index - 1].focus();
+        }
+    });
+
+    // Optional: Automatically select the input when focused
+    input.addEventListener('focus', () => {
+        input.select(); // Select the current input's content if needed
+    });
+});
+
+function verifyOTP() {
+    let otp_inp = '';
+    for (let i = 1; i <= 4; i++) {
+        otp_inp += document.getElementById('otp' + i).value;
+    }
 
     if (otp_inp == otp_code) {
         const formElement = document.getElementById('signup_form');

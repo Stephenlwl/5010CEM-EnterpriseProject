@@ -68,8 +68,12 @@ body {
 }
 
 .login-form {
-    max-width: 400px;
-    margin: 0 auto;
+    padding-top: 180px;
+    max-width: 450px; 
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+
 }
 
 .login-form p {
@@ -93,12 +97,6 @@ body {
 .google-btn {
     background-color: #fff;
     border: 1px solid #d9d9d9;
-}
-
-.twitter-btn {
-    background-color: #1da1f2;
-    color: #fff;
-    border: 1px solid #1da1f2;
 }
 
 form p {
@@ -156,4 +154,17 @@ input[type="text"], input[type="password"] {
 .separator span {
     padding: 0 10px;
     background: #fff; 
+}
+
+.otp-input {
+    width: 50px;
+    height: 50px;
+    font-size: 36px !important;
+    font-weight: bold !important;
+    text-align: center;
+    margin-right: 10px;
+}
+
+.modal-footer {
+    justify-content: space-between;
 }

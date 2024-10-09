@@ -26,8 +26,8 @@
             </div>
         </section>
         
-        <section class="right-section d-flex flex-column justify-content-center align-items-center p-5 bg-white">
-            <div class="login-form w-100" style="max-width: 400px;">
+        <section class="right-section d-flex flex-column justify-content-center align-items-center bg-white">
+            <div class="login-form mt-5">
                 <p class="text-right">Already have an account? <a href="login.php">Login</a></p>
                 <h2 class="text-center mb-4">Login</h2>
                 <button class="google-btn">
@@ -67,8 +67,6 @@
                     </div>
                     <button type="submit" name="send" class="btn btn-success">Verify Email</button>           
                 </form>
-
-                <p class="text-center mt-4">Don't have an account? <a href="#">Sign up</a></p>
             </div>
         </section>
     </main>
@@ -77,27 +75,30 @@
 
      <!-- Email Verification Modal -->
     <div class="modal fade" id="emailVerificationModal" tabindex="-1" role="dialog" aria-labelledby="emailVerificationModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="emailVerificationModalLabel">Email Verification</h5>
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="emailVerificationModalLabel">Email Verification</h5>
+                </div>
+                <div class="modal-body">
+                    <p>An OTP has been sent to your email. Please enter the OTP below to verify your email address.</p>
+                    <div class="d-flex justify-content-center">
+                        <!-- Four input boxes for OTP -->
+                        <input type="text" id="otp1" class="form-control otp-input" maxlength="1" autocomplete="off" required>
+                        <input type="text" id="otp2" class="form-control otp-input" maxlength="1" autocomplete="off" required>
+                        <input type="text" id="otp3" class="form-control otp-input" maxlength="1" autocomplete="off" required>
+                        <input type="text" id="otp4" class="form-control otp-input" maxlength="1" autocomplete="off" required>
                     </div>
-                    <div class="modal-body">
-                        <p>An OTP has been sent to your email. Please enter the OTP below to verify your email address.</p>
-                        <input type="text" id="otp" class="form-control" placeholder="Enter OTP" autocomplete="off" required>
-                        <div id="otp-error" class="mt-2"></div>
-                        <div id="validation-error" class="text-start tex text-danger" class="error-message"></div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" onclick="verifyOTP()">Verify OTP</button>
-
-                    </div>
+                    <div id="otp-error" class="mt-2 text-danger"></div>
+                    <div id="validation-error" class="text-start text-danger error-message"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="verifyOTP()">Verify OTP</button>
                 </div>
             </div>
         </div>
     </div>
-
     <!-- Bootstrap JS and dependencies -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
