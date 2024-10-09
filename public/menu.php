@@ -54,7 +54,6 @@ if (isset($_SESSION['user_id'])) {
             border: none;
         }
     </style>
-
 </head>
 
 <body>
@@ -100,7 +99,7 @@ if (isset($_SESSION['user_id'])) {
                 </div>
                 <!--dynamic right screen -->
                 <div class="col-sm-9 d-flex" style="height: 100vh;">
-                    <iframe width="100%" height="100%" src="userProfileSettings/editProfile.php" frameborder="0" name="profile-iframe" style="flex-grow: 1;"></iframe>
+                    <iframe width="100%" height="100%" src="menu/coffeeMenu.php" frameborder="0" name="profile-iframe" style="flex-grow: 1;"></iframe>
                 </div>
             </div>
         </div>

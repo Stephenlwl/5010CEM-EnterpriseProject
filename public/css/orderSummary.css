@@ -1,0 +1,47 @@
+.box-float {
+    margin: auto;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #f8f9fa;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+.order-table { 
+    margin-top: 20px; 
+}
+
+.total-section { 
+    margin-top: 20px; 
+}
+
+.border-left { 
+    border-left: 1px solid #252525; 
+    padding-left: 50px;
+    margin-left: 10px;
+}
+
+.payment-method,.delivery-method {
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 5px; 
+    transition: background-color 0.3s; 
+}
+
+.payment-method input[type="radio"]:checked + label,
+.delivery-method input[type="radio"]:checked + label {
+    background-color: #b2ebf2; 
+}
+
+.payment-method input[type="radio"],
+.delivery-method input[type="radio"] {
+    display: none; 
+}
+
+.payment-method label,
+.delivery-method label {
+    display: block; 
+    cursor: pointer; 
+    padding: 10px;
+    border-radius: 5px; 
+    transition: background-color 0.3s; 
+}

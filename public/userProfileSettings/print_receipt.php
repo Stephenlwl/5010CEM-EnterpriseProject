@@ -12,14 +12,14 @@ $db = $database->getConnection();
 $ReceiptID = isset($_GET['receipt_id']) ? $_GET['receipt_id'] : 0;
 
 // Query to fetch receipt details
-$query = "SELECT r.ReceiptID, r.TotalPrice, r.PaymentType, r.ReceiveMethod, r.ReceiptCreatedAt,
+$query = "SELECT r.ReceiptID, r.TotalPrice, r.PaymentType, r.ReceiveMethod, r.ReceiptCreatedAt, r.ReferenceNo,
                  a.AddressName, rd.ItemID, rd.ItemQuantity, rd.ItemPrice, rd.TotalPrice AS ItemTotal, 
                  m.ItemName, pi.Temperature, pi.MilkType, pi.CoffeeBeanType, pi.Sweetness, pi.AddShot
           FROM Receipt r 
           INNER JOIN receipt_details rd ON r.ReceiptID = rd.ReceiptID 
             LEFT JOIN personal_item pi ON rd.PersonalItemID = pi.PersonalItemID
           INNER JOIN menu m ON rd.ItemID = m.ItemID 
-          LEFT JOIN address a ON r.AddressID = a.AddressID AND r.ReceiveMethod <> 'Pickup' 
+          INNER JOIN address a ON r.AddressID = a.AddressID
           WHERE r.ReceiptID = :ReceiptID";
 
 $stmt = $db->prepare($query);
@@ -51,12 +51,13 @@ if (!$receipt_data) {
             <div class="row mb-4 mt-5">
                 <div class="col-6 col-md-10">
                     <p><strong>Receipt ID:</strong> <?= htmlspecialchars($receipt_data[0]['ReceiptID']) ?></p>
-                    <p><strong>Receive Method:</strong> <?= htmlspecialchars($receipt_data[0]['ReceiveMethod']) ?></p>
+                    <p><strong>Reference No:</strong> <?= htmlspecialchars($receipt_data[0]['ReferenceNo']) ?></p>
+                    <p><strong>Payment Type:</strong> <?= htmlspecialchars($receipt_data[0]['PaymentType']) ?></p>
                     <p><strong>Ordered By:</strong> <?= htmlspecialchars($_SESSION['username']) ?></p>
                 </div>
                 <div class="col-6 col-md-2 text-start">
                     <p><strong>Date:</strong> <?= date('d M Y - H:i', strtotime($receipt_data[0]['ReceiptCreatedAt'])) ?></p>
-                    <p><strong>Payment Type:</strong> <?= htmlspecialchars($receipt_data[0]['PaymentType']) ?></p>
+                    <p><strong>Receive Method:</strong> <?= htmlspecialchars($receipt_data[0]['ReceiveMethod']) ?></p>
                     <p><strong>Address:</strong> <?= htmlspecialchars($receipt_data[0]['AddressName']) ?></p>
                 </div>
             </div>

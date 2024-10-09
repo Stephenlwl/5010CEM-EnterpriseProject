@@ -16,7 +16,7 @@ $UserID = $_SESSION['user_id'];
 $query = "SELECT o.OrderID, o.OrderStatus, o.CreatedAt AS OrderDate, r.ReceiptID, r.TotalPrice, r.PaymentType, r.ReceiveMethod, a.AddressName 
           FROM `Order` o 
           INNER JOIN Receipt r ON o.ReceiptID = r.ReceiptID
-          LEFT JOIN Address a ON r.AddressID = a.AddressID AND r.ReceiveMethod <> 'Pickup' -- Exclude Pickup orders (temporary placed)
+          INNER JOIN address a ON r.AddressID = a.AddressID
           WHERE r.UserID = :UserID
           ORDER BY o.CreatedAt DESC
           LIMIT 1";  // fetching and showing the most recent order
