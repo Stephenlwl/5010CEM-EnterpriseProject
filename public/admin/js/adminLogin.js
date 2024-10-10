@@ -25,33 +25,35 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-function showPassword() {
-    var passwd = document.getElementById("password");
 
-    if (passwd.type === "password") {
-        passwd.type = "text";
+function showPasswordAdmin() {
+    var adminPasswd = document.getElementById("password");
+
+    if (adminPasswd.type === "password") {
+        adminPasswd.type = "text";
     } else {
-        passwd.type = "password";
+        adminPasswd.type = "password";
     }
 }
 
-function userLogin(event) {
-    event.preventDefault(); 
+
+function adminLogin(event) {
+    event.preventDefault();  // Prevent the form from submitting the traditional way
 
     // Get the email and password from the form inputs
-    const email = document.getElementById("email").value; 
-    const password = document.getElementById("password").value;
+    const admin_email = document.getElementById("email").value;
+    const admin_password = document.getElementById("password").value;
     const captchaResponse = grecaptcha.getResponse();
 
     document.getElementById("error-message").style.color = "red";
 
     // Check for empty email or password
-    if (email === "" || email == null) {
+    if (admin_email === "" || admin_email == null) {
         document.getElementById("error-message").innerText = "Please don't leave the email empty.";
         return;
     }
 
-    if (password === "" || password == null) {
+    if (admin_password === "" || admin_password == null) {
         document.getElementById("error-message").innerText = "Please don't leave the password empty.";
         return;
     }
@@ -62,29 +64,28 @@ function userLogin(event) {
     }
 
     // Prepare the data to send
-    const loginData = {email: email, password: password};
+    const adminLoginData = {admin_email: admin_email, admin_password: admin_password};
 
-    fetch('auth/objects/login.php', {
+    fetch('../auth/objects/admin_login.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(loginData)
+        body: JSON.stringify(adminLoginData)
     }).then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok ' + response.statusText);
-        }
-        return response.json();
+        return response.text(); // Change to text() to log raw response
     }).then(data => {
-        if (data.success) {
-            alert("Login Successfully! Welcome back " + data.username + " !");
-            window.location.href = "profile.php";
+        console.log(data); // Log the raw response to identify the error
+        let jsonData = JSON.parse(data); // Parse the response after logging it
+        if (jsonData.success) {
+            alert("Login Successfully! Welcome back " + jsonData.admin_username + "!");
+            window.location.href = "orderDashboard.php";
         } else {
-            document.getElementById("error-message").innerText = data.message;
+            document.getElementById("error-message").innerText = jsonData.message;
         }
     }).catch(error => {
         console.error('Error:', error);
         document.getElementById("error-message").innerText = "An error occurred. Please try again.";
     });
+    
 }
-

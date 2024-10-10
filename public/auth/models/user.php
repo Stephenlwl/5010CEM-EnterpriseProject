@@ -78,6 +78,18 @@ class User {
         }
         return false;
     }
+
+    public function updatePhoneNumber($id, $newPhoneNumber) {
+        $query = "UPDATE " . $this->table_name . " SET PhoneNumber = :PhoneNumber, UserUpdatedAt = NOW() WHERE UserID = :UserID";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':PhoneNumber', $newPhoneNumber);
+        $stmt->bindParam(':UserID', $id);
+
+        if ($stmt->execute()) {
+            return true;
+        }
+        return false;
+    }
     
     public function updatePassword($id, $newPassword) {
         $query = "UPDATE " . $this->table_name . " SET Password = :Password, UserUpdatedAt = NOW() WHERE UserID = :UserID";

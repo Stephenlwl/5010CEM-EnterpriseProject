@@ -61,11 +61,8 @@ if (!$userData) {
             </div>
             <div class="row mb-3">
                 <div class="col-sm-6">
-                    <label for="phone" class="form-label">Phone Number:</label>
-                    <input type="tel" id="phone_no" name="phone" value="<?php echo htmlspecialchars($userData['PhoneNumber']); ?>" class="form-control" readonly>
-                </div>
-                <div class="col-sm-5 text-muted">    
-                    <p class="mt-4 text-warning"><i class="bi bi-exclamation-triangle-fill"></i> Cannot change phone number</p>
+                    <label for="phone_number" class="form-label">Phone Number:</label>
+                    <input type="text" id="phone_number" name="phone_number" value="<?php echo!empty($userData['PhoneNumber']) ? htmlspecialchars($userData['PhoneNumber']) : ''; ?>" class="form-control" placeholder="Enter your phone number (e.g., 012XXXXXXX)">
                 </div>
             </div>
             <div class="row mb-3">

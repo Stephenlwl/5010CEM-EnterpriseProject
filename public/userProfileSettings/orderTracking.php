@@ -4,7 +4,7 @@ session_start();
 // Ensure session variables are set
 require_once '../auth/config/database.php';
 require_once '../auth/models/user.php';
-
+require_once '../auth/objects/pagination.php';
 // Database connection
 $database = new Database_Auth();
 $db = $database->getConnection();
@@ -12,17 +12,40 @@ $db = $database->getConnection();
 // fetch user ID from session
 $UserID = $_SESSION['user_id'];
 
+// setting up the pagination 
+$ordersPerPage = 1;  
+$currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$offset = ($currentPage - 1) * $ordersPerPage;
+
+// query to count total orders for pagination
+$countQuery = "SELECT COUNT(*) as totalOrders
+               FROM `Order` o
+               INNER JOIN Receipt r ON o.ReceiptID = r.ReceiptID
+               WHERE r.UserID = :UserID
+               AND o.OrderStatus <> 'Delivered'";
+
+$countStmt = $db->prepare($countQuery);
+$countStmt->bindParam(':UserID', $UserID, PDO::PARAM_INT);
+$countStmt->execute();
+$totalOrders = $countStmt->fetch(PDO::FETCH_ASSOC)['totalOrders'];
+
+// calculating total pages
+$totalPages = ceil($totalOrders / $ordersPerPage);
+
 // query to fetch order details based on the user
 $query = "SELECT o.OrderID, o.OrderStatus, o.CreatedAt AS OrderDate, r.ReceiptID, r.TotalPrice, r.PaymentType, r.ReceiveMethod, a.AddressName 
           FROM `Order` o 
           INNER JOIN Receipt r ON o.ReceiptID = r.ReceiptID
           INNER JOIN address a ON r.AddressID = a.AddressID
           WHERE r.UserID = :UserID
+          AND o.OrderStatus <> 'Delivered'
           ORDER BY o.CreatedAt DESC
-          LIMIT 1";  // fetching and showing the most recent order
+          LIMIT :limit OFFSET :offset";
 
 $stmt = $db->prepare($query);
-$stmt->bindParam(':UserID', $UserID, PDO::PARAM_INT); 
+$stmt->bindParam(':UserID', $UserID, PDO::PARAM_INT);
+$stmt->bindParam(':limit', $ordersPerPage, PDO::PARAM_INT);
+$stmt->bindParam(':offset', $offset, PDO::PARAM_INT); 
 $stmt->execute();
 $orderData = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -54,6 +77,7 @@ $orderData = $stmt->fetch(PDO::FETCH_ASSOC);
                 No orders have been made yet. Please place an order to track your status.
             </div>
         <?php else: ?>
+            <?php renderPagination($currentPage, $totalPages); ?>
         <div class="container-borderframe">
             <div class="row mb-4 align-items-center">
                 <div class="col-sm-3">
@@ -86,10 +110,18 @@ $orderData = $stmt->fetch(PDO::FETCH_ASSOC);
                             <i class="bi bi-box-seam"></i>
                             <p>Packing</p>
                         </div>
-                        <div class="col-sm-2 status-item" data-status="Ready to Pickup">
-                            <i class="bi bi-shop"></i>
-                            <p>Ready to Pickup</p>
-                        </div>
+                        <!-- check the receive method to showing the correspoding status -->
+                        <?php if ($orderData['ReceiveMethod'] === 'Pickup'): ?>
+                            <div class="col-sm-2 status-item" data-status="Ready to Pickup">
+                                <i class="bi bi-shop"></i>
+                                <p>Ready to Pickup</p>
+                            </div>
+                        <?php elseif ($orderData['ReceiveMethod'] === 'Delivery'): ?>
+                            <div class="col-sm-2 status-item" data-status="Out for Delivery">
+                                <i class="bi bi-truck"></i>
+                                <p>Out for Delivery</p>
+                            </div>
+                        <?php endif; ?>
                         <div class="col-sm-2 status-item" data-status="Delivered">
                             <i class="bi bi-truck"></i>
                             <p>Delivered</p>

@@ -4,6 +4,7 @@ session_start();
 // Ensure session variables are set
 require_once '../auth/config/database.php';
 require_once '../auth/models/user.php';
+require_once '../auth/objects/pagination.php';
 
 // Database connection
 $database = new Database_Auth();
@@ -12,6 +13,25 @@ $db = $database->getConnection();
 // Fetch user ID from session
 $UserID = $_SESSION['user_id'];
 
+// setting up the pagination 
+$ordersPerPage = 3;  
+$currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$offset = ($currentPage - 1) * $ordersPerPage;
+
+// query to count total orders for pagination
+$countQuery = "SELECT COUNT(*) as totalOrders
+               FROM `Order` o
+               INNER JOIN Receipt r ON o.ReceiptID = r.ReceiptID
+               WHERE r.UserID = :UserID";
+
+$countStmt = $db->prepare($countQuery);
+$countStmt->bindParam(':UserID', $UserID, PDO::PARAM_INT);
+$countStmt->execute();
+$totalOrders = $countStmt->fetch(PDO::FETCH_ASSOC)['totalOrders'];
+
+// calculating total pages
+$totalPages = ceil($totalOrders / $ordersPerPage);
+
 // Query to fetch order details based on the user
 $query = "SELECT o.OrderID, o.OrderStatus, o.CreatedAt AS OrderDate, r.ReceiptID, r.TotalPrice, r.PaymentType, r.ReceiveMethod, a.AddressName 
           FROM `Order` o 
@@ -19,10 +39,12 @@ $query = "SELECT o.OrderID, o.OrderStatus, o.CreatedAt AS OrderDate, r.ReceiptID
           INNER JOIN address a ON r.AddressID = a.AddressID
           WHERE r.UserID = :UserID
           ORDER BY o.CreatedAt DESC
-          LIMIT 10";  // show the 10 most recent orders
+          LIMIT :limit OFFSET :offset";
 
 $stmt = $db->prepare($query);
 $stmt->bindParam(':UserID', $UserID, PDO::PARAM_INT); 
+$stmt->bindParam(':limit', $ordersPerPage, PDO::PARAM_INT);
+$stmt->bindParam(':offset', $offset, PDO::PARAM_INT); 
 $stmt->execute();
 $order_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -78,7 +100,6 @@ $order_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     </select>
                 </div>
             </div>
-            
             <?php foreach ($order_data as $order): ?>
                 <div class="container-borderframe p-3 mb-3">
                     <div class="row">
@@ -87,8 +108,36 @@ $order_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <p class="mb-1"><?= date('d M Y - H:i', strtotime($order['OrderDate'])) ?></p>
                         </div>
                         <div class="col-4 col-sm-4 text-end">
-                            <label>Receipt</label>
-                            <button type="button" class="btn btn-primary btn-sm me-2" onclick="window.open('print_receipt.php?receipt_id=<?= $order['ReceiptID'] ?>', '_blank')">Print</button>
+                            <div class="mb-2">
+                            <!-- Order Status with dynamic background color -->
+                            <label class="form-label">Status:</label>
+                            <span class="badge" style="
+                                background-color: 
+                                    <?php 
+                                        switch ($order['OrderStatus']) {
+                                            case 'Delivered':
+                                                echo '#28a745'; // green for delivered
+                                                break;
+                                            case 'Packing':
+                                            case 'Crafting':
+                                            case 'Preparing':
+                                                echo '#ffc107'; // yellow for Packing, Crafting, Preparing
+                                                break;
+                                            case 'Ready to Pickup':
+                                                echo '#fd7e14'; // orange for Ready to Pickup
+                                                break;
+                                            default:
+                                                echo '#f8f9fa'; // default background color (the order placed)
+                                        }
+                                    ?>; 
+                                color: <?= ($order['OrderStatus'] === 'Order Placed') ? '#000' : '#fff' ?>;
+                                box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
+                                padding: 5px 10px;
+                                border-radius: 5px;
+                            "><?= htmlspecialchars($order['OrderStatus']) ?></span>
+                            </div>
+                            <label class="form-label">Receipt</label>
+                            <button type="button" class="btn btn-primary btn-sm me-2" onclick="window.open('print_receipt.php?receipt_id=<?= $order['ReceiptID'] ?>', '_blank')">Print</button>                            
                         </div>
                     </div>
                     <hr>
@@ -117,6 +166,7 @@ $order_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     </div>
                 </div>
             <?php endforeach; ?>
+            <?php renderPagination($currentPage, $totalPages); ?>
         <?php else: ?>
             <div class="alert alert-warning text-center" role="alert">
                 No orders have been made yet.

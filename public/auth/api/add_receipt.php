@@ -75,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Insert into the receipt_details table
             foreach ($items as $item) {
                 $ItemID = $item['ItemID'];
-                $PersonalItemID = null; // Set as default for not customized items
+                $PersonalItemID = $item['PersonalItemID'] ?? null; // Set as default for not customized items
                 $ItemQuantity = $item['Quantity'];
                 $ItemPrice = $item['ItemPrice'];
                 $TotalItemPrice = $ItemPrice * $ItemQuantity;
@@ -105,7 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 // Function to fetch cart items
 function fetchCartItems($UserID, $db) {
-    $query = "SELECT c.CartID, c.ItemID, c.Quantity, m.ItemName, m.ItemPrice
+    $query = "SELECT c.CartID, c.ItemID, c.Quantity, m.ItemName, m.ItemPrice, c.PersonalItemID
               FROM cart AS c
               JOIN menu AS m ON c.ItemID = m.ItemID
               WHERE c.UserID = :userID AND c.Status = 'Active'";

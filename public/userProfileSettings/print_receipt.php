@@ -17,7 +17,7 @@ $query = "SELECT r.ReceiptID, r.TotalPrice, r.PaymentType, r.ReceiveMethod, r.Re
                  m.ItemName, pi.Temperature, pi.MilkType, pi.CoffeeBeanType, pi.Sweetness, pi.AddShot
           FROM Receipt r 
           INNER JOIN receipt_details rd ON r.ReceiptID = rd.ReceiptID 
-            LEFT JOIN personal_item pi ON rd.PersonalItemID = pi.PersonalItemID
+          LEFT JOIN personal_item pi ON rd.PersonalItemID = pi.PersonalItemID
           INNER JOIN menu m ON rd.ItemID = m.ItemID 
           INNER JOIN address a ON r.AddressID = a.AddressID
           WHERE r.ReceiptID = :ReceiptID";
