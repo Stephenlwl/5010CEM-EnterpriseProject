@@ -20,24 +20,24 @@
     margin-left: 10px;
 }
 
-.payment-method,.delivery-method {
+.payment-option,.delivery-method {
     padding: 10px;
     margin: 5px 0;
     border-radius: 5px; 
     transition: background-color 0.3s; 
 }
 
-.payment-method input[type="radio"]:checked + label,
+.payment-option input[type="radio"]:checked + label,
 .delivery-method input[type="radio"]:checked + label {
     background-color: #b2ebf2; 
 }
 
-.payment-method input[type="radio"],
+.payment-option input[type="radio"],
 .delivery-method input[type="radio"] {
     display: none; 
 }
 
-.payment-method label,
+.payment-option label,
 .delivery-method label {
     display: block; 
     cursor: pointer; 

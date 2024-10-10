@@ -57,35 +57,35 @@ document.addEventListener('DOMContentLoaded', function () {
 
     //delete address
     window.deleteAddress = function (addressId) {
-    if (confirm('Are you sure you want to delete this address?')) {
-        fetch('../auth/api/remove_address.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json' // Ensures the server knows you're sending JSON
-            },
-            body: JSON.stringify({ address_id: addressId }) // Send the address ID as JSON
-        })
-        .then(response => {
-            // Check if the response is ok and parse JSON
-            if (!response.ok) {
-                throw new Error('Server returned an error!');
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (data.success) {
-                alert('Address deleted successfully!');
-                location.reload();
-            } else {
-                alert('Error deleting address: ' + data.message);
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('An error occurred while deleting the address.');
-        });
-    }
-};
+        if (confirm('Are you sure you want to delete this address?')) {
+            fetch('../auth/api/remove_address.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json' // Ensures the server knows you're sending JSON
+                },
+                body: JSON.stringify({ address_id: addressId }) // Send the address ID as JSON
+            })
+            .then(response => {
+                // Check if the response is ok and parse JSON
+                if (!response.ok) {
+                    throw new Error('Server returned an error!');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    alert('Address deleted successfully!');
+                    location.reload();
+                } else {
+                    alert('Error deleting address: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while deleting the address.');
+            });
+        }
+    };
 
     
     // Submit event listener for add address form

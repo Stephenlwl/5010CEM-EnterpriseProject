@@ -1,8 +1,8 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const paymentMethods = document.getElementsByName('paymentMethod');
+    const paymentOptions = document.getElementsByName('paymentOption');
     const paypalContainer = document.getElementById('paypal-button-container');
     const userId = document.getElementById('userId').value;
-    let paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;  
+    let paymentOption = document.querySelector('input[name="paymentOption"]:checked').value;  
     const addressOptions = document.getElementById('addressOptions');
     const addressSection = document.getElementById('addressSection');
     const storeAddressOptions = document.getElementById('storeAddressOptions');
@@ -32,6 +32,35 @@ document.addEventListener('DOMContentLoaded', function () {
     // show user address based on radio button listener
     deliveryHomeRadio.addEventListener('change', handleDeliveryMethodChange);
     deliveryPickupRadio.addEventListener('change', handleDeliveryMethodChange);
+
+   // Submit event listener for add address form
+   var addAddressForm = document.getElementById('addAddressForm');
+   if (addAddressForm) {
+       addAddressForm.addEventListener('submit', function (e) {
+           e.preventDefault();
+
+           // Retrieve form data
+           const addressData = new FormData(this);
+
+           // Send new address to the server
+           fetch('auth/api/add_address.php', {
+               method: 'POST',
+               body: addressData,
+           })
+           .then(response => response.json())
+           .then(data => {
+               if (data.success) {
+                   alert('Address added successfully!');
+                   location.reload(); 
+               } else {
+                   alert('Error adding address: ' + data.message);
+               }
+           })
+           .catch(error => {
+               console.error('Error:', error);
+           });
+       });
+   }
     
     // fetch user addresses
     function fetchUserAddresses() {
@@ -110,15 +139,22 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    paymentMethods.forEach(method => {
+    paymentOptions.forEach(method => {
         method.addEventListener('change', function() {
-            paymentMethod = this.value;
+            paymentOption = this.value;
             togglePaypalButton();
         });
     });
 
     paypal.Buttons({
         createOrder: function (data, actions) {
+            const addressId = getSelectedAddressId(); 
+
+            if (!addressId || addressId === 'null') {
+                // returning a rejected promise to prevent the payment process from starting
+                return Promise.reject(new Error('Please select an address before proceeding.'));
+            }
+
             return actions.order.create({
                 purchase_units: [{
                     amount: {
@@ -134,12 +170,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 const totalAmount = details.purchase_units[0].amount.value;
                 const addressId = getSelectedAddressId();                     
 
-                
                 // declare all the receipt data
                 const receiptData = {
                     AddressID: addressId,
                     TotalPrice: totalAmount,
-                    PaymentType: paymentMethod,
+                    PaymentType: paymentOption,
                     ReceiveMethod: deliveryMethod,
                     ReferenceNo: transactionId,
                     // Get cart items from the cartItems where has been fetched on OrderSummary.php
@@ -227,7 +262,7 @@ document.addEventListener('DOMContentLoaded', function () {
         },
         onError: function (err) {
             console.error('PayPal Checkout error: ', err);
-            alert('An error occurred during the payment process.');
+            alert('An error occurred during the payment process. '+ err);
         }
     }).render('#paypal-button-container');
 });
