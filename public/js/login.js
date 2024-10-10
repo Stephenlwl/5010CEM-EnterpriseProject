@@ -74,7 +74,7 @@ function userLogin(event) {
     // Prepare the data to send
     const loginData = {username: username, password: password};
 
-    fetch('../auth/objects/login.php', {
+    fetch('auth/objects/login.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
