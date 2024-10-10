@@ -29,7 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         // Fetch current user data
-        $query = "SELECT Username, Password FROM users WHERE UserID = :UserID";
+        $query = "SELECT Username, Password, PhoneNumber FROM users WHERE UserID = :UserID";
         $stmt = $db->prepare($query);
         $stmt->bindParam(':UserID', $userId);
         $stmt->execute();
@@ -43,6 +43,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $user = new User($db);
 
         $newName = $_POST['username'] ?? '';
+        $newPhoneNumber = $_POST['phone_number'] ?? '';
+        $phonePattern = '/^01[0-9]{8,9}$/';
         $currentPassword = $_POST['current_password'] ?? '';
         $newPassword = $_POST['new_password'] ?? '';
 
@@ -56,6 +58,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $nameUpdated = true;
             } else {
                 throw new Exception('Failed to update name');
+            }
+        }
+
+        if (!empty($newPhoneNumber) && $newPhoneNumber !== $userData['PhoneNumber'] && $newPhoneNumber !== '') {    
+            if (!preg_match($phonePattern, $newPhoneNumber)) {
+                throw new Exception('Invalid phone number format (e.g. 0123456789)');
+            }
+            if ($user->updatePhoneNumber($userId, $newPhoneNumber)) {
+                $phoneNumberUpdated = true;
+            } else {
+                throw new Exception('Failed to update phone number');
             }
         }
 
@@ -82,9 +95,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($nameUpdated && $passwordUpdated) {
             $response['success'] = true;
             $response['message'] = 'Profile name and password updated successfully';
+        } else if ($nameUpdated && $phoneNumberUpdated) {
+            $response['success'] = true;
+            $response['message'] = 'Name and phone number updated successfully';
+        } else if ($phoneNumberUpdated && $passwordUpdated) {
+            $response['success'] = true;
+            $response['message'] = 'Phone number and password updated successfully';
+        } else if ($nameUpdated && $phoneNumberUpdated && $passwordUpdated) {
+            $response['success'] = true;
+            $response['message'] = 'Name, phone number, and password updated successfully';
         } else if ($nameUpdated) {
             $response['success'] = true;
             $response['message'] = 'Name updated successfully';
+        } else if ($phoneNumberUpdated) {
+            $response['success'] = true;
+            $response['message'] = 'Phone number updated successfully';
         } else if ($passwordUpdated) {
             $response['success'] = true;
             $response['message'] = 'Password updated successfully';
@@ -93,11 +118,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
     } catch (Exception $e) {
+        $response['success'] = false;
         $response['message'] = $e->getMessage();
+    } finally {
+        ob_end_clean();
+        // return the response as JSON
+        echo json_encode($response);
+
     }
 }
 
-// return the response as JSON
-echo json_encode($response);
 
 ?>
