@@ -19,7 +19,7 @@ if (isset($_SESSION['user_id'])) {
 }
 
 ?>
-<header>
+<header style="background-color: <?php echo basename($_SERVER['PHP_SELF']) == 'mainpage.php' ? '#000000' : '#6B8A7A'; ?>;">
     <nav class="navbar navbar-expand-lg">
         <div class="container">
             <a class="navbar-brand" href="mainpage.php"><img src="img/logo.png" height="50px" width="150px" alt="Rimberio Cafe Logo"></a>
