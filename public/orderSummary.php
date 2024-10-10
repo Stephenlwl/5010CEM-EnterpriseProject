@@ -28,9 +28,11 @@ if (!isset($_SESSION['user_id']) || empty($userData)) {
 $userId = $_SESSION['user_id']; 
 
 // Fetch cart items for the logged-in user
-$query = "SELECT c.CartID, c.ItemID, c.Quantity, c.PersonalItemID, m.ItemName, m.ItemPrice
+$query = "SELECT c.CartID, c.ItemID, c.Quantity, c.PersonalItemID, m.ItemName, m.ItemPrice,
+                 pi.Temperature, pi.MilkType, pi.CoffeeBeanType, pi.Sweetness, pi.AddShot
           FROM cart AS c
           JOIN menu AS m ON c.ItemID = m.ItemID
+          LEFT JOIN personal_item pi ON c.PersonalItemID = pi.PersonalItemID
           WHERE c.UserID = :userID AND c.Status = 'Active'";
 
 $stmt = $db->prepare($query);
@@ -107,7 +109,17 @@ $total = $subTotal + $sst;
                             <tbody>
                                 <?php foreach ($items as $item): ?>
                                 <tr>
-                                    <td><?= htmlspecialchars($item['ItemName']) ?></td>
+                                    <td>
+                                        <?= htmlspecialchars($item['ItemName']) ?>
+                                        <br>
+                                        <small class="text-muted">
+                                            <?= !empty($item['Temperature']) ? htmlspecialchars($item['Temperature']) : 'Default' ?> 
+                                            <?= !empty($item['MilkType']) ? '| ' . htmlspecialchars($item['MilkType']) : '' ?> 
+                                            <?= !empty($item['CoffeeBeanType']) ? '| ' . htmlspecialchars($item['CoffeeBeanType']) : '' ?> 
+                                            <?= !empty($item['Sweetness']) ? '| ' . htmlspecialchars($item['Sweetness']) : '' ?> 
+                                            <?= !empty($item['AddShot']) ? '| Add Shot' : '' ?>
+                                        </small>
+                                    </td>
                                     <td><?= number_format($item['ItemPrice'], 2) ?></td>
                                     <td><?= htmlspecialchars($item['Quantity']) ?></td>
                                     <td><?= number_format($item['ItemPrice'] * $item['Quantity'], 2) ?></td>
