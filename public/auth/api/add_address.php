@@ -20,14 +20,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $db = $database->getConnection();
 
         // Check if UserID is set in session
-        if (!isset($_SESSION['UserID'])) {
+        if (!isset($_SESSION['user_id'])) {
             $response['message'] = 'User not logged in.';
             echo json_encode($response);
             exit();
         }
 
         // Get UserID from session
-        $UserID = $_SESSION['UserID'];
+        $UserID = $_SESSION['user_id'];
         $addressName = $_POST['address_name'];
         $address1 = $_POST['address1'];
         $address2 = $_POST['address2'];

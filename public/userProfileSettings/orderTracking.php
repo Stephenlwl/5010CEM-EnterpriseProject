@@ -9,17 +9,14 @@ require_once '../auth/models/user.php';
 $database = new Database_Auth();
 $db = $database->getConnection();
 
-// For testing purposes (should be removed in production)
-$_SESSION['UserID'] = 1;
-
 // fetch user ID from session
-$UserID = $_SESSION['UserID'];
+$UserID = $_SESSION['user_id'];
 
 // query to fetch order details based on the user
 $query = "SELECT o.OrderID, o.OrderStatus, o.CreatedAt AS OrderDate, r.ReceiptID, r.TotalPrice, r.PaymentType, r.ReceiveMethod, a.AddressName 
           FROM `Order` o 
           INNER JOIN Receipt r ON o.ReceiptID = r.ReceiptID
-          LEFT JOIN Address a ON r.AddressID = a.AddressID AND r.ReceiveMethod <> 'Pickup' -- Exclude Pickup orders (temporary placed)
+          INNER JOIN address a ON r.AddressID = a.AddressID
           WHERE r.UserID = :UserID
           ORDER BY o.CreatedAt DESC
           LIMIT 1";  // fetching and showing the most recent order
@@ -52,28 +49,24 @@ $orderData = $stmt->fetch(PDO::FETCH_ASSOC);
         <h1 class="text-center">Orders & Tracking</h1>
         <h2 class="text-center mb-4">Order Tracking</h2>
         <hr>
-
+        <?php if (empty($orderData)): ?>
+            <div class="alert alert-warning text-center" role="alert">
+                No orders have been made yet. Please place an order to track your status.
+            </div>
+        <?php else: ?>
         <div class="container-borderframe">
-            <?php if (empty($orderData)): ?>
-                <div class="alert alert-warning text-center" role="alert">
-                    No orders have been made yet. Please place an order to track your status.
+            <div class="row mb-4 align-items-center">
+                <div class="col-sm-3">
+                    <h4>Current Order Status</h4>
                 </div>
-            <?php else: ?>
-                <div class="row mb-4 align-items-center">
-                    <div class="col-sm-3">
-                        <h4>Current Order Status</h4>
-                    </div>
-                    <div class="col-sm-6">
-                        <label class="form-label status current-status-highlight"><?php echo htmlspecialchars($orderData['OrderStatus']); ?></label>
-                    </div>
-                    <div class="col-sm-3 text-end">
-                        <label class="form-label fw-semibold" id="receiveMethod"><?php echo htmlspecialchars($orderData['ReceiveMethod']); ?></label>
-                    </div>
+                <div class="col-sm-6">
+                    <label class="form-label status current-status-highlight"><?php echo htmlspecialchars($orderData['OrderStatus']); ?></label>
                 </div>
-                <?php
-                // Assuming you have fetched the order status in the $orderData
-                $currentOrderStatus = $orderData['OrderStatus']; // E.g., 'Preparing'
-                ?>
+                <div class="col-sm-3 text-end">
+                    <label class="form-label fw-semibold" id="receiveMethod"><?php echo htmlspecialchars($orderData['ReceiveMethod']); ?></label>
+                </div>
+            </div>
+            <?php $currentOrderStatus = $orderData['OrderStatus']; ?>
                 <div class="order_status_frame">
                     <input type="hidden" id="currentStatus" value="<?php echo $currentOrderStatus; ?>">
                     <div class="row text-center">
@@ -112,7 +105,7 @@ $orderData = $stmt->fetch(PDO::FETCH_ASSOC);
                     </div>
                     <div class="col-4 col-sm-4 text-end">
                         <label>Receipt</label>
-                        <button type="submit" class="btn btn-primary me-2">Print</button>
+                        <button type="button" class="btn btn-primary btn-sm me-2" onclick="window.open('print_receipt.php?receipt_id=<?= $orderData['ReceiptID'] ?>', '_blank')">Print</button>
                     </div>
                 </div>
 

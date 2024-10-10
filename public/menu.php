@@ -1,3 +1,25 @@
+<?php
+session_start();
+
+require_once 'auth/config/database.php';
+require_once 'auth/models/user.php';
+
+// Database connection
+$database = new Database_Auth();
+$db = $database->getConnection();
+
+// Fetch user data
+if (isset($_SESSION['user_id'])) {
+    $UserID = $_SESSION['user_id'];
+    $query = "SELECT * FROM users WHERE UserID = :UserID";
+    $stmt = $db->prepare($query);
+    $stmt->bindParam(':UserID', $UserID, PDO::PARAM_INT); // Bind UserID as an integer
+    $stmt->execute();
+    $userData = $stmt->fetch(PDO::FETCH_ASSOC);
+} else {
+    $userData = null;
+}
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -32,7 +54,6 @@
             border: none;
         }
     </style>
-
 </head>
 
 <body>
@@ -52,29 +73,25 @@
 
                         <button class="btn btn-secondary d-lg-none mb-3" type="button" data-bs-toggle="collapse"
                             data-bs-target="#profile-nav" aria-expanded="false" aria-controls="profile-nav">
-                            Account Settings
+                            Menu
                         </button>
 
                         <div id="profile-nav" class="collapse d-lg-block">
                             <ul class="nav nav-pills flex-column">
-                                <label for="profile">Account Information</label>
+                                <label for="profile">Coffee</label>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="menu/coffee.php" target="profile-iframe">Edit Profile</a>
+                                    <a class="nav-link" href="menu/coffeeMenu.php" target="profile-iframe">coffee</a>
                                 </li>
-                                <label for="profile">Delivery</label>
+                                <label for="profile">Desserts</label>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="" target="profile-iframe">Delivery Address</a>
+                                    <a class="nav-link" href="menu/dessertMenu.php" target="profile-iframe">Desserts</a>
                                 </li>
-                                <label for="profile">Orders & Tracking</label>
+                                <label for="profile">Goodies</label>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="" target="profile-iframe">Order Tracking</a>
-                                </li>
+                                    <a class="nav-link" href="" target="profile-iframe">Goodies</a>
+                                <label for="profile">Favorite List</label>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="" target="profile-iframe">Order History</a>
-                                </li>
-                                <label for="profile">Favorite & Preference</label>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="userProfileSettings/favoriteList.php" target="profile-iframe">Favorite List</a>
+                                    <a class="nav-link" href="" target="profile-iframe">Favorites</a>
                                 </li>
                             </ul>
                         </div>
@@ -82,13 +99,13 @@
                 </div>
                 <!--dynamic right screen -->
                 <div class="col-sm-9 d-flex" style="height: 100vh;">
-                    <iframe width="100%" height="100%" src="userProfileSettings/editProfile.php" frameborder="0" name="profile-iframe" style="flex-grow: 1;"></iframe>
+                    <iframe width="100%" height="100%" src="menu/coffeeMenu.php" frameborder="0" name="profile-iframe" style="flex-grow: 1;"></iframe>
                 </div>
             </div>
         </div>
     </main>
-    <!-- footer -->
-    <?php include($IPATH."footer.html"); ?>
+<!-- footer -->
+<?php include($IPATH."footer.html"); ?>
 
 </body>
 

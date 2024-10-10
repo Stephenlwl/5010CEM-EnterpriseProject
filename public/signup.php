@@ -10,6 +10,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <link rel="stylesheet" href="css/publicDefault.css">
+    <script src="js/signup.js"></script>
 </head>
 <body>
 
@@ -25,8 +26,8 @@
             </div>
         </section>
         
-        <section class="right-section d-flex flex-column justify-content-center align-items-center p-5 bg-white">
-            <div class="login-form w-100" style="max-width: 400px;">
+        <section class="right-section d-flex flex-column justify-content-center align-items-center bg-white">
+            <div class="login-form mt-5">
                 <p class="text-right">Already have an account? <a href="login.php">Login</a></p>
                 <h2 class="text-center mb-4">Login</h2>
                 <button class="google-btn">
@@ -35,45 +36,69 @@
                 </button>
                 <p class="separator text-center"><span>OR</span></p>
 
-                <form action="#">
-                    <div class="form-group">
-                        <label for="username">Username</label>
-                        <input type="text" class="form-control" id="username" name="username" required>
+                <form id="signup_form">
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username:</label>
+                        <input id="username" name="username" type="text" class="form-control" placeholder="Enter username" required>
+                        <div class="form-text">*Username must be at least 8 characters long and no special character.</div>
+                        <div id="username-error" class="mt-2"></div>                            
                     </div>
-                    
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="text" class="form-control" id="email" name="email" required>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input id="email" name="email" type="email" class="form-control" placeholder="...@gmail.com" required>
+                        <div id="email-error" class="mt-2"></div> 
                     </div>
-
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="password" class="form-control" id="password" name="password" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="password">Confirm Password</label>
-                        <input type="password" class="form-control" id="password" name="password" required>
-                    </div>
-
-                    <div class="form-group d-flex justify-content-between align-items-center">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="hide">
-                            <label class="form-check-label" for="hide">Hide</label>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password:</label>
+                        <input id="password" name="password" type="password" class="form-control" placeholder="Enter password" required>
+                        <div class="form-check form-switch">                                
+                            <input class="form-check-input" id="flexSwitchCheckChecked" type="checkbox" onclick="showPassword()"><small>Show Password</small>
                         </div>
-                        <a href="#">Forgot your password?</a>
+                        <div class="form-text">*Password must be at least 8 characters long with at least 1 number and 1 special character.</div>
+                        <div id="password-error" class="mt-2"></div>  
                     </div>
-
-                    <button type="submit" class="btn btn-success btn-block">Sign in</button>
+                    <div class="mb-3">
+                        <label for="confirm_password" class="form-label">Confirm Password:</label>
+                        <input id="confirm_password" name="confirm_password" type="password" class="form-control" placeholder="Enter confirm password" required>
+                        <div id="confirm-password-error" class="mt-2"></div>
+                        <div class="form-check form-switch">    
+                            <input class="form-check-input" id="flexSwitchCheckChecked" type="checkbox" onclick="showConfirmPassword()"><small>Show Confirm Password</small>
+                        </div>
+                    </div>
+                    <button type="submit" name="send" class="btn btn-success">Verify Email</button>           
                 </form>
-
-                <p class="text-center mt-4">Don't have an account? <a href="#">Sign up</a></p>
             </div>
         </section>
     </main>
     <!-- footer -->
     <?php include($IPATH."footer.html"); ?>
 
+     <!-- Email Verification Modal -->
+    <div class="modal fade" id="emailVerificationModal" tabindex="-1" role="dialog" aria-labelledby="emailVerificationModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="emailVerificationModalLabel">Email Verification</h5>
+                </div>
+                <div class="modal-body">
+                    <p>An OTP has been sent to your email. Please enter the OTP below to verify your email address.</p>
+                    <div class="d-flex justify-content-center">
+                        <!-- Four input boxes for OTP -->
+                        <input type="text" id="otp1" class="form-control otp-input" maxlength="1" autocomplete="off" required>
+                        <input type="text" id="otp2" class="form-control otp-input" maxlength="1" autocomplete="off" required>
+                        <input type="text" id="otp3" class="form-control otp-input" maxlength="1" autocomplete="off" required>
+                        <input type="text" id="otp4" class="form-control otp-input" maxlength="1" autocomplete="off" required>
+                    </div>
+                    <div id="otp-error" class="mt-2 text-danger"></div>
+                    <div id="validation-error" class="text-start text-danger error-message"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="verifyOTP()">Verify OTP</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Bootstrap JS and dependencies -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>

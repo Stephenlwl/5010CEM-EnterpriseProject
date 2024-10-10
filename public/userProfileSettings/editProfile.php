@@ -1,12 +1,6 @@
 <?php
 session_start();
 
-// Ensure session variables are set
-// if (!isset($_SESSION['username'])) {
-//     header('Location: login.php'); // Redirect to login page instead of editProfile.php
-//     exit();
-// }
-
 require_once '../auth/config/database.php';
 require_once '../auth/models/user.php';
 
@@ -14,11 +8,8 @@ require_once '../auth/models/user.php';
 $database = new Database_Auth();
 $db = $database->getConnection();
 
-// testing purpose only should remove after testing
-$_SESSION['UserID'] = 1;
-
 // Fetch user data
-$UserID = $_SESSION['UserID'];
+$UserID = $_SESSION['user_id'];
 $query = "SELECT * FROM users WHERE UserID = :UserID";
 $stmt = $db->prepare($query);
 $stmt->bindParam(':UserID', $UserID, PDO::PARAM_INT); // Bind UserID as an integer

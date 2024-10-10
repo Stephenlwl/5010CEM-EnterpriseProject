@@ -1,3 +1,26 @@
+<?php
+session_start();
+
+require_once 'auth/config/database.php';
+require_once 'auth/models/user.php';
+
+// Database connection
+$database = new Database_Auth();
+$db = $database->getConnection();
+
+// Fetch user data
+if (isset($_SESSION['user_id'])) {
+    $UserID = $_SESSION['user_id'];
+    $query = "SELECT * FROM users WHERE UserID = :UserID";
+    $stmt = $db->prepare($query);
+    $stmt->bindParam(':UserID', $UserID, PDO::PARAM_INT); // Bind UserID as an integer
+    $stmt->execute();
+    $userData = $stmt->fetch(PDO::FETCH_ASSOC);
+} else {
+    $userData = null;
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

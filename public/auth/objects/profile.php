@@ -22,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $db = $database->getConnection();
 
         // Ensure UserID is in session
-        $userId = $_SESSION['UserID'] ?? null;
+        $userId = $_SESSION['user_id'] ?? null;
 
         if (!$userId) {
             throw new Exception('User not logged in');
@@ -63,10 +63,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (!empty($currentPassword) && !empty($newPassword)) {
             // Verify current password
             
-            // after finish testing should remove the below if code
-            if ($currentPassword === $userData['Password']) {
-            // should use the below code after testing 
-            // if (password_verify($currentPassword, $userData['Password'])) {
+            if (password_verify($currentPassword, $userData['Password'])) {
                 // hash the new password
                 $newPasswordHashed = password_hash($newPassword, PASSWORD_DEFAULT);
                 if ($user->updatePassword($userId, $newPasswordHashed)) {

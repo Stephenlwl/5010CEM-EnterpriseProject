@@ -18,21 +18,21 @@ $db = $database->getConnection();
 // Get the input data
 $input = json_decode(file_get_contents('php://input'), true);
 
-// get the user input data
-$username = $input['username'] ?? '';
+// Get the user input data
+$email = $input['email'] ?? ''; 
 $password = $input['password'] ?? '';
 
 // Instantiate User object
 $user = new User($db);
 
 // Check credentials
-$user_id = $user->checkCredentials($username, $password);
-if ($user_id) {
-    $_SESSION['username'] = $username;
-    $_SESSION['user_id'] = $user_id;
-    echo json_encode(['success' => true]);
+$UserData = $user->checkCredentials($email, $password); 
+if ($UserData) {
+    $_SESSION['email'] = $email;
+    $_SESSION['username'] =  $UserData['Username'];
+    $_SESSION['user_id'] = $UserData['UserID'];
+    echo json_encode(['success' => true, 'username' => $UserData['Username']]);
 } else {
-    echo json_encode(['success' => false, 'message' => 'Invalid username or password. Please try again.']);
+    echo json_encode(['success' => false, 'message' => 'Invalid email or password. Please try again.']); 
 }
 ?>
-
