@@ -124,8 +124,12 @@ $order_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                 echo '#ffc107'; // yellow for Packing, Crafting, Preparing
                                                 break;
                                             case 'Ready to Pickup':
+                                            case 'Out for Delivery':
                                                 echo '#fd7e14'; // orange for Ready to Pickup
                                                 break;
+                                            case 'Order Placed':
+                                                echo '#898989'; // grey for Order Placed
+                                                break;        
                                             default:
                                                 echo '#f8f9fa'; // default background color (the order placed)
                                         }

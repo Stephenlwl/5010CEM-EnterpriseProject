@@ -38,7 +38,7 @@ $AdminData = $admin->checkCredentials($admin_email, $admin_password);
 
 if ($AdminData) {
     $_SESSION['admin_email'] = $admin_email;
-    $_SESSION['admin_id'] = $AdminData['AdminID'];
+    $_SESSION['AdminID'] = $AdminData['AdminID'];
     $_SESSION['admin_username'] = $AdminData['AdminName'];
     
     echo json_encode(['success' => true, 'admin_username' => $AdminData['AdminName']]);
