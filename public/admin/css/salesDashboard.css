@@ -1,0 +1,21 @@
+.main-content {
+    padding: 20px;
+    background-color: #ffffff;
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    color: #343a40;
+}
+
+h3 {
+    color: #495057;
+}
+
+.chart-container {
+    position: relative;
+    margin: auto;
+    height: 40vh; 
+    width: 80vw; 
+}

@@ -54,6 +54,9 @@ class Admin {
     
         $admin = $stmt->fetch(PDO::FETCH_ASSOC);
     
+        // Debugging: Check the content of $admin
+        error_log(print_r($admin, true)); // Log the admin details for debugging
+        
         // Check if email exists and password matches
         if ($admin && password_verify($password, $admin['AdminPassword'])) {
             return [
@@ -63,7 +66,7 @@ class Admin {
         } else {
             return false; 
         }
-    }
+    }    
     
 }
 

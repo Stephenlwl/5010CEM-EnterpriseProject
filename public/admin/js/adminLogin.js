@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-function showPasswordAdmin() {
+function showAdminPassword() {
     var adminPasswd = document.getElementById("password");
 
     if (adminPasswd.type === "password") {

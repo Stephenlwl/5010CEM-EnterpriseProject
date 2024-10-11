@@ -74,34 +74,26 @@ $order_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <?php if (!empty($order_data)): ?>
             <div class="row">
                 <div class="col-sm-4">
-                    <label for="month" class="form-label">Filter by Month:</label>
-                    <select class="form-select" id="month">
-                        <option selected>All</option>
-                        <option>January</option>
-                        <option>February</option>
-                        <option>March</option>
-                        <option>April</option>
-                        <option>May</option>
-                        <option>June</option>
-                        <option>July</option>
-                        <option>August</option>
-                        <option>September</option>
-                        <option>October</option>
-                        <option>November</option>
-                        <option>December</option>
-                    </select>
-                </div>
-                <div class="col-sm-4">
                     <label for="receiveMethod" class="form-label">Filter by Receive Method:</label>
-                    <select class="form-select" id="month">
+                    <select class="form-select" id="receiveMethodFilter">
                         <option selected>All</option>
                         <option>Delivery</option>
                         <option>Pickup</option>
                     </select>
                 </div>
+                <div class="col-sm-8 mb-4">
+                    <label for="orderIdInput" class="form-label">Search by Order ID:</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="orderIdInput" placeholder="E.g., 1, 2, 10" aria-label="Order IDs" aria-describedby="submitOrderButton">
+                        <button class="btn btn-primary" type="button" id="submitOrderButton">Submit</button>
+                    </div>
+                    <small class="form-text text-muted mb-4">Enter one or more Order IDs, separated by commas (e.g., 1, 2, 10).</small>
+                </div>
             </div>
             <?php foreach ($order_data as $order): ?>
-                <div class="container-borderframe p-3 mb-3">
+                <div class="container-borderframe p-3 mb-3 order"
+                    data-order-id="<?= htmlspecialchars($order['OrderID']) ?>"
+                    receiveMethod="<?= htmlspecialchars($order['ReceiveMethod']) ?>">
                     <div class="row">
                         <div class="col-8 col-sm-8">
                             <label class="form-label">Order ID: <?= $order['OrderID'] ?></label>
@@ -124,8 +116,12 @@ $order_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                 echo '#ffc107'; // yellow for Packing, Crafting, Preparing
                                                 break;
                                             case 'Ready to Pickup':
+                                            case 'Out for Delivery':
                                                 echo '#fd7e14'; // orange for Ready to Pickup
                                                 break;
+                                            case 'Order Placed':
+                                                echo '#898989'; // grey for Order Placed
+                                                break;        
                                             default:
                                                 echo '#f8f9fa'; // default background color (the order placed)
                                         }

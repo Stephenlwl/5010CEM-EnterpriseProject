@@ -13,11 +13,13 @@ $ReceiptID = isset($_GET['receipt_id']) ? $_GET['receipt_id'] : 0;
 
 // Query to fetch receipt details
 $query = "SELECT r.ReceiptID, r.TotalPrice, r.PaymentType, r.ReceiveMethod, r.ReceiptCreatedAt, r.ReferenceNo,
-                 a.AddressName, rd.ItemID, rd.ItemQuantity, rd.ItemPrice, rd.TotalPrice AS ItemTotal, 
-                 m.ItemName, pi.Temperature, pi.MilkType, pi.CoffeeBeanType, pi.Sweetness, pi.AddShot
+                 a.Address1, a.Address2, a.PostalCode, a.State, rd.ItemID, rd.ItemQuantity, rd.ItemPrice, rd.TotalPrice AS ItemTotal, 
+                 m.ItemName, pi.Temperature, pi.MilkType, pi.CoffeeBeanType, pi.Sweetness, pi.AddShot,
+                 u.Username
           FROM Receipt r 
           INNER JOIN receipt_details rd ON r.ReceiptID = rd.ReceiptID 
           LEFT JOIN personal_item pi ON rd.PersonalItemID = pi.PersonalItemID
+          LEFT JOIN users u ON r.UserID = u.UserID
           INNER JOIN menu m ON rd.ItemID = m.ItemID 
           INNER JOIN address a ON r.AddressID = a.AddressID
           WHERE r.ReceiptID = :ReceiptID";
@@ -49,16 +51,17 @@ if (!$receipt_data) {
         <h2 class="receipt-header">Receipt</h2>
         <div class="mt-3">
             <div class="row mb-4 mt-5">
-                <div class="col-6 col-md-10">
+                <div class="col-7 col-md-9">
                     <p><strong>Receipt ID:</strong> <?= htmlspecialchars($receipt_data[0]['ReceiptID']) ?></p>
                     <p><strong>Reference No:</strong> <?= htmlspecialchars($receipt_data[0]['ReferenceNo']) ?></p>
                     <p><strong>Payment Type:</strong> <?= htmlspecialchars($receipt_data[0]['PaymentType']) ?></p>
-                    <p><strong>Ordered By:</strong> <?= htmlspecialchars($_SESSION['username']) ?></p>
+                    <p><strong>Ordered By:</strong> <?= htmlspecialchars($receipt_data[0]['Username']) ?></p>
                 </div>
-                <div class="col-6 col-md-2 text-start">
+                <div class="col-5 col-md-3 text-start">
                     <p><strong>Date:</strong> <?= date('d M Y - H:i', strtotime($receipt_data[0]['ReceiptCreatedAt'])) ?></p>
                     <p><strong>Receive Method:</strong> <?= htmlspecialchars($receipt_data[0]['ReceiveMethod']) ?></p>
-                    <p><strong>Address:</strong> <?= htmlspecialchars($receipt_data[0]['AddressName']) ?></p>
+                    <p><strong>Address:</strong> <?= htmlspecialchars($receipt_data[0]['Address1']); htmlspecialchars($receipt_data[0]['Address2']) ?></p>
+                    <p><?= htmlspecialchars($receipt_data[0]['PostalCode']) ?>, <?= htmlspecialchars($receipt_data[0]['State']) ?></p>
                 </div>
             </div>
         </div>
