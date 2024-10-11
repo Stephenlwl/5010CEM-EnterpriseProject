@@ -1,0 +1,285 @@
+/* Reset default margins and padding */
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow-y: auto; /* Enable vertical scrolling */
+}
+
+/* Ensure the body allows scrolling */
+body {
+    min-height: 100vh; /* Ensure body height covers at least the screen */
+    overflow-y: auto;  /* Allow vertical scrolling */
+}
+
+/* Basic styling for the sections */
+section {
+    padding: 50px;
+    margin-bottom: 50px; /* Space between sections */
+}
+
+/* Different background colors for each section */
+.about-section {
+    position: relative; /* Set position relative for the overlay */
+    background-color: #f9f9f9;
+    background-image: url(../img/aboutus-1.jpg);
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    overflow: hidden; /* Prevent overflow from the overlay */
+}
+
+.about-section::before {
+    content: ''; /* Create an empty content for the overlay */
+    position: absolute; /* Position it absolutely to cover the section */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Adjust the color and opacity as needed */
+    z-index: 1; /* Place it above the background image but below the text */
+}
+
+.about-section h1, .about-section p {
+    position: relative; /* Position text above the overlay */
+    z-index: 2; /* Ensure text appears above the overlay */
+}
+
+
+/* Styles for the h1 element */
+.about-section h1 {
+    font-size: 30px; /* Adjust font size */
+    margin: -178px 0 0 0; /* Space from top (20px) */
+    text-align: left; /* Align text to the left */
+    width: 100%; /* Take full width to ensure left alignment */
+    font-family: 'Lobster';
+}
+
+/* Styles for the p element */
+.about-section p {
+    font-size: 80px; /* Adjust font size */
+    text-align: left; /* Center text if needed */
+    max-width: 600px; /* Limit width for better readability */
+    margin-top: 78px; /* Space above the paragraph */
+    font-family: -webkit-body;
+}
+
+.btn {
+    background-color: #ff6347;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    font-size: 1.2rem;
+    border-radius: 5px;
+    margin-top: 103px;
+    position: relative; /* Make the button position relative */
+    z-index: 2; /* Ensure the button appears above the overlay */
+    cursor: pointer; /* Change cursor to pointer for better UX */
+}
+
+.left-aligned {
+    float: left; /* Align the button to the left */
+}
+
+/* Menu Section */
+.menu-section {
+    background-color: #f9f9f9; /* Background color for the menu section */
+    padding: 50px 0; /* Padding for the section */
+    text-align: center; /* Center text */
+}
+
+.menu-section h1 {
+    font-size: 2.5rem; /* Heading size */
+    margin-bottom: 20px; /* Space below the heading */
+    font-weight: bold;
+    font-family: cursive;
+}
+
+.menu-section p {
+    font-size: 1rem; /* Description size */
+    margin-bottom: 40px; /* Space below the description */
+    font-family: monospace;
+}
+
+.menu-grid {
+    display: grid; /* Use grid layout */
+    grid-template-columns: repeat(3, 1fr); /* Fixed 3 columns */
+    gap: 20px; /* Space between items */
+}
+
+.menu-item {
+    background-color: white; /* Background for each item */
+    border-radius: 10px; /* Rounded corners */
+    overflow: hidden; /* Hide overflow */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Shadow effect */
+    height: 300px; /* Fixed height for consistency */
+    display: flex; /* Flexbox for item layout */
+    flex-direction: column; /* Column layout */
+    justify-content: space-between; /* Space between elements */
+}
+
+.menu-item img {
+    width: 100%; /* Full width image */
+    height: auto; /* Maintain aspect ratio */
+    max-height: 150px; /* Max height for images */
+}
+
+.menu-item h2 {
+    font-size: 1.5rem; /* Name size */
+    margin: 10px 0 5px; /* Spacing */
+    font-family: cursive;
+}
+
+.menu-item p {
+    font-size: 0.9rem; /* Description size */
+    color: #666; /* Description color */
+    padding: 0 10px 10px; /* Padding for description */
+}
+
+.espresso-nulla {
+    background-image: url('../img/tiramisu.png');
+    background-size: 101%; /* Set size to less than 100% to zoom out */
+    background-position: right calc(62% + -6px);
+}
+
+.choco-latte {
+    background-image: url('../img/cheesecake.png');
+    background-size: 100%; /* Set size to less than 100% to zoom out */
+    background-position: right calc(48% + -6px);
+}
+
+.avocado-squash {
+    background-image: url('../img/doublechococake.png');
+    background-size: 100%;
+    background-position: right calc(88% + -6px);
+}
+
+.ice-latte-berry {
+    background-image: url('../img/ice-latte-berry.jpg');
+}
+
+.french-fries {
+    background-image: url('../img/french-fries.jpg');
+}
+
+.choco-cookies {
+    background-image: url('../img/choco-cookies.jpg');
+}
+
+
+
+.our-team-section {
+    text-align: center; /* Center the text */
+    padding: 20px; /* Add some padding */
+}
+
+.team-images {
+    display: flex; /* Use flexbox for layout */
+    justify-content: center; /* Center items horizontally */
+    align-items: center; /* Center items vertically */
+}
+
+.team-image-left {
+    flex: 0 0 40%; /* Set width to 40% */
+    padding: 444px; /* Add padding around the image */
+    background-image: url('../img/barista2.jpg'); /* Replace with actual path */
+    background-size: 165%; /* Set size to less than 100% to zoom out */
+    background-position: right calc(30% + 0px);
+}
+
+.team-image-right {
+    flex: 0 0 60%; /* Set width to 60% */
+    padding: 444px; /* Add padding around the image */
+    background-image: url('../img/coffee-25.jpg'); /* Replace with actual path */
+    background-size: 127%; /* Set size to less than 100% to zoom out */
+    background-position: right calc(45% + -6px);
+    background-repeat: no-repeat; /* Prevent the background from repeating */
+}
+
+.team-image-left img,
+.team-image-right img {
+    width: 100%; /* Make images responsive */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 10px; /* Optional: Add rounded corners */
+}
+
+
+.mission-section {
+    background-color: #f2f2f2;
+}
+
+.extra-section {
+    background-color: #e0e0e0;
+    min-height: 300px; /* Add enough height to ensure scrolling */
+}
+
+.mission-section {
+    position: relative;
+    overflow: hidden;
+    height: 100vh; /* Adjust as needed */
+}
+
+.slideshow-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.slide {
+    background-size: cover;
+    background-position: center;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+.slide:nth-child(1) {
+    background-image: url('../img/coffee-25.jpg');
+    animation: fade 10s infinite; /* Set animation duration */
+}
+
+.slide:nth-child(2) {
+    background-image: url('../img/barista.jpg');
+    animation: fade 10s infinite 2s; /* Start after first slide */
+}
+
+.slide:nth-child(3) {
+    background-image: url('../img/barista2.jpg');
+    animation: fade 10s infinite 4s; /* Start after second slide */
+}
+
+.slide:nth-child(4) {
+    background-image: url('../img/couple.jpg');
+    animation: fade 10s infinite 6s; /* Start after third slide */
+}
+
+.slide:nth-child(5) {
+    background-image: url('../img/aboutus-1.jpg');
+    animation: fade 10s infinite 8s; /* Start after fourth slide */
+}
+
+@keyframes fade {
+    0% { opacity: 0; }
+    5% { opacity: 1; }
+    20% { opacity: 1; }
+    25% { opacity: 0; }
+    100% { opacity: 0; }
+}
+
+.text-container {
+    position: relative;
+    z-index: 1; /* Ensure text appears above slides */
+    text-align: center; /* Center text */
+    color: white; /* Adjust text color as needed for visibility */
+}
+
+
+
