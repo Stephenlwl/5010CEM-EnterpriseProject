@@ -7,6 +7,8 @@
 body {
     font-family: Arial, sans-serif;
     background-color: #F2EFEA;
+
+
 }
 
 header {
@@ -77,4 +79,14 @@ header nav ul li:hover .dropdown-menu {
 header nav ul li .dropdown-menu a:hover {
     background-color: #2f6b77; 
     color: #252525; 
+}
+
+body.aboutus-page {
+    background-image: url(../img/coffeebeanbackground.jpg);
+    background-size: auto; /* To make sure the image scales well */
+}
+
+/* Optional: Add a fallback background for other pages */
+body {
+    background-color: #F2EFEA;
 }
