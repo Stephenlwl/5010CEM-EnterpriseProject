@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
     viewOrderDetailsLink.addEventListener('click', function () {
         const orderId = this.getAttribute('data-order-id');
 
-        fetch(`../auth/api/viewOrderDetails.php`, {
+        fetch(`../auth/api/view_order_details.php`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
