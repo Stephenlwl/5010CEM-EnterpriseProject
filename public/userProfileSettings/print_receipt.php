@@ -34,6 +34,17 @@ if (!$receipt_data) {
     echo "No receipt found.";
     exit;
 }
+
+// Initialize totals
+$subTotal = 0;
+
+// Calculate sub-total and SST
+foreach ($receipt_data as $item) {
+    $subTotal += $item['ItemPrice'] * $item['ItemQuantity'];
+}
+$sst = $subTotal * 0.08; 
+$total = $subTotal + $sst;
+
 ?>
 
 <!DOCTYPE html>
@@ -95,7 +106,8 @@ if (!$receipt_data) {
                 <?php endforeach; ?>
             </tbody>
         </table>
-
+        <h6 class="text-end">Sub-Total: RM <?= number_format($subTotal, 2) ?></h6>
+        <h6 class="text-end">SST (8%): RM <?= number_format($sst, 2) ?></h6>
         <h4 class="mt-4 text-end">Total: RM <?= number_format($receipt_data[0]['TotalPrice'], 2) ?></h4>
 
         <div class="footer">
