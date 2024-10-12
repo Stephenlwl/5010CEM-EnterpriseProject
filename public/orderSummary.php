@@ -163,6 +163,7 @@ $total = $subTotal + $sst;
                             <input type="hidden" id="promoCodeApplied" name="promoCode">
                             <input type="hidden" id="discountedTotal" name="discountedTotal">
                             <input type="hidden" id="discountAmount" name="discountAmount">
+                            <input type="hidden" id="promoCodeApplied" name="promoCodeApplied">
                             <?php $counter = 0; ?>
                             <?php foreach ($promoCodes as $promo): ?>
                                 <div class="form-check card p-2 mb-2 shadow-sm">

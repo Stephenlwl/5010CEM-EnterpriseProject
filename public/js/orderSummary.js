@@ -211,10 +211,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 const transactionId = details.id;
                 const discountedTotal = document.getElementById('discountedTotal').value;
                 const discountAmount = document.getElementById('discountAmount').value;
-
-                // const totalAmount = details.purchase_units[0].amount.value;
-                const addressId = getSelectedAddressId();                     
-
+                const addressId = getSelectedAddressId()
+        
                 // declare all the receipt data
                 const receiptData = {
                     AddressID: addressId,
@@ -267,7 +265,35 @@ document.addEventListener('DOMContentLoaded', function () {
                         }
                         return JSON.parse(orderText);
                     }).then(data => {
-                        if (data.success) { 
+                        if (data.success) {
+                            let appliedPromoCode = document.getElementById('promoCodeApplied').value;
+        
+                            // Add the used promo code
+                            const promoCodeData = {
+                                UserID: userId,
+                                PromoCode: appliedPromoCode,
+                            };
+        
+                            return fetch('auth/api/add_used_promo.php', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify(promoCodeData)
+                            }).then(promoResponse => promoResponse.text().then(promoText => {
+                                console.log('Promo API raw response:', promoText); // Log raw response
+                                if (!promoResponse.ok) {
+                                    throw new Error(`HTTP error! status: ${promoResponse.status} - ${promoText}`);
+                                }
+                                return JSON.parse(promoText);
+                            }).then(promoData => {
+                                if (promoData.success) {
+                                    // Handle promo code success logic if necessary
+                                    alert('Promo code applied successfully!');
+                                } else {
+                                    alert('Error applying promo code: ' + promoData.message);
+                                }
+                            }));
                         } else {
                             alert('Error adding order: ' + data.message);
                         }
@@ -284,15 +310,14 @@ document.addEventListener('DOMContentLoaded', function () {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({ userId: userId, status: 'Active'})
-                }); 
-                // show cart error message if cart item removal failed
+                });
             }).then(cartResponse => cartResponse.text().then(cartText => {
                 if (!cartResponse.ok) {
                     throw new Error(`HTTP error! status: ${cartResponse.status} - ${cartText}`);
                 }
                 return JSON.parse(cartText);
             }).then(data => {
-                if (data.success) { 
+                if (data.success) {
                     // navigate to order tracking for user easier to track their order
                     window.location.href = 'profile.php?page=orderTracking';
                 } else {
@@ -308,7 +333,7 @@ document.addEventListener('DOMContentLoaded', function () {
         },
         onError: function (err) {
             console.error('PayPal Checkout error: ', err);
-            alert('An error occurred during the payment process. '+ err);
+            alert('An error occurred during the payment process: ' + err);
         }
     }).render('#paypal-button-container');
 });
