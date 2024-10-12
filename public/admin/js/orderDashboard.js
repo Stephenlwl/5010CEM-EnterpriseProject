@@ -56,8 +56,7 @@ document.addEventListener("DOMContentLoaded", function() {
             .then(data => {
                 if (data.success) {
                     alert('Order status updated successfully!');
-                    window.location.reload();
-                    
+                    sendNotificationEmail(orderId, newStatus);
                 } else {
                     alert('Failed to update order status.');
                 }
@@ -68,4 +67,70 @@ document.addEventListener("DOMContentLoaded", function() {
             });
         });
     });
+
+    function sendNotificationEmail(orderId, status) {
+        const updateButton = document.querySelector(`.update-status[data-order-id="${orderId}"]`);
+
+        // retrieve user details from the button's data attributes
+        const username = updateButton.getAttribute('data-user-name');
+        const email = updateButton.getAttribute('data-user-email');
+        const spinner = document.createElement('span');
+
+        // setting up spinner
+        spinner.className = 'spinner-border spinner-border-sm me-2';
+        spinner.setAttribute('role', 'status');
+        spinner.setAttribute('aria-hidden', 'true');
+        spinner.style.display = 'none'; 
+        updateButton.prepend(spinner);
+        
+        let emailEndpoint = ''; // determine the email endpoint based on the status
+
+        if (status === 'Out for Delivery') {
+            spinner.style.display = 'inline-block';
+            updateButton.innerHTML = 'Sending...';
+            updateButton.disabled = true;
+            updateButton.prepend(spinner);
+            emailEndpoint = '../auth/mail_handler/sendDeliveryNotification.php';
+        } else if (status === 'Ready to Pickup') {
+            spinner.style.display = 'inline-block';
+            updateButton.innerHTML = 'Sending...';
+            updateButton.disabled = true;
+            updateButton.prepend(spinner);
+            emailEndpoint = '../auth/mail_handler/sendReadyPickupNotification.php';
+        } else {
+            window.location.reload();
+            return; 
+        }
+
+        // send the email notification
+        fetch(emailEndpoint, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ username: username, email: email })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.status == 'success') {
+                alert(`Email notification (${status}) sent successfully.`);
+                window.location.reload();
+            } else {
+                alert('Failed to send email: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error sending email:', error);
+            alert('An error occurred while sending the email notification.');
+        }).finally(() => {
+            spinner.style.display = 'none';
+            updateButton.innerHTML = 'Update Status';
+            updateButton.disabled = false;
+        });
+    }
 });
