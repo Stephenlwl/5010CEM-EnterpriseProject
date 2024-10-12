@@ -27,6 +27,13 @@ if (!isset($_SESSION['user_id']) || empty($userData)) {
 
 $userId = $_SESSION['user_id']; 
 
+// Fetch used promo codes by the user
+$queryUsedPromo = "SELECT UsedPromoCode FROM used_promotion WHERE UserID = :userID";
+$stmtUsedPromo = $db->prepare($queryUsedPromo);
+$stmtUsedPromo->bindParam(':userID', $userId);
+$stmtUsedPromo->execute();
+$usedPromoCodes = $stmtUsedPromo->fetchAll(PDO::FETCH_COLUMN);
+
 // fetch active promotions
 $query = "SELECT PromoCode, DiscountType, DiscountValue, PromotionEndDate FROM promotions WHERE PromotionEndDate >= CURDATE()"; 
 $stmt = $db->prepare($query);
@@ -164,21 +171,41 @@ $total = $subTotal + $sst;
                             <input type="hidden" id="discountedTotal" name="discountedTotal">
                             <input type="hidden" id="discountAmount" name="discountAmount">
                             <input type="hidden" id="promoCodeApplied" name="promoCodeApplied">
+                            
                             <?php $counter = 0; ?>
                             <?php foreach ($promoCodes as $promo): ?>
-                                <div class="form-check card p-2 mb-2 shadow-sm">
-                                    <input class="form-check-input promo-button" type="radio" name="promoCode" id="promoCode<?= htmlspecialchars($promo['PromoCode']) ?>" value="<?= htmlspecialchars($promo['PromoCode'])?>" 
-                                        data-discount="<?= htmlspecialchars($promo['DiscountValue']) ?>" data-discounttype="<?= htmlspecialchars($promo['DiscountType']) ?>"
-                                        <?= $counter === 0 ? '' : '' ?>> <!-- Default checked for the first promo code -->
+                                <?php
+                                // Check if promo code has been used
+                                $isUsed = in_array($promo['PromoCode'], $usedPromoCodes);
+                                ?>
+
+                                <div class="form-check card p-2 mb-2 shadow-sm <?= $isUsed ? 'bg-light text-muted' : '' ?>"> <!-- Disable card appearance for used promo -->
+                                    <input 
+                                        class="form-check-input promo-button" 
+                                        type="radio" 
+                                        name="promoCode" 
+                                        id="promoCode<?= htmlspecialchars($promo['PromoCode']) ?>" 
+                                        value="<?= htmlspecialchars($promo['PromoCode']) ?>" 
+                                        data-discount="<?= htmlspecialchars($promo['DiscountValue']) ?>" 
+                                        data-discounttype="<?= htmlspecialchars($promo['DiscountType']) ?>"
+                                        <?= $isUsed ? 'disabled' : '' ?>>
+                                    
                                     <label class="form-check-label" for="promoCode<?= htmlspecialchars($promo['PromoCode']) ?>">
                                         <i class="bi bi-tags me-2"></i>
-                                        <strong>Promo Code:</strong> <span class="text-muted"><?= htmlspecialchars($promo['PromoCode']) ?></span><br> 
-                                        <strong>Discount:</strong> <span class="text-muted"><?= $promo['DiscountType'] === 'percentage' ? '' : 'RM' ?>
-                                        <?= $promo['DiscountType'] === 'percentage' ? $promo['DiscountValue'] . '%' : number_format($promo['DiscountValue'], 2) ?></span>
+                                        <strong>Promo Code:</strong> 
+                                        <span class="text-muted"><?= htmlspecialchars($promo['PromoCode']) ?></span><br> 
+                                        <strong>Discount:</strong> 
+                                        <span class="text-muted">
+                                            <?= $promo['DiscountType'] === 'percentage' ? '' : 'RM' ?>
+                                            <?= $promo['DiscountType'] === 'percentage' ? $promo['DiscountValue'] . '%' : number_format($promo['DiscountValue'], 2) ?>
+                                        </span>
                                     </label>
                                     <div class="mt-2">
                                         <small class="text-muted">Expires on <?= date('d M Y', strtotime($promo['PromotionEndDate'])) ?></small>
                                     </div>
+                                    <?php if ($isUsed): ?>
+                                        <small class="text-danger">This promo code has already been used.</small> <!-- Show message if promo is used -->
+                                    <?php endif; ?>
                                 </div>
                                 <?php $counter++; ?>
                             <?php endforeach; ?>
