@@ -69,8 +69,8 @@ $adminData = $stmt->fetch(PDO::FETCH_ASSOC);
                     </a>
                 </li>
                 <li class="nav-item mb-2">
-                    <a href="adminSettings.php" class="nav-link text-white text-start">
-                        <i class="bi bi-gear"></i> Admin Settings
+                    <a href="promotionSettings.php" class="nav-link text-white text-start">
+                        <i class="bi bi-tags"></i> Promotion Settings
                     </a>
                 </li>
                 <hr>

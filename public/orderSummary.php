@@ -27,6 +27,12 @@ if (!isset($_SESSION['user_id']) || empty($userData)) {
 
 $userId = $_SESSION['user_id']; 
 
+// fetch active promotions
+$query = "SELECT PromoCode, DiscountType, DiscountValue, PromotionEndDate FROM promotions WHERE PromotionEndDate >= CURDATE()"; 
+$stmt = $db->prepare($query);
+$stmt->execute();
+$promoCodes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 // Fetch cart items for the logged-in user
 $query = "SELECT c.CartID, c.ItemID, c.Quantity, c.PersonalItemID, m.ItemName, m.ItemPrice,
                  pi.Temperature, pi.MilkType, pi.CoffeeBeanType, pi.Sweetness, pi.AddShot
@@ -133,7 +139,10 @@ $total = $subTotal + $sst;
                     <div class="total-section text-end mt-4">
                         <p><strong>Sub-Total:</strong> RM <?= number_format($subTotal, 2) ?></p>
                         <p><strong>SST 8%:</strong> RM <?= number_format($sst, 2) ?></p>
-                        <h4 class="border-top pt-2">Total: RM <?= number_format($total, 2) ?></h4>
+                        <div id="discount-section" style="display: none;">
+                            <p><strong>Discount Applied:</strong> <span id="discountAmount"></span></p>
+                        </div>
+                        <h4 class="border-top pt-2">Total: RM <span id="final-total"><?= number_format($total, 2) ?></h4>
                     </div>
                 </div>
             </div>
@@ -141,6 +150,39 @@ $total = $subTotal + $sst;
             <!-- Right Column: Delivery and Payment Method -->
             <div class="col-md-4 border-start ms-md-5">
                 <div class="p-2 ms-md-5">
+                    <h2 class="mb-4">Promotion</h2>
+                    <!-- Promo Codes Section -->
+                    <?php if (empty($promoCodes)): ?>
+                        <div class="alert alert-warning text-center" role="alert">
+                            No promo codes available at the moment!
+                        </div>
+                    <?php else: ?>
+                        <!-- Promo Codes List -->
+                        <h5>Available Promo Codes</h5>
+                        <div class="promo-codes">
+                            <input type="hidden" id="promoCodeApplied" name="promoCode">
+                            <input type="hidden" id="discountedTotal" name="discountedTotal">
+                            <input type="hidden" id="discountAmount" name="discountAmount">
+                            <?php $counter = 0; ?>
+                            <?php foreach ($promoCodes as $promo): ?>
+                                <div class="form-check card p-2 mb-2 shadow-sm">
+                                    <input class="form-check-input promo-button" type="radio" name="promoCode" id="promoCode<?= htmlspecialchars($promo['PromoCode']) ?>" value="<?= htmlspecialchars($promo['PromoCode'])?>" 
+                                        data-discount="<?= htmlspecialchars($promo['DiscountValue']) ?>" data-discounttype="<?= htmlspecialchars($promo['DiscountType']) ?>"
+                                        <?= $counter === 0 ? '' : '' ?>> <!-- Default checked for the first promo code -->
+                                    <label class="form-check-label" for="promoCode<?= htmlspecialchars($promo['PromoCode']) ?>">
+                                        <i class="bi bi-tags me-2"></i>
+                                        <strong>Promo Code:</strong> <span class="text-muted"><?= htmlspecialchars($promo['PromoCode']) ?></span><br> 
+                                        <strong>Discount:</strong> <span class="text-muted"><?= $promo['DiscountType'] === 'percentage' ? '' : 'RM' ?>
+                                        <?= $promo['DiscountType'] === 'percentage' ? $promo['DiscountValue'] . '%' : number_format($promo['DiscountValue'], 2) ?></span>
+                                    </label>
+                                    <div class="mt-2">
+                                        <small class="text-muted">Expires on <?= date('d M Y', strtotime($promo['PromotionEndDate'])) ?></small>
+                                    </div>
+                                </div>
+                                <?php $counter++; ?>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endif; ?> 
                     <h2 class="mb-4">Delivery & Payment</h2>
                     
                     <?php if (empty($items)): ?>

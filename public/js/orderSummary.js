@@ -12,6 +12,46 @@ document.addEventListener('DOMContentLoaded', function () {
     const currency = 'MYR';
     let deliveryMethod = 'Delivery';
     
+    const promoButtons = document.querySelectorAll('.promo-button'); 
+
+    promoButtons.forEach(button => {
+        button.addEventListener('change', function() {
+            const promoCode = this.getAttribute('value');
+            const discountValue = parseFloat(this.getAttribute('data-discount'));
+            const discountType = this.getAttribute('data-discounttype');
+
+            // update the displayed total based on the selected promo code
+            applyPromoCode(promoCode, discountValue, discountType);
+        });
+    });
+
+    function applyPromoCode(promoCode, discountValue, discountType) {
+        let discountedTotal = totalAmount; // set default discounted total to current total
+        
+        // calculate the discounted total based on promo type
+        if (discountType === 'percentage') {
+            discountValue = (totalAmount * discountValue / 100)
+            discountedTotal = totalAmount - discountValue;
+        } else if (discountType === 'fixed') {
+            discountedTotal = totalAmount - discountValue;
+        }
+
+        // update the final total displayed
+        document.getElementById('final-total').innerText = `RM ${discountedTotal.toFixed(2)}`;
+
+        // update the discount amount section
+        const discountSection = document.getElementById('discount-section');
+        const discountAmount = document.getElementById('discountAmount');
+
+        // show discount amount with the correct format and discount amount
+        discountAmount.innerText = `RM ${discountValue.toFixed(2)}`;
+        discountSection.style.display = 'block';
+
+        document.getElementById('promoCodeApplied').value = promoCode;
+        document.getElementById('discountedTotal').value = discountedTotal.toFixed(2);
+        document.getElementById('discountAmount').value = discountValue.toFixed(2);
+    }
+
     // Show address at initial load becasue home delivery is selected by default
     fetchUserAddresses();
 
@@ -155,11 +195,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 return Promise.reject(new Error('Please select an address before proceeding.'));
             }
 
+            const discountedTotal = document.getElementById('discountedTotal').value;
+    
             return actions.order.create({
                 purchase_units: [{
                     amount: {
                         currency_code: currency,
-                        value: totalAmount
+                        value: discountedTotal
                     }
                 }]
             });
@@ -167,16 +209,20 @@ document.addEventListener('DOMContentLoaded', function () {
         onApprove: function (data, actions) {
             return actions.order.capture().then(function (details) {
                 const transactionId = details.id;
-                const totalAmount = details.purchase_units[0].amount.value;
+                const discountedTotal = document.getElementById('discountedTotal').value;
+                const discountAmount = document.getElementById('discountAmount').value;
+
+                // const totalAmount = details.purchase_units[0].amount.value;
                 const addressId = getSelectedAddressId();                     
 
                 // declare all the receipt data
                 const receiptData = {
                     AddressID: addressId,
-                    TotalPrice: totalAmount,
+                    TotalPrice: discountedTotal,
                     PaymentType: paymentOption,
                     ReceiveMethod: deliveryMethod,
                     ReferenceNo: transactionId,
+                    DiscountAmount: discountAmount,  // discount value
                     // Get cart items from the cartItems where has been fetched on OrderSummary.php
                     items: cartItems.map(item => ({
                         ItemID: item.ItemID,
