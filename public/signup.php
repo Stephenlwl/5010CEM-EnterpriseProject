@@ -29,7 +29,7 @@
         <section class="right-section d-flex flex-column justify-content-center align-items-center bg-white">
             <div class="login-form mt-5">
                 <p class="text-right">Already have an account? <a href="login.php">Login</a></p>
-                <h2 class="text-center mb-4">Login</h2>
+                <h2 class="text-center mb-4">Signup</h2>
                 <button class="google-btn">
                     <img src="https://cdn1.iconfinder.com/data/icons/google-s-logo/150/Google_Icons-09-512.png" alt="Google Logo" width="20px" height="20px">
                     Continue with Google
