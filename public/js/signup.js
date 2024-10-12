@@ -221,7 +221,7 @@ function verifyOTP() {
             if (response.success) {
                 if (response.redirect) {
                     alert("Register Successfully, Your email was verified!")
-                    window.location.href = "profile.php";  // Redirect to profile page
+                    window.location.href = "login.php";  
                 } else {
                     $('#emailVerificationModal').modal('show');
                 }

@@ -63,11 +63,12 @@ if (!$userData) {
                             <p>' . htmlspecialchars($row['PostalCode']) . ', ' . htmlspecialchars($row['State']) . '</p>
                         </div>
                         <div class="col-sm-4">
-                            <button type="button" class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#editAddressModal" 
+                            <button type="button" class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#editAddressModal"
+                            data-user-id="' . $UserID . '" 
                             data-id="' . $row['AddressID'] . '" data-name="' . htmlspecialchars($row['AddressName']) . '" 
                             data-address1="' . htmlspecialchars($row['Address1']) . '" data-address2="' . htmlspecialchars($row['Address2']) . '" 
                             data-postal="' . htmlspecialchars($row['PostalCode']) . '" data-state="' . htmlspecialchars($row['State']) . '">Edit</button>
-                            <button type="button" class="btn btn-danger" onclick="deleteAddress(' . $row['AddressID'] . ')">Delete</button>
+                            <button type="button" class="btn btn-danger" onclick="deleteAddress(' . $row['AddressID'] . ', ' . $UserID . ')">Delete</button>
                         </div>
                     </div>
                 </div>';
@@ -93,6 +94,7 @@ if (!$userData) {
                 </div>
                 <div class="modal-body">
                     <form id="editAddressForm">
+                        <input type="hidden" id="editUserID" name="user_id">
                         <input type="hidden" id="editAddressID" name="address_id" value="<?php isset($_GET['edit_address_id'])?>">
                         <div class="mb-3">
                             <label for="editAddressName" class="form-label">Address Name</label>
@@ -132,6 +134,7 @@ if (!$userData) {
                 </div>
                 <div class="modal-body">
                     <form id="addAddressForm">
+                        <input type="hidden" class="form-control" id="user_id" name="user_id" value="<?php echo htmlspecialchars($UserID); ?>">
                         <div class="mb-3">
                             <label for="addAddressName" class="form-label">Address Name</label>
                             <input type="text" class="form-control" id="addAddressName" name="address_name" required>
