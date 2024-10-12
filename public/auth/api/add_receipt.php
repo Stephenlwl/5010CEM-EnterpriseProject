@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $PaymentType = $input['PaymentType']; 
         $ReceiveMethod = $input['ReceiveMethod']; 
         $ReferenceNo = $input['ReferenceNo'] ?? null; // Set as null if not provided
-        $DiscountAmount = $input['DiscountAmount'] ?? null; 
+        $DiscountAmount = $input['DiscountAmount'] ?? 0.00; 
         // Fetch cart items for the user
         $cartResponse = fetchCartItems($UserID, $db);
         if (!$cartResponse['success']) {
