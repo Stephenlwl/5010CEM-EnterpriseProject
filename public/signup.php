@@ -89,6 +89,7 @@
                         <input type="text" id="otp3" class="form-control otp-input" maxlength="1" autocomplete="off" required>
                         <input type="text" id="otp4" class="form-control otp-input" maxlength="1" autocomplete="off" required>
                     </div>
+                    <div id="otp-timer" style="font-weight: bold; color: red;"></div>
                     <div id="otp-error" class="mt-2 text-danger"></div>
                     <div id="validation-error" class="text-start text-danger error-message"></div>
                 </div>
