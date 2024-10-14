@@ -12,6 +12,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const currency = 'MYR';
     let deliveryMethod = 'Delivery';
     
+    document.getElementById('discountedTotal').value = totalAmount;
+
     const promoButtons = document.querySelectorAll('.promo-button'); 
 
     promoButtons.forEach(button => {
@@ -302,6 +304,34 @@ document.addEventListener('DOMContentLoaded', function () {
                     // show error message if receipt creation failed
                     alert('Error creating receipt: ' + data.message);
                 }
+            }).then(()=> {
+                const username = document.getElementById('username').value;
+                // send the order place email notification to admin side
+                return fetch('auth/mail_handler/sendNewOrderPlaced.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ username: username})
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Email API response:', data); 
+                    if (data.status !== 'success') {
+                        alert('Failed to send email: ' + data.message);
+                    } else {
+                        console.log('Email sent successfully'); 
+                    }
+                })
+                .catch(error => {
+                    console.error('Error sending email:', error);
+                    alert('An error occurred while sending the email notification.');
+                });
             }).then(() => {
                 // remove cart items after the transaction is complete and receipt is created
                 return fetch('auth/api/remove_cart_item.php', {

@@ -22,7 +22,7 @@ $countQuery = "SELECT COUNT(*) as totalOrders
                FROM `Order` o
                INNER JOIN Receipt r ON o.ReceiptID = r.ReceiptID
                WHERE r.UserID = :UserID
-               AND o.OrderStatus <> 'Delivered'";
+               AND o.OrderStatus <> 'Order Completed'";
 
 $countStmt = $db->prepare($countQuery);
 $countStmt->bindParam(':UserID', $UserID, PDO::PARAM_INT);
@@ -38,7 +38,7 @@ $query = "SELECT o.OrderID, o.OrderStatus, o.CreatedAt AS OrderDate, r.ReceiptID
           INNER JOIN Receipt r ON o.ReceiptID = r.ReceiptID
           INNER JOIN address a ON r.AddressID = a.AddressID
           WHERE r.UserID = :UserID
-          AND o.OrderStatus <> 'Delivered'
+          AND o.OrderStatus <> 'Order Completed'
           ORDER BY o.CreatedAt DESC
           LIMIT :limit OFFSET :offset";
 
@@ -122,9 +122,9 @@ $orderData = $stmt->fetch(PDO::FETCH_ASSOC);
                                 <p>Out for Delivery</p>
                             </div>
                         <?php endif; ?>
-                        <div class="col-sm-2 status-item" data-status="Delivered">
+                        <div class="col-sm-2 status-item" data-status="Order Completed">
                             <i class="bi bi-truck"></i>
-                            <p>Delivered</p>
+                            <p>Order Completed</p>
                         </div>
                     </div>
                 </div>

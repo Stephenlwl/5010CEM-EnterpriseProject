@@ -107,8 +107,8 @@ $order_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 background-color: 
                                     <?php 
                                         switch ($order['OrderStatus']) {
-                                            case 'Delivered':
-                                                echo '#28a745'; // green for delivered
+                                            case 'Order Completed':
+                                                echo '#28a745'; // green for Order Completed
                                                 break;
                                             case 'Packing':
                                             case 'Crafting':

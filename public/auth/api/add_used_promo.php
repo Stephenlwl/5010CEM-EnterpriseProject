@@ -27,7 +27,7 @@ try {
 
         if ($stmt->rowCount() > 0) {
             // promo code already used by the user
-            $response['success'] = false;
+            $response['success'] = true;
             $response['message'] = 'Promo code already used';
         } else {
             // insert the used promo code into the used promotion table

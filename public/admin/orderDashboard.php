@@ -94,7 +94,7 @@ $order_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 <option value="Packing">Packing</option>
                                 <option value="Ready to Pickup">Ready to Pickup</option>
                                 <option value="Out for Delivery">Out for Delivery</option>
-                                <option value="Delivered">Delivered</option>
+                                <option value="Order Completed">Order Completed</option>
                             </select>
                         </div>
                         <div class="col-sm-4">
@@ -136,8 +136,8 @@ $order_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                 background-color: 
                                                     <?php 
                                                         switch ($firstItem['OrderStatus']) {
-                                                            case 'Delivered':
-                                                                echo '#28a745'; // green for delivered
+                                                            case 'Order Completed':
+                                                                echo '#28a745'; // green for order completed
                                                                 break;
                                                             case 'Packing':
                                                             case 'Crafting':
@@ -234,9 +234,9 @@ $order_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                         Out for Delivery
                                                     </option>
                                                 <?php endif; ?>
-                                                <option value="Delivered" <?= $firstItem['OrderStatus'] == 'Delivered' ? 'selected' : '' ?> 
-                                                        <?= $firstItem['OrderStatus'] != 'Delivered' && $firstItem['OrderStatus'] != 'Ready to Pickup' && $firstItem['OrderStatus'] != 'Out for Delivery' ? 'disabled' : '' ?>>
-                                                    Delivered
+                                                <option value="Order Completed" <?= $firstItem['OrderStatus'] == 'Order Completed' ? 'selected' : '' ?> 
+                                                        <?= $firstItem['OrderStatus'] != 'Order Completed' && $firstItem['OrderStatus'] != 'Ready to Pickup' && $firstItem['OrderStatus'] != 'Out for Delivery' ? 'disabled' : '' ?>>
+                                                        Order Completed
                                                 </option>
                                             </select>
                                             <button class="btn btn-success btn-sm mt-2 update-status shadow-sm" id="updateStatusButon"

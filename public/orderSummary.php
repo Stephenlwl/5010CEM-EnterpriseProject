@@ -171,7 +171,7 @@ $total = $subTotal + $sst;
                             <input type="hidden" id="discountedTotal" name="discountedTotal">
                             <input type="hidden" id="discountAmount" name="discountAmount">
                             <input type="hidden" id="promoCodeApplied" name="promoCodeApplied">
-                            
+                            <input type="hidden" id="username" name="username" value="<?= htmlspecialchars($userData['Username']) ?>">
                             <?php $counter = 0; ?>
                             <?php foreach ($promoCodes as $promo): ?>
                                 <?php
