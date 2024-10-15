@@ -8,6 +8,11 @@ $db = $database->getConnection();
 
 $admin_id = $_SESSION['AdminID'];
 
+if (!$admin_id){
+    header("Location: adminLogin.php");
+    exit();
+}
+
 $totalAddressPerPage = 5;  
 $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $offset = ($currentPage - 1) * $totalAddressPerPage;

@@ -130,10 +130,7 @@ if (isset($_SESSION['user_id'])) {
                 </div>
             </div>
         </section>
-
     </main>
-    <!-- footer -->
-    <?php include($IPATH."footer.html"); ?>
 
 </body>
 </html> 

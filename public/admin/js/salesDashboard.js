@@ -4,13 +4,13 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                const itemNames = data.data.map(item => item.ItemName);
-                const quantities = data.data.map(item => item.TotalQuantityOrdered);
+                const itemNames = data.data.topProducts.map(item => item.ItemName);
+                const quantities = data.data.topProducts.map(item => item.TotalQuantityOrdered);
                 
                 // showing top products in table
                 const topProductsTableBody = document.getElementById('topProductsTable');
                 topProductsTableBody.innerHTML = ''; 
-                data.data.forEach(item => {
+                data.data.topProducts.forEach(item => {
                     const row = `<tr>
                                     <td>${item.ItemName}</td>
                                     <td>${item.TotalQuantityOrdered}</td>
@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                 });
             } else {
-                console.error("Failed to fetch top products:", data.message);
+                console.error("Failed to fetch top products:", data.data.message);
             }
         })
         .catch(error => console.error("Error fetching top products:", error));

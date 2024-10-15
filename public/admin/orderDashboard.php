@@ -12,6 +12,11 @@ $db = $database->getConnection();
 // Fetch admin ID from session
 $admin_id = $_SESSION['AdminID'];
 
+if (!$admin_id){
+    header("Location: adminLogin.php");
+    exit();
+}
+
 // setting up pagination 
 $ordersPerPage = 9; 
 
@@ -43,12 +48,9 @@ $query = "SELECT o.OrderID, o.OrderStatus, o.CreatedAt AS OrderDate,
             LEFT JOIN menu m ON rd.ItemID = m.ItemID
             LEFT JOIN personal_item pi ON rd.PersonalItemID = pi.PersonalItemID
             LEFT JOIN users u ON r.UserID = u.UserID
-            ORDER BY o.CreatedAt DESC
-            LIMIT :limit OFFSET :offset";
+            ORDER BY o.CreatedAt DESC";
 
 $stmt = $db->prepare($query);
-$stmt->bindParam(':limit', $ordersPerPage, PDO::PARAM_INT);
-$stmt->bindParam(':offset', $offset, PDO::PARAM_INT); 
 $stmt->execute();
 $order_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
