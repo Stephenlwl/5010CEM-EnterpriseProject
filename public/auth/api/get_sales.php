@@ -10,14 +10,12 @@ try {
     $database = new Database_Auth();
     $db = $database->getConnection();
 
-
-
-
     // to get daily sales
-    $dailyQuery = "SELECT DATE(r.ReceiptCreatedAt) AS SaleDate, SUM(r.TotalPrice - r.DiscountAmount) AS DailySales
+    $dailyQuery = "SELECT DATE(r.ReceiptCreatedAt) AS SaleDate, SUM(r.TotalPrice - r.DiscountAmount) AS DailySales, SUM(CASE WHEN m.ItemType = 'coffee' THEN rd.ItemQuantity ELSE 0 END) AS CoffeeSales
                    FROM receipt_details rd
                    JOIN `order` o ON rd.ReceiptID = o.ReceiptID
                    INNER JOIN receipt r ON o.ReceiptID = r.ReceiptID
+                   INNER JOIN menu m ON rd.ItemID = m.ItemID
                    GROUP BY SaleDate
                    ORDER BY SaleDate ASC";
     
@@ -28,7 +26,8 @@ try {
         while ($row = $dailyResult->fetch(PDO::FETCH_ASSOC)) {
             $dailySales[] = [
                 'SaleDate' => $row['SaleDate'],
-                'DailySales' => (float) $row['DailySales']
+                'DailySales' => (float) $row['DailySales'],
+                'CoffeeSold' => (int) $row['CoffeeSales']
             ];
         }
     } else {

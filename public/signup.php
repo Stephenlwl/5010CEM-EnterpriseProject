@@ -15,7 +15,7 @@
 <body>
 
 <?php 
-require_once 'C:/xampp/htdocs/RimberioCafeWebsite/5010CEM-EnterpriseProject/vendor/autoload.php';
+// require_once 'C:/xampp/htdocs/RimberioCafeWebsite/5010CEM-EnterpriseProject/vendor/autoload.php';
 
 $IPATH = $_SERVER["DOCUMENT_ROOT"]."/RimberioCafeWebsite/5010CEM-EnterpriseProject/public/inc/";
 include($IPATH."nav.php"); 
