@@ -45,10 +45,8 @@ foreach ($menuItems as $item) {
     <link rel="stylesheet" href="../css/allMenu.css">
 </head>
 <body>
-    <h1> Menu</h1>
-
     <!-- Food Section -->
-    <div class="section-title">Food</div>
+    <div class="section-title">Taste of Rimberio</div>
     <div class="menu-container">
         <?php
         if ($foodItems) {
@@ -56,7 +54,7 @@ foreach ($menuItems as $item) {
                 echo "<div class='menu-item'>";
                 
                 // Placeholder image, replace with actual image paths for food items
-                echo "<img src='images/food-placeholder.jpg' alt='" . htmlspecialchars($item["ItemName"]) . "'>";
+                echo "<img src='../img/food-placeholder.jpg' alt='" . htmlspecialchars($item["ItemName"]) . "'>";
                 
                 echo "<h2>" . htmlspecialchars($item["ItemName"]) . "</h2>";
                 echo "<p class='price'>$" . number_format($item["ItemPrice"], 2) . "</p>";
@@ -72,17 +70,5 @@ foreach ($menuItems as $item) {
         }
         ?>
     </div>
-
-    <script>
-        function addToCart(itemId) {
-            alert("Item " + itemId + " added to cart.");
-            // You can integrate actual cart functionality here
-        }
-    </script>
 </body>
 </html>
-
-<?php
-// Close the connection
-$db = null;
-?>

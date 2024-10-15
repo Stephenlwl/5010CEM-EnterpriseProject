@@ -27,7 +27,7 @@ if (isset($_SESSION['user_id'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MENU</title>
+    <title>Rimberio Cafe Menu</title>
     <link rel="stylesheet" href="css/profile.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -64,16 +64,16 @@ if (isset($_SESSION['user_id'])) {
     <main>
         <div class="container mt-5">
             <div class="row">
-                <!--Account Settings Sidebar -->
+                <!--Menu Settings Sidebar -->
                 <div class="col-sm-3">
-                    <h3>Welcome to our menu</h3>
+                    <h4>Browse Rimberio Cafe’s Delicious Offerings</h4>
                     <div class="profile-settings-frame">
-                        <h3>MENU</h3>
+                        <h4>What’s on the Menu</h4>
                         <hr>
 
                         <button class="btn btn-secondary d-lg-none mb-3" type="button" data-bs-toggle="collapse"
                             data-bs-target="#profile-nav" aria-expanded="false" aria-controls="profile-nav">
-                            Menu
+                            Expand Menu
                         </button>
 
                         <div id="profile-nav" class="collapse d-lg-block">
@@ -98,7 +98,7 @@ if (isset($_SESSION['user_id'])) {
                     </div>
                 </div>
                 <!--dynamic right screen -->
-                <div class="col-sm-9 d-flex" style="height: 100vh;">
+                <div class="col-sm-9 d-flex" style="height: calc(100vh - 50px); padding-bottom: 20px;">
                     <iframe width="100%" height="100%" src="menu/coffeeMenu.php" frameborder="0" name="profile-iframe" style="flex-grow: 1;"></iframe>
                 </div>
             </div>

@@ -9,17 +9,18 @@ document.addEventListener('DOMContentLoaded', function () {
             var address2 = button.getAttribute('data-address2');
             var postal = button.getAttribute('data-postal');
             var state = button.getAttribute('data-state');
-            var userId = button.getAttribute('data-user-id');
+            var adminId = button.getAttribute('data-admin-id');
 
             // Update the modal's content.
             var modalBody = editAddressModal.querySelector('.modal-body');
+            modalBody.querySelector('#editAdminID').value = adminId;
             modalBody.querySelector('#editAddressID').value = addressId;
-            modalBody.querySelector('#editUserID').value = userId;
             modalBody.querySelector('#editAddressName').value = addressName;
             modalBody.querySelector('#editAddress1').value = address1;
             modalBody.querySelector('#editAddress2').value = address2;
             modalBody.querySelector('#editPostalCode').value = postal;
             modalBody.querySelector('#editState').value = state;
+            
         });
     } else {
         console.error('Modal element not found!');
@@ -56,39 +57,6 @@ document.addEventListener('DOMContentLoaded', function () {
     } else {
         console.error('Edit address form not found!');
     }
-
-    //delete address
-    window.deleteAddress = function (addressId, userId) {
-        if (confirm('Are you sure you want to delete this address?')) {
-            fetch('../auth/api/remove_address.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json' // Ensures the server knows you're sending JSON
-                },
-                body: JSON.stringify({ address_id: addressId, user_id: userId }) // Send the address ID  and userid as JSON
-            })
-            .then(response => {
-                // Check if the response is ok and parse JSON
-                if (!response.ok) {
-                    throw new Error('Server returned an error!');
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.success) {
-                    alert('Address deleted successfully!');
-                    location.reload();
-                } else {
-                    alert('Error deleting address: ' + data.message);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('An error occurred while deleting the address.');
-            });
-        }
-    };
-
     
     // Submit event listener for add address form
     var addAddressForm = document.getElementById('addAddressForm');
@@ -119,4 +87,44 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 }); 
+
+function setRemoveAddressId(addressId, AddressName, adminId) {
+    removeAddressId = addressId;
+    removeAdminId = adminId;
+    document.getElementById('addressToRemove').innerHTML = AddressName;
+}
+
+//delete address
+function removeAddress() {
+
+    var addressId = removeAddressId;
+    var admin_id = removeAdminId;
+
+    fetch('../auth/api/remove_address.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json' 
+        },
+        body: JSON.stringify({ address_id: addressId, admin_id: admin_id }) 
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Server returned an error!');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            alert('Address deleted successfully!');
+            location.reload();
+        } else {
+            alert('Error deleting address: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while deleting the address.');
+    });
+}
+    
 

@@ -20,7 +20,7 @@
     margin-left: 10px;
 }
 
-.payment-option,.delivery-method {
+.payment-option,.delivery-method,.promo-codes {
     padding: 10px;
     margin: 5px 0;
     border-radius: 5px; 
@@ -28,17 +28,20 @@
 }
 
 .payment-option input[type="radio"]:checked + label,
-.delivery-method input[type="radio"]:checked + label {
+.delivery-method input[type="radio"]:checked + label,
+.promo-codes input[type="radio"]:checked + label {
     background-color: #b2ebf2; 
 }
 
 .payment-option input[type="radio"],
-.delivery-method input[type="radio"] {
+.delivery-method input[type="radio"],
+.promo-codes input[type="radio"] {
     display: none; 
 }
 
 .payment-option label,
-.delivery-method label {
+.delivery-method label,
+.promo-codes label {
     display: block; 
     cursor: pointer; 
     padding: 10px;

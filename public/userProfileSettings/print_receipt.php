@@ -15,7 +15,7 @@ $ReceiptID = isset($_GET['receipt_id']) ? $_GET['receipt_id'] : 0;
 $query = "SELECT r.ReceiptID, r.TotalPrice, r.PaymentType, r.ReceiveMethod, r.ReceiptCreatedAt, r.ReferenceNo,
                  a.Address1, a.Address2, a.PostalCode, a.State, rd.ItemID, rd.ItemQuantity, rd.ItemPrice, rd.TotalPrice AS ItemTotal, 
                  m.ItemName, pi.Temperature, pi.MilkType, pi.CoffeeBeanType, pi.Sweetness, pi.AddShot,
-                 u.Username
+                 u.Username, r.DiscountAmount
           FROM Receipt r 
           INNER JOIN receipt_details rd ON r.ReceiptID = rd.ReceiptID 
           LEFT JOIN personal_item pi ON rd.PersonalItemID = pi.PersonalItemID
@@ -34,6 +34,16 @@ if (!$receipt_data) {
     echo "No receipt found.";
     exit;
 }
+
+// Initialize totals
+$subTotal = 0;
+
+// Calculate sub-total and SST
+foreach ($receipt_data as $item) {
+    $subTotal += $item['ItemPrice'] * $item['ItemQuantity'];
+}
+$sst = $subTotal * 0.08; 
+
 ?>
 
 <!DOCTYPE html>
@@ -95,7 +105,9 @@ if (!$receipt_data) {
                 <?php endforeach; ?>
             </tbody>
         </table>
-
+        <h6 class="text-end">Sub-Total: <span class="text-muted">RM <?= number_format($subTotal, 2) ?></span></h6>
+        <h6 class="text-end">SST (8%): <span class="text-muted">RM <?= number_format($sst, 2) ?></span></h6>
+        <h6 class="text-end">Discount Amount: <span class="text-muted">RM <?= number_format($receipt_data[0]['DiscountAmount'], 2) ?></span></h6>
         <h4 class="mt-4 text-end">Total: RM <?= number_format($receipt_data[0]['TotalPrice'], 2) ?></h4>
 
         <div class="footer">

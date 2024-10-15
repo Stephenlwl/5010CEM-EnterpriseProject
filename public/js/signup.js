@@ -1,4 +1,6 @@
 let otp_code;
+let otpTimeoutDuration = 30; // set 30 seconds for OTP expiration
+let otpExpired = false;
 
 document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("signup_form");
@@ -44,6 +46,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 alert("OTP sent successfully.");
                 console.log("OTP sent successfully.");
                 otp_code = data.otp_code;
+                startOtpCountdown(otp_code); // start the countdown timer
+                
                 $('#emailVerificationModal').modal('show');
             } else {
                 alert(data.message);
@@ -192,8 +196,37 @@ document.querySelectorAll('.otp-input').forEach((input, index, inputs) => {
     });
 });
 
+function startOtpCountdown(otp_code) {
+    const otpTimerElement = document.getElementById('otp-timer');
+    let remainingTime = otpTimeoutDuration;
+
+    const countdownInterval = setInterval(() => {
+        remainingTime--;
+        const minutes = Math.floor(remainingTime / 60);
+        const seconds = remainingTime % 60;
+        otpTimerElement.textContent = `Time remaining: ${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+
+        if (remainingTime <= 0) {
+            clearInterval(countdownInterval);
+            otpExpired = true;  // mark the OTP as expired
+            otp_code = null;  // invalidate the OTP code
+            otpTimerElement.textContent = "OTP expired. Please request a new one.";
+            alert("Your OTP has expired. Please verify your email again.");
+        } else {
+            otpExpired = false;
+            otp_code = otp_code;  // keep the OTP code
+        }
+    }, 1000); // for updating the countdown every second
+}
+
 function verifyOTP() {
     let otp_inp = '';
+
+    if (otpExpired) {
+        alert("Your OTP has expired. Please request a new OTP.");
+        return;  // Stop further execution
+    }
+
     for (let i = 1; i <= 4; i++) {
         otp_inp += document.getElementById('otp' + i).value;
     }
@@ -221,7 +254,7 @@ function verifyOTP() {
             if (response.success) {
                 if (response.redirect) {
                     alert("Register Successfully, Your email was verified!")
-                    window.location.href = "profile.php";  // Redirect to profile page
+                    window.location.href = "login.php";  
                 } else {
                     $('#emailVerificationModal').modal('show');
                 }

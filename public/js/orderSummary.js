@@ -12,6 +12,48 @@ document.addEventListener('DOMContentLoaded', function () {
     const currency = 'MYR';
     let deliveryMethod = 'Delivery';
     
+    document.getElementById('discountedTotal').value = totalAmount;
+
+    const promoButtons = document.querySelectorAll('.promo-button'); 
+
+    promoButtons.forEach(button => {
+        button.addEventListener('change', function() {
+            const promoCode = this.getAttribute('value');
+            const discountValue = parseFloat(this.getAttribute('data-discount'));
+            const discountType = this.getAttribute('data-discounttype');
+
+            // update the displayed total based on the selected promo code
+            applyPromoCode(promoCode, discountValue, discountType);
+        });
+    });
+
+    function applyPromoCode(promoCode, discountValue, discountType) {
+        let discountedTotal = totalAmount; // set default discounted total to current total
+        
+        // calculate the discounted total based on promo type
+        if (discountType === 'percentage') {
+            discountValue = (totalAmount * discountValue / 100)
+            discountedTotal = totalAmount - discountValue;
+        } else if (discountType === 'fixed') {
+            discountedTotal = totalAmount - discountValue;
+        }
+
+        // update the final total displayed
+        document.getElementById('final-total').innerText = `RM ${discountedTotal.toFixed(2)}`;
+
+        // update the discount amount section
+        const discountSection = document.getElementById('discount-section');
+        const discountAmount = document.getElementById('discountAmount');
+
+        // show discount amount with the correct format and discount amount
+        discountAmount.innerText = `RM ${discountValue.toFixed(2)}`;
+        discountSection.style.display = 'block';
+
+        document.getElementById('promoCodeApplied').value = promoCode;
+        document.getElementById('discountedTotal').value = discountedTotal.toFixed(2);
+        document.getElementById('discountAmount').value = discountValue.toFixed(2);
+    }
+
     // Show address at initial load becasue home delivery is selected by default
     fetchUserAddresses();
 
@@ -155,11 +197,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 return Promise.reject(new Error('Please select an address before proceeding.'));
             }
 
+            const discountedTotal = document.getElementById('discountedTotal').value;
+    
             return actions.order.create({
                 purchase_units: [{
                     amount: {
                         currency_code: currency,
-                        value: totalAmount
+                        value: discountedTotal
                     }
                 }]
             });
@@ -167,16 +211,18 @@ document.addEventListener('DOMContentLoaded', function () {
         onApprove: function (data, actions) {
             return actions.order.capture().then(function (details) {
                 const transactionId = details.id;
-                const totalAmount = details.purchase_units[0].amount.value;
-                const addressId = getSelectedAddressId();                     
-
+                const discountedTotal = document.getElementById('discountedTotal').value;
+                const discountAmount = document.getElementById('discountAmount').value;
+                const addressId = getSelectedAddressId()
+        
                 // declare all the receipt data
                 const receiptData = {
                     AddressID: addressId,
-                    TotalPrice: totalAmount,
+                    TotalPrice: discountedTotal,
                     PaymentType: paymentOption,
                     ReceiveMethod: deliveryMethod,
                     ReferenceNo: transactionId,
+                    DiscountAmount: discountAmount,  // discount value
                     // Get cart items from the cartItems where has been fetched on OrderSummary.php
                     items: cartItems.map(item => ({
                         ItemID: item.ItemID,
@@ -221,7 +267,35 @@ document.addEventListener('DOMContentLoaded', function () {
                         }
                         return JSON.parse(orderText);
                     }).then(data => {
-                        if (data.success) { 
+                        if (data.success) {
+                            let appliedPromoCode = document.getElementById('promoCodeApplied').value;
+        
+                            // Add the used promo code
+                            const promoCodeData = {
+                                UserID: userId,
+                                PromoCode: appliedPromoCode,
+                            };
+        
+                            return fetch('auth/api/add_used_promo.php', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify(promoCodeData)
+                            }).then(promoResponse => promoResponse.text().then(promoText => {
+                                console.log('Promo API raw response:', promoText); // Log raw response
+                                if (!promoResponse.ok) {
+                                    throw new Error(`HTTP error! status: ${promoResponse.status} - ${promoText}`);
+                                }
+                                return JSON.parse(promoText);
+                            }).then(promoData => {
+                                if (promoData.success) {
+                                    // Handle promo code success logic if necessary
+                                    alert('Promo code applied successfully!');
+                                } else {
+                                    alert('Error applying promo code: ' + promoData.message);
+                                }
+                            }));
                         } else {
                             alert('Error adding order: ' + data.message);
                         }
@@ -230,6 +304,34 @@ document.addEventListener('DOMContentLoaded', function () {
                     // show error message if receipt creation failed
                     alert('Error creating receipt: ' + data.message);
                 }
+            }).then(()=> {
+                const username = document.getElementById('username').value;
+                // send the order place email notification to admin side
+                return fetch('auth/mail_handler/sendNewOrderPlaced.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ username: username})
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Email API response:', data); 
+                    if (data.status !== 'success') {
+                        alert('Failed to send email: ' + data.message);
+                    } else {
+                        console.log('Email sent successfully'); 
+                    }
+                })
+                .catch(error => {
+                    console.error('Error sending email:', error);
+                    alert('An error occurred while sending the email notification.');
+                });
             }).then(() => {
                 // remove cart items after the transaction is complete and receipt is created
                 return fetch('auth/api/remove_cart_item.php', {
@@ -238,15 +340,14 @@ document.addEventListener('DOMContentLoaded', function () {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({ userId: userId, status: 'Active'})
-                }); 
-                // show cart error message if cart item removal failed
+                });
             }).then(cartResponse => cartResponse.text().then(cartText => {
                 if (!cartResponse.ok) {
                     throw new Error(`HTTP error! status: ${cartResponse.status} - ${cartText}`);
                 }
                 return JSON.parse(cartText);
             }).then(data => {
-                if (data.success) { 
+                if (data.success) {
                     // navigate to order tracking for user easier to track their order
                     window.location.href = 'profile.php?page=orderTracking';
                 } else {
@@ -262,7 +363,7 @@ document.addEventListener('DOMContentLoaded', function () {
         },
         onError: function (err) {
             console.error('PayPal Checkout error: ', err);
-            alert('An error occurred during the payment process. '+ err);
+            alert('An error occurred during the payment process: ' + err);
         }
     }).render('#paypal-button-container');
 });

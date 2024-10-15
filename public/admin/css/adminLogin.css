@@ -1,0 +1,33 @@
+body {
+    background-color: #f8f9fa; /* Light background for contrast */
+}
+
+main {
+    min-height: 100vh;
+}
+
+/* Left section with background image and gradient */
+.left-section {
+    background: linear-gradient(rgba(54, 54, 53, 0.7), rgba(13, 13, 13, 0.7)), 
+    url('../../img/logo.png') no-repeat center center;
+}
+
+.hero-text h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #ffd700; /* Matching yellow from your logo */
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+}
+
+/* Right section styling */
+.login-form {
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 40px;
+}
+
+/* Show password toggle */
+.form-check-label {
+    font-size: 0.9rem;
+    margin-left: 5px;
+}

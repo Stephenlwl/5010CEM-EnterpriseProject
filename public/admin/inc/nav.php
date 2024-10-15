@@ -27,8 +27,13 @@ $adminData = $stmt->fetch(PDO::FETCH_ASSOC);
 <head>
     <meta charset="UTF-8">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/navigation.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
     <title>Admin Dashboard</title>
 </head>
 <body>
@@ -68,10 +73,22 @@ $adminData = $stmt->fetch(PDO::FETCH_ASSOC);
                         <i class="bi bi-file-earmark-text"></i> Reports
                     </a>
                 </li>
-                <li class="nav-item mb-2">
-                    <a href="adminSettings.php" class="nav-link text-white text-start">
-                        <i class="bi bi-gear"></i> Admin Settings
+                <li class="nav-item dropdown mb-2">
+                    <a class="nav-link dropdown-toggle text-white text-start" href="#" id="settingsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-gear"></i> Settings
                     </a>
+                    <ul class="dropdown-menu" aria-labelledby="settingsDropdown">
+                        <li>
+                            <a href="promotionSettings.php" class="dropdown-item nav-link text-dark text-start">
+                                <i class="bi bi-tags"></i> Promotion Settings
+                            </a>
+                        </li>
+                        <li>
+                            <a href="locationSettings.php" class="dropdown-item nav-link text-dark text-start">
+                                <i class="bi bi-geo-alt"></i> Location Settings
+                            </a>
+                        </li>
+                    </ul>
                 </li>
                 <hr>
                 <li class="nav-item mt-2">

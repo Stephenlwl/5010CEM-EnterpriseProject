@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $PaymentType = $input['PaymentType']; 
         $ReceiveMethod = $input['ReceiveMethod']; 
         $ReferenceNo = $input['ReferenceNo'] ?? null; // Set as null if not provided
-
+        $DiscountAmount = $input['DiscountAmount'] ?? 0.00; 
         // Fetch cart items for the user
         $cartResponse = fetchCartItems($UserID, $db);
         if (!$cartResponse['success']) {
@@ -57,8 +57,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $ReceiptCreatedAt = date('Y-m-d H:i:s');
 
         // Insert into the 'receipt' table
-        $query_receipt = "INSERT INTO receipt (UserID, AddressID, TotalPrice, ReceiptCreatedAt, PaymentType, ReceiveMethod, ReferenceNo)
-                          VALUES (:UserID, :AddressID, :TotalPrice, :ReceiptCreatedAt, :PaymentType, :ReceiveMethod, :ReferenceNo)";
+        $query_receipt = "INSERT INTO receipt (UserID, AddressID, TotalPrice, ReceiptCreatedAt, PaymentType, ReceiveMethod, ReferenceNo, DiscountAmount)
+                          VALUES (:UserID, :AddressID, :TotalPrice, :ReceiptCreatedAt, :PaymentType, :ReceiveMethod, :ReferenceNo, :DiscountAmount)";
         $stmt = $db->prepare($query_receipt);
         $stmt->bindParam(':UserID', $UserID);
         $stmt->bindParam(':AddressID', $AddressID);
@@ -67,6 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bindParam(':PaymentType', $PaymentType);
         $stmt->bindParam(':ReceiveMethod', $ReceiveMethod);
         $stmt->bindParam(':ReferenceNo', $ReferenceNo);
+        $stmt->bindParam(':DiscountAmount', $DiscountAmount);
 
         if ($stmt->execute()) {
             // Get the last inserted ReceiptID

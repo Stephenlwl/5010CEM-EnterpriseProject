@@ -34,13 +34,15 @@ $totalPages = ceil($totalOrders / $ordersPerPage);
 $query = "SELECT o.OrderID, o.OrderStatus, o.CreatedAt AS OrderDate, 
                  r.ReceiveMethod, a.AddressName, r.ReceiptID,
                  rd.ItemID, rd.ItemQuantity, m.ItemName,
-                 pi.Temperature, pi.MilkType, pi.CoffeeBeanType, pi.Sweetness, pi.AddShot
+                 pi.Temperature, pi.MilkType, pi.CoffeeBeanType, pi.Sweetness, pi.AddShot,
+                 u.Username, u.Email
             FROM `Order` o 
             LEFT JOIN Receipt r ON o.ReceiptID = r.ReceiptID
             LEFT JOIN address a ON r.AddressID = a.AddressID
             LEFT JOIN receipt_details rd ON r.ReceiptID = rd.ReceiptID
             LEFT JOIN menu m ON rd.ItemID = m.ItemID
             LEFT JOIN personal_item pi ON rd.PersonalItemID = pi.PersonalItemID
+            LEFT JOIN users u ON r.UserID = u.UserID
             ORDER BY o.CreatedAt DESC
             LIMIT :limit OFFSET :offset";
 
@@ -92,7 +94,7 @@ $order_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 <option value="Packing">Packing</option>
                                 <option value="Ready to Pickup">Ready to Pickup</option>
                                 <option value="Out for Delivery">Out for Delivery</option>
-                                <option value="Delivered">Delivered</option>
+                                <option value="Order Completed">Order Completed</option>
                             </select>
                         </div>
                         <div class="col-sm-4">
@@ -134,8 +136,8 @@ $order_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                 background-color: 
                                                     <?php 
                                                         switch ($firstItem['OrderStatus']) {
-                                                            case 'Delivered':
-                                                                echo '#28a745'; // green for delivered
+                                                            case 'Order Completed':
+                                                                echo '#28a745'; // green for order completed
                                                                 break;
                                                             case 'Packing':
                                                             case 'Crafting':
@@ -205,18 +207,42 @@ $order_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                             <select class="form-select orderStatus" 
                                                     data-order-id="<?= htmlspecialchars($firstItem['OrderID']) ?>" 
                                                     data-receive-method="<?= htmlspecialchars($firstItem['ReceiveMethod']) ?>">
-                                                <option value="Order Placed" <?= $firstItem['OrderStatus'] == 'Order Placed' ? 'selected' : '' ?>>Order Placed</option>
-                                                <option value="Preparing" <?= $firstItem['OrderStatus'] == 'Preparing' ? 'selected' : '' ?>>Preparing</option>
-                                                <option value="Crafting" <?= $firstItem['OrderStatus'] == 'Crafting' ? 'selected' : '' ?>>Crafting</option>
-                                                <option value="Packing" <?= $firstItem['OrderStatus'] == 'Packing' ? 'selected' : '' ?>>Packing</option>
+                                                <option value="Order Placed" <?= $firstItem['OrderStatus'] == 'Order Placed' ? 'selected' : '' ?> 
+                                                        <?= $firstItem['OrderStatus'] != 'Order Placed' ? 'disabled' : '' ?>>
+                                                    Order Placed
+                                                </option>
+                                                <option value="Preparing" <?= $firstItem['OrderStatus'] == 'Preparing' ? 'selected' : '' ?> 
+                                                        <?= $firstItem['OrderStatus'] != 'Preparing' && $firstItem['OrderStatus'] != 'Order Placed' ? 'disabled' : '' ?>>
+                                                    Preparing
+                                                </option>
+                                                <option value="Crafting" <?= $firstItem['OrderStatus'] == 'Crafting' ? 'selected' : '' ?> 
+                                                        <?= $firstItem['OrderStatus'] != 'Crafting' && $firstItem['OrderStatus'] != 'Preparing' && $firstItem['OrderStatus'] != 'Order Placed' ? 'disabled' : '' ?>>
+                                                    Crafting
+                                                </option>
+                                                <option value="Packing" <?= $firstItem['OrderStatus'] == 'Packing' ? 'selected' : '' ?> 
+                                                        <?= $firstItem['OrderStatus'] != 'Packing' && $firstItem['OrderStatus'] != 'Crafting' && $firstItem['OrderStatus'] != 'Preparing' && $firstItem['OrderStatus'] != 'Order Placed' ? 'disabled' : '' ?>>
+                                                    Packing
+                                                </option>
                                                 <?php if ($firstItem['ReceiveMethod'] == 'Pickup'): ?>
-                                                    <option value="Ready to Pickup" <?= $firstItem['OrderStatus'] == 'Ready to Pickup' ? 'selected' : '' ?>>Ready to Pickup</option>
+                                                    <option value="Ready to Pickup" <?= $firstItem['OrderStatus'] == 'Ready to Pickup' ? 'selected' : '' ?> 
+                                                            <?= $firstItem['OrderStatus'] != 'Packing' && $firstItem['OrderStatus'] != 'Ready to Pickup' ? 'disabled' : '' ?>>
+                                                        Ready to Pickup
+                                                    </option>
                                                 <?php else: ?>
-                                                    <option value="Out for Delivery" <?= $firstItem['OrderStatus'] == 'Out for Delivery' ? 'selected' : '' ?>>Out for Delivery</option>
+                                                    <option value="Out for Delivery" <?= $firstItem['OrderStatus'] == 'Out for Delivery' ? 'selected' : '' ?> 
+                                                            <?= $firstItem['OrderStatus'] != 'Packing' && $firstItem['OrderStatus'] != 'Out for Delivery' ? 'disabled' : '' ?>>
+                                                        Out for Delivery
+                                                    </option>
                                                 <?php endif; ?>
-                                                <option value="Delivered" <?= $firstItem['OrderStatus'] == 'Delivered' ? 'selected' : '' ?>>Delivered</option>
+                                                <option value="Order Completed" <?= $firstItem['OrderStatus'] == 'Order Completed' ? 'selected' : '' ?> 
+                                                        <?= $firstItem['OrderStatus'] != 'Order Completed' && $firstItem['OrderStatus'] != 'Ready to Pickup' && $firstItem['OrderStatus'] != 'Out for Delivery' ? 'disabled' : '' ?>>
+                                                        Order Completed
+                                                </option>
                                             </select>
-                                            <button class="btn btn-success btn-sm mt-2 update-status shadow-sm" data-order-id="<?= htmlspecialchars($firstItem['OrderID']) ?>">
+                                            <button class="btn btn-success btn-sm mt-2 update-status shadow-sm" id="updateStatusButon"
+                                                    data-order-id="<?= htmlspecialchars($firstItem['OrderID']) ?>" 
+                                                    data-user-name="<?= htmlspecialchars($firstItem['Username']) ?>"
+                                                    data-user-email="<?= htmlspecialchars($firstItem['Email']) ?>">
                                                 Update Status
                                             </button>
                                         </div>

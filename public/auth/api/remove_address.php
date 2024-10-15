@@ -20,20 +20,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $database = new Database_Auth();
         $db = $database->getConnection();
 
-        // Check if UserID is set in session
-        if (!isset($_SESSION['user_id'])) {
-            $response['message'] = 'User not logged in.';
-            echo json_encode($response);
-            exit();
-        }
-
-        // Get UserID from session
-        $UserID = $_SESSION['user_id'];
-        // $addressId = $_POST['AddressID'];
-        // 
         // Delete address
-        if (isset($data['address_id'])) {
+        if (isset($data['address_id'], $data['user_id'])) {
             $addressId = intval($data['address_id']);
+            $UserID = intval($data['user_id']);
             $query = "DELETE FROM Address WHERE AddressID = :AddressID AND UserID = :UserID";
             $stmt = $db->prepare($query);
             $stmt->bindParam(':AddressID', $addressId);
@@ -45,6 +35,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             } else {
                 $response['message'] = 'Failed to delete address.';
             }
+        } else if (isset($data['address_id'], $data['admin_id'])) {
+            $addressId = intval($data['address_id']);
+            $AdminID = intval($data['admin_id']);
+            $query = "DELETE FROM Address WHERE AddressID = :AddressID AND AdminID = :AdminID";
+            $stmt = $db->prepare($query);
+            $stmt->bindParam(':AddressID', $addressId);
+            $stmt->bindParam(':AdminID', $AdminID);
+
+            if ($stmt->execute()) {
+                $response['success'] = true;
+                $response['message'] = 'Address deleted successfully!';
+            } else {
+                $response['message'] = 'Failed to delete address.';
+            }
+        } else {
+            $response['message'] = 'Address ID and User ID or Admin ID required.';
         }
     } catch (Exception $e) {
         $response['message'] = $e->getMessage();

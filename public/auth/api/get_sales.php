@@ -10,8 +10,11 @@ try {
     $database = new Database_Auth();
     $db = $database->getConnection();
 
+
+
+
     // to get daily sales
-    $dailyQuery = "SELECT DATE(r.ReceiptCreatedAt) AS SaleDate, SUM(rd.ItemPrice * rd.ItemQuantity) AS DailySales
+    $dailyQuery = "SELECT DATE(r.ReceiptCreatedAt) AS SaleDate, SUM(r.TotalPrice - r.DiscountAmount) AS DailySales
                    FROM receipt_details rd
                    JOIN `order` o ON rd.ReceiptID = o.ReceiptID
                    INNER JOIN receipt r ON o.ReceiptID = r.ReceiptID
@@ -33,7 +36,7 @@ try {
     }
 
     // to get weekly sales
-    $weeklyQuery = "SELECT YEAR(r.ReceiptCreatedAt) AS Year, WEEK(r.ReceiptCreatedAt) AS Week, SUM(rd.ItemPrice * rd.ItemQuantity) AS WeeklySales
+    $weeklyQuery = "SELECT YEAR(r.ReceiptCreatedAt) AS Year, WEEK(r.ReceiptCreatedAt) AS Week, SUM(r.TotalPrice - r.DiscountAmount) AS WeeklySales
                     FROM receipt_details rd
                     JOIN `order` o ON rd.ReceiptID = o.ReceiptID
                     INNER JOIN receipt r ON o.ReceiptID = r.ReceiptID
@@ -56,7 +59,7 @@ try {
     }
 
     // to get monthly sales
-    $monthlyQuery = "SELECT DATE_FORMAT(r.ReceiptCreatedAt, '%Y-%m') AS Month, SUM(rd.ItemPrice * rd.ItemQuantity) AS MonthlySales
+    $monthlyQuery = "SELECT DATE_FORMAT(r.ReceiptCreatedAt, '%Y-%m') AS Month, SUM(r.TotalPrice - r.DiscountAmount) AS MonthlySales
                      FROM receipt_details rd
                      JOIN `order` o ON rd.ReceiptID = o.ReceiptID
                      INNER JOIN receipt r ON o.ReceiptID = r.ReceiptID
