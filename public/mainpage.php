@@ -89,37 +89,18 @@ if (isset($_SESSION['user_id'])) {
             </video>
 
             <div class="features-content">
-                <h2>Drinks</h2>
+                <h2>Discover the 6 Most Popular Coffee Drinks at Rimberio Cafe</h2>
                 <div id="featureBox" class="feature-box">
-                    <div class="feature-item">
-                        <h3>coffee 1</h3>
-                        <p>Description of coffee 1.</p>
-                    </div>
-                    <div class="feature-item">
-                        <h3>coffee 2</h3>
-                        <p>Description of coffee 2.</p>
-                    </div>
-                    <div class="feature-item">
-                        <h3>coffee 3</h3>
-                        <p>Description of coffee 3.</p>
-                    </div>
+                    <div class="feature-item" id="coffee1"></div>
+                    <div class="feature-item" id="coffee2"></div>
+                    <div class="feature-item" id="coffee3"></div>
                 </div>
                 
                 <div id="featureBox2" class="feature-box hidden">
-                    <div class="feature-item">
-                        <h3>coffee 4</h3>
-                        <p>Description of coffee 4.</p>
-                    </div>
-                    <div class="feature-item">
-                        <h3>coffee 5</h3>
-                        <p>Description of coffee 5.</p>
-                    </div>
-                    <div class="feature-item">
-                        <h3>coffee 6</h3>
-                        <p>Description of coffee 6.</p>
-                    </div>
+                    <div class="feature-item" id="coffee4"></div>
+                    <div class="feature-item" id="coffee5"></div>
+                    <div class="feature-item" id="coffee6"></div>
                 </div>
-
 
                     <!-- Navigation Buttons -->
                 <button class="prev" onclick="showPrev()">Previous</button>

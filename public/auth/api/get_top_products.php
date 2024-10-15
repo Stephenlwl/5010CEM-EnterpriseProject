@@ -10,6 +10,7 @@ try {
     $database = new Database_Auth();
     $db = $database->getConnection();
 
+    // get the top 5 products
     $query = "SELECT m.ItemName, SUM(rd.ItemQuantity) AS TotalQuantityOrdered
               FROM receipt_details rd
               JOIN menu m ON rd.ItemID = m.ItemID
@@ -28,8 +29,35 @@ try {
             ];
         }
 
+        // get the top 3 coffee drinks
+        $queryCoffeeItems = "SELECT m.ItemName, SUM(rd.ItemQuantity) AS TotalCoffeeDrinkSold
+                             FROM receipt_details rd
+                             JOIN menu m ON rd.ItemID = m.ItemID
+                             WHERE m.ItemType = 'coffee'
+                             GROUP BY m.ItemName
+                             ORDER BY TotalCoffeeDrinkSold DESC
+                             LIMIT 6";
+
+        $resultCoffee = $db->query($queryCoffeeItems);
+        $topCoffeeDrink = [];
+
+        if ($resultCoffee) {
+            while ($row = $resultCoffee->fetch(PDO::FETCH_ASSOC)) {
+                $topCoffeeDrink[] = [
+                    'ItemName' => $row['ItemName'],
+                    'TotalCoffeeDrinkSold' => (int) $row['TotalCoffeeDrinkSold']
+                ];
+            }
+        } else {
+            $response['message'] = "Failed to fetch top coffee drinks.";
+        }
+
         $response['success'] = true;
-        $response['data'] = $topProducts;
+        $response['data'] = [
+            'topProducts' => $topProducts,
+            'topCoffeeDrinks' => $topCoffeeDrink
+        ];
+
     } else {
         $response['message'] = "Failed to fetch top products.";
     }

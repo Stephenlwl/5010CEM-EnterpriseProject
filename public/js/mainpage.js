@@ -58,7 +58,49 @@ function updateSalesSection() {
         });
 }
 
+function updateTopThreeCoffee() {
+    fetch('auth/api/get_top_products.php') 
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // get the top 3 coffee drinks data
+            const topProducts = data.data.topCoffeeDrinks;
+
+            document.getElementById('coffee1').innerHTML = `
+                <h3>${topProducts[0].ItemName}</h3>
+                <img src="${topProducts[0].ItemImage ? topProducts[0].ItemImage : 'img/coffee-placeholder.jpg'}" alt="${topProducts[0].ItemName}" style="width: 90%; border-radius: 10px;"/>
+            `;
+            document.getElementById('coffee2').innerHTML = `
+                <h3>${topProducts[1].ItemName}</h3>
+                <img src="${topProducts[1].ItemImage ? topProducts[1].ItemImage : 'img/coffee-placeholder.jpg'}" alt="${topProducts[1].ItemName}" style="width: 90%; border-radius: 10px;"/>
+            `;
+            document.getElementById('coffee3').innerHTML = `
+                <h3>${topProducts[2].ItemName}</h3>
+                <img src="${topProducts[2].ItemImage ? topProducts[2].ItemImage : 'img/coffee-placeholder.jpg'}" alt="${topProducts[2].ItemName}" style="width: 90%; border-radius: 10px;"/>
+            `;
+            document.getElementById('coffee4').innerHTML = `
+                <h3>${topProducts[3].ItemName}</h3>
+                <img src="${topProducts[3].ItemImage ? topProducts[3].ItemImage : 'img/coffee-placeholder.jpg'}" alt="${topProducts[3].ItemName}" style="width: 90%; border-radius: 10px;"/>
+            `;
+            document.getElementById('coffee5').innerHTML = `
+                <h3>${topProducts[4].ItemName}</h3>
+                <img src="${topProducts[4].ItemImage ? topProducts[4].ItemImage : 'img/coffee-placeholder.jpg'}" alt="${topProducts[4].ItemName}" style="width: 90%; border-radius: 10px;"/>
+            `;
+            document.getElementById('coffee6').innerHTML = `
+                <h3>${topProducts[5].ItemName}</h3>
+                <img src="${topProducts[5].ItemImage ? topProducts[5].ItemImage : 'img/coffee-placeholder.jpg'}" alt="${topProducts[5].ItemName}" style="width: 90%; border-radius: 10px;"/>
+            `;
+        } else {
+            alert(data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error fetching data:', error);
+    });
+}
 setInterval(updateSalesSection, 1000);  // refresh every 1 second
+setInterval(updateTopThreeCoffee, 1000);  
 
 // initial fetch when the page loads
 updateSalesSection();
+updateTopThreeCoffee();
