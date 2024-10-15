@@ -14,9 +14,13 @@
 </head>
 <body>
 
-    <?php $IPATH = $_SERVER["DOCUMENT_ROOT"]."/RimberioCafeWebsite/5010CEM-EnterpriseProject/public/inc/";
-        include($IPATH."nav.php"); 
-    ?>
+<?php 
+require_once 'C:/xampp/htdocs/RimberioCafeWebsite/5010CEM-EnterpriseProject/vendor/autoload.php';
+
+$IPATH = $_SERVER["DOCUMENT_ROOT"]."/RimberioCafeWebsite/5010CEM-EnterpriseProject/public/inc/";
+include($IPATH."nav.php"); 
+?>
+
 
     <main class="d-flex">
         <section class="left-section d-none d-lg-flex flex-column justify-content-center align-items-center text-center bg-dark text-white p-5">
@@ -30,10 +34,10 @@
             <div class="login-form mt-5">
                 <p class="text-right">Already have an account? <a href="login.php">Login</a></p>
                 <h2 class="text-center mb-4">Signup</h2>
-                <button class="google-btn">
+                <a href="google_login.php" class="btn google-btn">
                     <img src="https://cdn1.iconfinder.com/data/icons/google-s-logo/150/Google_Icons-09-512.png" alt="Google Logo" width="20px" height="20px">
                     Continue with Google
-                </button>
+                </a>
                 <p class="separator text-center"><span>OR</span></p>
 
                 <form id="signup_form">
@@ -73,7 +77,7 @@
     <!-- footer -->
     <?php include($IPATH."footer.html"); ?>
 
-     <!-- Email Verification Modal -->
+    <!-- Email Verification Modal -->
     <div class="modal fade" id="emailVerificationModal" tabindex="-1" role="dialog" aria-labelledby="emailVerificationModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
