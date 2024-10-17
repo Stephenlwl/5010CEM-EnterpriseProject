@@ -1,0 +1,165 @@
+[16-Oct-2024 19:35:42 Europe/Berlin] Received data: Array
+(
+    [ItemName] => des
+    [ItemPrice] => 123
+    [ItemQuantity] => 123
+    [ItemType] => Food
+    [ImagePath] => C:\xampp\htdocs\RimberioCafeWebsite\5010CEM-EnterpriseProject\public\img\slideshow1.jpg
+    [csrf_token] => b024c2edc0d3c82661931dd528d91b3ed3397b754a8883403d35e29c5caa5048
+)
+
+[16-Oct-2024 19:35:42 Europe/Berlin] Error in add_product.php: Product already exists
+[16-Oct-2024 19:35:43 Europe/Berlin] Received data: Array
+(
+    [ItemName] => des
+    [ItemPrice] => 123
+    [ItemQuantity] => 123
+    [ItemType] => Food
+    [ImagePath] => C:\xampp\htdocs\RimberioCafeWebsite\5010CEM-EnterpriseProject\public\img\slideshow1.jpg
+    [csrf_token] => b024c2edc0d3c82661931dd528d91b3ed3397b754a8883403d35e29c5caa5048
+)
+
+[16-Oct-2024 19:35:43 Europe/Berlin] Error in add_product.php: Product already exists
+[16-Oct-2024 19:35:44 Europe/Berlin] Received data: Array
+(
+    [ItemName] => des
+    [ItemPrice] => 123
+    [ItemQuantity] => 123
+    [ItemType] => Food
+    [ImagePath] => C:\xampp\htdocs\RimberioCafeWebsite\5010CEM-EnterpriseProject\public\img\slideshow1.jpg
+    [csrf_token] => b024c2edc0d3c82661931dd528d91b3ed3397b754a8883403d35e29c5caa5048
+)
+
+[16-Oct-2024 19:35:44 Europe/Berlin] Error in add_product.php: Product already exists
+[16-Oct-2024 19:35:44 Europe/Berlin] Received data: Array
+(
+    [ItemName] => des
+    [ItemPrice] => 123
+    [ItemQuantity] => 123
+    [ItemType] => Food
+    [ImagePath] => C:\xampp\htdocs\RimberioCafeWebsite\5010CEM-EnterpriseProject\public\img\slideshow1.jpg
+    [csrf_token] => b024c2edc0d3c82661931dd528d91b3ed3397b754a8883403d35e29c5caa5048
+)
+
+[16-Oct-2024 19:35:44 Europe/Berlin] Error in add_product.php: Product already exists
+[16-Oct-2024 19:35:44 Europe/Berlin] Received data: Array
+(
+    [ItemName] => des
+    [ItemPrice] => 123
+    [ItemQuantity] => 123
+    [ItemType] => Food
+    [ImagePath] => C:\xampp\htdocs\RimberioCafeWebsite\5010CEM-EnterpriseProject\public\img\slideshow1.jpg
+    [csrf_token] => b024c2edc0d3c82661931dd528d91b3ed3397b754a8883403d35e29c5caa5048
+)
+
+[16-Oct-2024 19:35:44 Europe/Berlin] Error in add_product.php: Product already exists
+[16-Oct-2024 19:35:46 Europe/Berlin] Received data: Array
+(
+    [ItemName] => des
+    [ItemPrice] => 123
+    [ItemQuantity] => 123
+    [ItemType] => Food
+    [ImagePath] => C:\xampp\htdocs\RimberioCafeWebsite\5010CEM-EnterpriseProject\public\img\slideshow1.jpg
+    [csrf_token] => b024c2edc0d3c82661931dd528d91b3ed3397b754a8883403d35e29c5caa5048
+)
+
+[16-Oct-2024 19:35:46 Europe/Berlin] Error in add_product.php: Product already exists
+[16-Oct-2024 19:35:51 Europe/Berlin] Received data: Array
+(
+    [ItemName] => des
+    [ItemPrice] => 123
+    [ItemQuantity] => 123
+    [ItemType] => Food
+    [ImagePath] => C:\xampp\htdocs\RimberioCafeWebsite\5010CEM-EnterpriseProject\public\img\slideshow1.jpg
+    [csrf_token] => b024c2edc0d3c82661931dd528d91b3ed3397b754a8883403d35e29c5caa5048
+)
+
+[16-Oct-2024 19:35:51 Europe/Berlin] Error in add_product.php: Product already exists
+[16-Oct-2024 19:36:03 Europe/Berlin] Received data: Array
+(
+    [ItemName] => des
+    [ItemPrice] => 123
+    [ItemQuantity] => 123
+    [ItemType] => Food
+    [ImagePath] => C:\xampp\htdocs\RimberioCafeWebsite\5010CEM-EnterpriseProject\public\img\slideshow1.jpg
+    [csrf_token] => b024c2edc0d3c82661931dd528d91b3ed3397b754a8883403d35e29c5caa5048
+)
+
+[16-Oct-2024 19:36:03 Europe/Berlin] Error in add_product.php: Product already exists
+[16-Oct-2024 19:36:11 Europe/Berlin] Received data: Array
+(
+    [ItemName] => des
+    [ItemPrice] => 123
+    [ItemQuantity] => 123
+    [ItemType] => Food
+    [ImagePath] => C:\xampp\htdocs\RimberioCafeWebsite\5010CEM-EnterpriseProject\public\img\slideshow1.jpg
+    [csrf_token] => b024c2edc0d3c82661931dd528d91b3ed3397b754a8883403d35e29c5caa5048
+)
+
+[16-Oct-2024 19:36:11 Europe/Berlin] Error in add_product.php: Product already exists
+[16-Oct-2024 19:36:47 Europe/Berlin] Received data: Array
+(
+    [ItemName] => des
+    [ItemPrice] => 123
+    [ItemQuantity] => 123
+    [ItemType] => Food
+    [ImagePath] => C:\xampp\htdocs\RimberioCafeWebsite\5010CEM-EnterpriseProject\public\img\slideshow1.jpg
+    [csrf_token] => b024c2edc0d3c82661931dd528d91b3ed3397b754a8883403d35e29c5caa5048
+)
+
+[16-Oct-2024 19:36:47 Europe/Berlin] Error in add_product.php: Product already exists
+[16-Oct-2024 19:36:52 Europe/Berlin] Received data: Array
+(
+    [ItemName] => des
+    [ItemPrice] => 123
+    [ItemQuantity] => 123
+    [ItemType] => Food
+    [ImagePath] => C:\xampp\htdocs\RimberioCafeWebsite\5010CEM-EnterpriseProject\public\img\slideshow1.jpg
+    [csrf_token] => b024c2edc0d3c82661931dd528d91b3ed3397b754a8883403d35e29c5caa5048
+)
+
+[16-Oct-2024 19:36:52 Europe/Berlin] Error in add_product.php: Product already exists
+[16-Oct-2024 19:36:53 Europe/Berlin] Received data: Array
+(
+    [ItemName] => des
+    [ItemPrice] => 123
+    [ItemQuantity] => 123
+    [ItemType] => Food
+    [ImagePath] => C:\xampp\htdocs\RimberioCafeWebsite\5010CEM-EnterpriseProject\public\img\slideshow1.jpg
+    [csrf_token] => b024c2edc0d3c82661931dd528d91b3ed3397b754a8883403d35e29c5caa5048
+)
+
+[16-Oct-2024 19:36:53 Europe/Berlin] Error in add_product.php: Product already exists
+[16-Oct-2024 19:36:55 Europe/Berlin] Received data: Array
+(
+    [ItemName] => des
+    [ItemPrice] => 123
+    [ItemQuantity] => 123
+    [ItemType] => Food
+    [ImagePath] => C:\xampp\htdocs\RimberioCafeWebsite\5010CEM-EnterpriseProject\public\img\slideshow1.jpg
+    [csrf_token] => b024c2edc0d3c82661931dd528d91b3ed3397b754a8883403d35e29c5caa5048
+)
+
+[16-Oct-2024 19:36:55 Europe/Berlin] Error in add_product.php: Product already exists
+[16-Oct-2024 19:36:59 Europe/Berlin] Received data: Array
+(
+    [ItemName] => des
+    [ItemPrice] => 123
+    [ItemQuantity] => 123
+    [ItemType] => Food
+    [ImagePath] => C:\xampp\htdocs\RimberioCafeWebsite\5010CEM-EnterpriseProject\public\img\slideshow1.jpg
+    [csrf_token] => b024c2edc0d3c82661931dd528d91b3ed3397b754a8883403d35e29c5caa5048
+)
+
+[16-Oct-2024 19:36:59 Europe/Berlin] Error in add_product.php: Product already exists
+[16-Oct-2024 19:37:02 Europe/Berlin] Received data: Array
+(
+    [ItemName] => des
+    [ItemPrice] => 123
+    [ItemQuantity] => 123
+    [ItemType] => Food
+    [ImagePath] => C:\xampp\htdocs\RimberioCafeWebsite\5010CEM-EnterpriseProject\public\img\slideshow1.jpg
+    [csrf_token] => b024c2edc0d3c82661931dd528d91b3ed3397b754a8883403d35e29c5caa5048
+)
+
+[16-Oct-2024 19:37:02 Europe/Berlin] Error in add_product.php: Product already exists
