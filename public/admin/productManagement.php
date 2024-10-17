@@ -61,6 +61,8 @@ try {
     <link rel="stylesheet" href="css/navigation.css">
     <link rel="stylesheet" href="css/adminPublicDefault.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/productManagement.css">
+
 </head>
 <body>
     <div class="container-fluid">
@@ -79,7 +81,7 @@ try {
                 <!-- Products Table -->
                 <div class="row mb-4">
                     <div class="col-12 shadow p-3 rounded">
-                        <h4 class="mb-3">Products</h4>
+                        <h4 class="mb-3">Product Setting Dashboard</h4>
                         <table class="table table-striped">
                             <thead>
                                 <tr>
