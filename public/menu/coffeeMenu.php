@@ -1,13 +1,23 @@
 <?php
 session_start();
 
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
-
-require_once '../auth/config/database.php';  // Adjust the path based on your folder structure
+require_once '../auth/config/database.php';  
 
 $database = new Database_Auth();
 $db = $database->getConnection();
+
+if (!isset($_SESSION['user_id'])) {
+   $UserID = null;
+} else {
+    $UserID = $_SESSION['user_id'];
+    $query = "SELECT * FROM users WHERE UserID = :UserID";
+    $stmt = $db->prepare($query);
+    $stmt->bindParam(':UserID', $UserID, PDO::PARAM_INT); 
+    $stmt->execute();
+
+    $userData = $stmt->fetch(PDO::FETCH_ASSOC);
+
+}
 
 // Fetch all menu items from the database and order them by type
 $query = "SELECT 
@@ -81,8 +91,9 @@ foreach ($menuItems as $item) {
         <div class="modal-content">
             <span class="close" onclick="closeModal()">&times;</span>
             <h2 id="modalItemName"></h2>
-            <p id="modalItemPrice"></p>
+            <p>RM <div id="modalItemPrice"></div></p>
             <input type="hidden" id="modalItemID">
+            <input type="hidden" id="userId" value="<?php echo htmlspecialchars($UserID); ?>">
 
             <!-- Customization form -->
             <form class="customization-form">

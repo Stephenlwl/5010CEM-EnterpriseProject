@@ -1,6 +1,6 @@
 let productIDToRemove = '';
 
-function setProductID(productID) {z
+function setProductID(productID) {
     productIDToRemove = productID;
     document.getElementById('productIDToRemove').innerText = productID;
 }
