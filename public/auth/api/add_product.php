@@ -23,7 +23,7 @@ try {
         // Validate all required fields are present and not empty
         if (empty($data['ItemName']) || 
             !isset($data['ItemPrice']) || 
-            !isset($data['ItemQuantity']) || 
+            // !isset($data['ItemQuantity']) || 
             empty($data['ItemType']) || 
             empty($data['ImagePath'])) {
             throw new Exception('All fields are required');
@@ -32,7 +32,7 @@ try {
         // Sanitize and validate input
         $itemName = trim(strip_tags($data['ItemName']));
         $itemPrice = filter_var($data['ItemPrice'], FILTER_VALIDATE_FLOAT);
-        $itemQuantity = filter_var($data['ItemQuantity'], FILTER_VALIDATE_INT);
+        // $itemQuantity = filter_var($data['ItemQuantity'], FILTER_VALIDATE_INT);
         $itemType = trim(strip_tags($data['ItemType']));
         $imagePath = trim(strip_tags($data['ImagePath']));
 
@@ -40,9 +40,9 @@ try {
         if ($itemPrice === false || $itemPrice < 0) {
             throw new Exception('Invalid price value');
         }
-        if ($itemQuantity === false || $itemQuantity < 0) {
-            throw new Exception('Invalid quantity value');
-        }
+        // if ($itemQuantity === false || $itemQuantity < 0) {
+        //     throw new Exception('Invalid quantity value');
+        // }
 
         // Initialize database connection
         $database = new Database_Auth();
@@ -61,8 +61,8 @@ try {
             }
 
             // Prepare INSERT statement
-            $query = "INSERT INTO menu (ItemName, ItemPrice, ItemQuantity, ItemType, ImagePath) 
-                     VALUES (?, ?, ?, ?, ?)";
+            $query = "INSERT INTO menu (ItemName, ItemPrice, ItemType, ImagePath) 
+                     VALUES (?, ?, ?, ?)";
             
             $stmt = $db->prepare($query);
             
@@ -70,7 +70,7 @@ try {
             if (!$stmt->execute([
                 $itemName,
                 $itemPrice,
-                $itemQuantity,
+                // $itemQuantity,
                 $itemType,
                 $imagePath
             ])) {

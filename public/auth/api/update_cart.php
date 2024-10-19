@@ -27,18 +27,6 @@ try {
 
         if ($itemID && $quantity !== null && $userID && $cartID) {
             try {
-                $itemExists = false;
-                foreach ($_SESSION['cart'] as &$item) {
-                    if ($item['itemID'] == $itemID) {
-                        // if the item exists then update the quantity
-                        $item['quantity'] = $quantity;
-                        $itemExists = true;
-                        break;
-                    }
-                }
-
-                // if the item exists in the session cart then proceed to update the database
-                if ($itemExists) {
                     // update quantity in the cart db
                     $query = "UPDATE cart SET Quantity = :Quantity WHERE UserID = :UserID AND ItemID = :ItemID AND CartID = :CartID";
                     $stmt = $db->prepare($query);
@@ -53,9 +41,6 @@ try {
                     } else {
                         $response['message'] = 'Database error: Unable to update quantity';
                     }
-                } else {
-                    $response['message'] = 'Item not found in the session cart';
-                }
             } catch (Exception $e) {
                 $response['message'] = 'An error occurred: ' . $e->getMessage();
             }
