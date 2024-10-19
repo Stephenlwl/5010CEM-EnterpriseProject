@@ -126,3 +126,40 @@ function addToCart(itemID) {
         alert('An error occurred while adding the item to the cart.');
     });
 }
+
+function addToFavourite() {
+    const itemID = document.getElementById("modalItemID").value;
+    const userID = document.getElementById("userId").value;
+    const temperature = document.getElementById("Temperature").value;
+    const sweetness = document.getElementById("Sweetness").value;
+    const addShot = document.getElementById("AddShot").value;
+    const milkType = document.getElementById("MilkType").value;
+    const coffeeBeanType = document.getElementById("CoffeeBean").value;
+
+    // Check if user is logged in
+    if (!userID) {
+        alert('You need to log in to add favourites.');
+        return;
+    }
+
+    // Create data string for POST request
+    const data = `ItemID=${itemID}&userID=${userID}&Temperature=${temperature}&Sweetness=${sweetness}&AddShot=${addShot}&MilkType=${milkType}&CoffeeBean=${coffeeBeanType}`;
+
+    // Send the AJAX request to add the item to the favorites
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", "../auth/api/add_favorite.php", true);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+    // Handle the response
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            alert('Item added to favourites successfully!');
+        } else {
+            alert('Error adding item to favourites.');
+        }
+    };
+
+    // Send the data
+    xhr.send(data);
+}
+
