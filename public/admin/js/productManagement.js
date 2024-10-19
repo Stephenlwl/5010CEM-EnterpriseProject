@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const productData = {
             ItemName: formData.get('ItemName').trim(),
             ItemPrice: parseFloat(formData.get('ItemPrice')),
-            ItemQuantity: parseInt(formData.get('ItemQuantity')),
+            // ItemQuantity: parseInt(formData.get('ItemQuantity')),
             ItemType: formData.get('ItemType').trim(),
             ImagePath: formData.get('ImagePath').trim(),
             csrf_token: formData.get('csrf_token')
@@ -104,6 +104,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(data => {
             if (data.success) {
                 showAlert(data.message, 'success');
+                alert('Product added successfully!');
                 form.reset();
                 setTimeout(() => window.location.reload(), 1500);
             } else {
