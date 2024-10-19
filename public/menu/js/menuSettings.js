@@ -147,7 +147,7 @@ function addToFavourite() {
 
     // Send the AJAX request to add the item to the favorites
     const xhr = new XMLHttpRequest();
-    xhr.open("POST", "../auth/api/add_favorite.php", true);
+    xhr.open("POST", "add_favorite.php", true);
     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
     // Handle the response
