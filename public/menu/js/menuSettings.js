@@ -142,24 +142,35 @@ function addToFavourite() {
         return;
     }
 
-    // Create data string for POST request
-    const data = `ItemID=${itemID}&userID=${userID}&Temperature=${temperature}&Sweetness=${sweetness}&AddShot=${addShot}&MilkType=${milkType}&CoffeeBean=${coffeeBeanType}`;
-
-    // Send the AJAX request to add the item to the favorites
-    const xhr = new XMLHttpRequest();
-    xhr.open("POST", "../auth/api/add_favorite.php", true);
-    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-
-    // Handle the response
-    xhr.onload = function() {
-        if (xhr.status === 200) {
-            alert('Item added to favourites successfully!');
-        } else {
-            alert('Error adding item to favourites.');
-        }
+    const data = {
+        ItemID: itemID,
+        UserID: userID, 
+        Temperature: temperature,
+        Sweetness: sweetness,
+        AddShot: addShot,
+        MilkType: milkType,
+        CoffeeBean: coffeeBeanType
     };
 
-    // Send the data
-    xhr.send(data);
+    fetch('../auth/api/add_favorite.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            alert('Item added to cart successfully!');
+            location.reload();    
+        } else {
+            alert('Failed to add item: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while adding the item to the cart.');
+    });
 }
 

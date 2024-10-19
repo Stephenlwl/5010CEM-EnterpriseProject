@@ -1,47 +1,65 @@
 <?php
 session_start();
 
-require_once '../config/database.php';
+header('Content-Type: application/json');
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Get database connection
-    $database = new Database_Auth();
-    $db = $database->getConnection();
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 
-    // Get the data from the POST request
-    $userID = $_POST['userID'];
-    $itemID = $_POST['ItemID'];
-    $temperature = $_POST['Temperature'];
-    $sweetness = $_POST['Sweetness'];
-    $addShot = $_POST['AddShot'];
-    $milkType = $_POST['MilkType'];
-    $coffeeBean = $_POST['CoffeeBean'];
+require_once '../config/database.php'; 
 
-    // Set the favourite flag to 1
-    $favourite = 1;
+$response = array('status' => 'error', 'message' => '');
 
-    // Get the current date and time
-    $createdAt = date('Y-m-d H:i:s');
+try {
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-    // Insert into the personal_item table
-    $query = "INSERT INTO personal_item (ItemID, UserID, Temperature, Sweetness, AddShot, MilkType, CoffeeBeanType, Favourite, CreatedAt)
-              VALUES (:itemID, :userID, :temperature, :sweetness, :addShot, :milkType, :coffeeBean, :favourite, :createdAt)";
+        $database = new Database_Auth();
+        $db = $database->getConnection();
 
-    $stmt = $db->prepare($query);
-    $stmt->bindParam(':itemID', $itemID, PDO::PARAM_INT);
-    $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
-    $stmt->bindParam(':temperature', $temperature, PDO::PARAM_STR);
-    $stmt->bindParam(':sweetness', $sweetness, PDO::PARAM_STR);
-    $stmt->bindParam(':addShot', $addShot, PDO::PARAM_STR);
-    $stmt->bindParam(':milkType', $milkType, PDO::PARAM_STR);
-    $stmt->bindParam(':coffeeBean', $coffeeBean, PDO::PARAM_STR);
-    $stmt->bindParam(':favourite', $favourite, PDO::PARAM_INT);
-    $stmt->bindParam(':createdAt', $createdAt);
+        $data = json_decode(file_get_contents('php://input'), true);
 
-    if ($stmt->execute()) {
-        echo "Success";
+        // validate the received data
+        if (!isset($data['UserID']) || !isset($data['ItemID'])) {
+            echo json_encode(['status' => 'error', 'message' => 'Invalid input']);
+            exit;
+        }
+
+        $userID = $data['UserID']; 
+        $itemID = $data['ItemID'];
+        $temperature = isset($data['Temperature']) ? $data['Temperature'] : null;  
+        $sweetness = isset($data['Sweetness']) ? $data['Sweetness'] : null; 
+        $addShot = isset($data['AddShot']) ? $data['AddShot'] : null;  
+        $milkType = isset($data['MilkType']) ? $data['MilkType'] : null;  
+        $coffeeBean = isset($data['CoffeeBean']) ? $data['CoffeeBean'] : null;  
+
+        // Set the favourite flag to 1
+        $favourite = 1;
+
+        // insert into the personal_item table
+        $query = "INSERT INTO personal_item (ItemID, UserID, Temperature, Sweetness, AddShot, MilkType, CoffeeBeanType, Favourite)
+                  VALUES (:itemID, :userID, :temperature, :sweetness, :addShot, :milkType, :coffeeBean, :favourite)";
+
+        $stmt = $db->prepare($query);
+        $stmt->bindParam(':itemID', $itemID);
+        $stmt->bindParam(':userID', $userID);
+        $stmt->bindParam(':temperature', $temperature);
+        $stmt->bindParam(':sweetness', $sweetness);
+        $stmt->bindParam(':addShot', $addShot);
+        $stmt->bindParam(':milkType', $milkType);
+        $stmt->bindParam(':coffeeBean', $coffeeBean);
+        $stmt->bindParam(':favourite', $favourite);
+
+        if ($stmt->execute()) {
+            echo json_encode(['status' => 'success', 'message' => 'Item added to cart']);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Failed to add item']);
+        }
     } else {
-        echo "Failed";
+        echo json_encode(['status' => 'error', 'message' => 'Invalid request method']);
     }
+} catch (Exception $e) {
+    $response['message'] = 'An error occurred: ' . $e->getMessage();
 }
+echo json_encode($response);
+
 ?>
