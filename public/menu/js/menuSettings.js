@@ -157,11 +157,11 @@ function addToFavourite() {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(data) 
     })
     .then(response => response.json())
     .then(data => {
-        if (data.status === 'success') {
+        if (data.success === true) {
             alert('Item added to cart successfully!');
             location.reload();    
         } else {
@@ -173,4 +173,3 @@ function addToFavourite() {
         alert('An error occurred while adding the item to the cart.');
     });
 }
-

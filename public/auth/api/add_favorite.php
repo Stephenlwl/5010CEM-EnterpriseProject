@@ -50,12 +50,15 @@ try {
         $stmt->bindParam(':favourite', $favourite);
 
         if ($stmt->execute()) {
-            echo json_encode(['status' => 'success', 'message' => 'Item added to cart']);
+           $response['success'] = true; 
+           $response['message'] = 'Item added to cart';
         } else {
-            echo json_encode(['status' => 'error', 'message' => 'Failed to add item']);
+            $response['success'] = false;
+            $response['message'] = 'Failed to add item';
         }
     } else {
-        echo json_encode(['status' => 'error', 'message' => 'Invalid request method']);
+        $response['success'] = false;
+        $response['message'] = 'Invalid request method';
     }
 } catch (Exception $e) {
     $response['message'] = 'An error occurred: ' . $e->getMessage();
