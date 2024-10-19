@@ -13,11 +13,6 @@ try {
     $database = new Database_Auth();
     $db = $database->getConnection();
 
-    // Initialize cart if not set
-    if (!isset($_SESSION['cart'])) {
-        $_SESSION['cart'] = [];
-    }
-
     // Handle POST request
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $data = json_decode(file_get_contents('php://input'), true);
@@ -81,11 +76,11 @@ try {
             $itemID = $data['itemID'] ?? null; 
             $quantity = isset($data['quantity']) ? intval($data['quantity']) : 1;
             $userID = $data['userID'] ?? null;
-        
+            $personalItemID = $data['personalItemID'] ?? null;
             if ($itemID && $userID) {
                 try {
                     // check if the item already exists in the cart for the same user
-                    $query = "SELECT * FROM cart WHERE UserID = :UserID AND ItemID = :ItemID AND Status = 'Active'";
+                    $query = "SELECT * FROM cart WHERE UserID = :UserID AND ItemID = :ItemID  AND Status = 'Active'";
                     $stmt = $db->prepare($query);
                     $stmt->bindParam(':UserID', $userID);
                     $stmt->bindParam(':ItemID', $itemID);
@@ -94,35 +89,41 @@ try {
                     if ($stmt->rowCount() > 0) {
                         // if item exists in the cart then only update the quantity
                         $existingCartItem = $stmt->fetch(PDO::FETCH_ASSOC);
-                        $newQuantity = $existingCartItem['Quantity'] + $quantity; // increase the quantity of the item
-        
-                        $updateQuery = "UPDATE cart SET Quantity = :Quantity WHERE CartID = :CartID";
-                        $updateStmt = $db->prepare($updateQuery);
-                        $updateStmt->bindParam(':Quantity', $newQuantity);
-                        $updateStmt->bindParam(':CartID', $existingCartItem['CartID']);
-        
-                        if ($updateStmt->execute()) {
-                            $response['status'] = 'success';
-                            $response['message'] = 'Quantity updated successfully';
+                        $currentPersonalItemID = $existingCartItem['PersonalItemID'];
+
+                        if (is_null($currentPersonalItemID) || $currentPersonalItemID == $personalItemID) {
+                            $newQuantity = $existingCartItem['Quantity'] + $quantity; // increase the quantity of the item
+
+                            $updateQuery = "UPDATE cart SET Quantity = :Quantity WHERE CartID = :CartID";
+                            $updateStmt = $db->prepare($updateQuery);
+                            $updateStmt->bindParam(':Quantity', $newQuantity);
+                            $updateStmt->bindParam(':CartID', $existingCartItem['CartID']);
+            
+                            if ($updateStmt->execute()) {
+                                $response['status'] = 'success';
+                                $response['message'] = 'Quantity updated successfully';
+                            } else {
+                                $response['message'] = 'Database error: Unable to update item quantity';
+                            }
                         } else {
-                            $response['message'] = 'Database error: Unable to update item quantity';
-                        }
-                    } else {
-                        // if item does not exist in the cart then only insert a new record
-                        $query = "INSERT INTO cart (UserID, ItemID, Quantity, AddedDate, Status)
-                                  VALUES (:UserID, :ItemID, :Quantity, NOW(), 'Active')";
-                        $stmt = $db->prepare($query);
-                        $stmt->bindParam(':UserID', $userID);
-                        $stmt->bindParam(':ItemID', $itemID);
-                        $stmt->bindParam(':Quantity', $quantity);
-        
-                        if ($stmt->execute()) {
-                            $response['status'] = 'success';
-                            $response['message'] = 'Item added to cart successfully';
+                                $response['message'] = 'You have already added a customized item to the cart';
+                            }
                         } else {
-                            $response['message'] = 'Database error: Unable to add item to cart';
+                            // if item does not exist in the cart then only insert a new record
+                            $query = "INSERT INTO cart (UserID, ItemID, Quantity, AddedDate, Status)
+                                    VALUES (:UserID, :ItemID, :Quantity, NOW(), 'Active')";
+                            $stmt = $db->prepare($query);
+                            $stmt->bindParam(':UserID', $userID);
+                            $stmt->bindParam(':ItemID', $itemID);
+                            $stmt->bindParam(':Quantity', $quantity);
+            
+                            if ($stmt->execute()) {
+                                $response['status'] = 'success';
+                                $response['message'] = 'Item added to cart successfully';
+                            } else {
+                                $response['message'] = 'Database error: Unable to add item to cart';
+                            }
                         }
-                    }
                 } catch (Exception $e) {
                     $response['message'] = 'An error occurred: ' . $e->getMessage();
                 }

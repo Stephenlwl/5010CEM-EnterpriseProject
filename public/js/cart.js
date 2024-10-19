@@ -2,10 +2,15 @@ function updateQuantity(action, itemID, userId, cartID) {
     // get the current quantity from the input field
     let quantityInput = document.getElementById('quantity_' + itemID);
     let currentQuantity = parseInt(quantityInput.value);
-
+    let currentItemStockQuantity = document.getElementById('item-stock-quantity-' + itemID);
+    
     // adjust quantity based on the action (plus or minus)
     if (action === 'plus') {
         currentQuantity++; 
+        if (currentQuantity > currentItemStockQuantity.value) {
+            alert('No more stock available for this item!');
+            return;
+        }
         if (currentQuantity > 10) {
             alert('You cannot order more than 10 items at once!');
             return;

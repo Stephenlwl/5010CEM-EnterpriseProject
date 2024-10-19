@@ -4,14 +4,6 @@ function showDetails(itemName, itemPrice, itemID) {
     document.getElementById('modalItemName').innerText = itemName;
     document.getElementById('modalItemPrice').innerText = itemPrice.toFixed(2);
     document.getElementById('modalItemID').value = itemID;
-
-    // Show the modal
-    document.getElementById('itemModal').style.display = 'block';
-}
-
-
-function closeModal() {
-    document.getElementById('itemModal').style.display = 'none';
 }
 
 
@@ -34,6 +26,20 @@ function addToCartWithCustomization() {
     const milkType = document.getElementById('MilkType').value;
     const coffeeBean = document.getElementById('CoffeeBean').value;
     const quantity = document.getElementById('Quantity').value;
+    const currentItemStockQuantity = document.getElementById('item-stock-quantity-' + itemID).value;
+    let currentItemQuantityInCart = document.getElementById('item-quantity-in-cart-' + itemID)?.value || 0;
+
+    let totalQuantity = parseInt(quantity) +parseInt(currentItemQuantityInCart);
+
+    if (quantity <= 0) {
+        alert('Please enter a valid quantity!');
+        return;
+    }
+
+    if (totalQuantity > currentItemStockQuantity) {
+        alert('No more stock available for this item!');
+        return;
+    }
 
     // Create data object to send
     const cartData = {
@@ -63,6 +69,7 @@ function addToCartWithCustomization() {
     .then(data => {
         if (data.status === 'success') {
             alert('Item added to cart successfully!');
+            location.reload();    
         } else {
             alert('Failed to add item: ' + data.message);
         }
@@ -72,9 +79,6 @@ function addToCartWithCustomization() {
         alert('An error occurred while adding the item to the cart.');
     });
 }
-
-
-
 
 // Close the modal when clicking outside of it
 window.onclick = function (event) {
@@ -112,6 +116,7 @@ function addToCart(itemID) {
     .then(data => {
         if (data.status === 'success') {
             alert('Item added to cart successfully!');
+            location.reload(); 
         } else {
             alert('Failed to add item: ' + data.message);
         }
