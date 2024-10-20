@@ -1,0 +1,21 @@
+.box-float {
+    margin: 10px 10px 50px 10px;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #f8f9fa;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+.order-table { 
+    margin-top: 20px; 
+}
+
+.total-section { 
+    margin-top: 20px; 
+}
+
+.border-left { 
+    border-left: 1px solid #252525; 
+    padding-left: 50px;
+    margin-left: 10px;
+}

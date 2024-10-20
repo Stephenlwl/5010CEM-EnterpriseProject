@@ -21,26 +21,26 @@ try {
         $data = json_decode(file_get_contents('php://input'), true);
 
         $itemID = $data['itemID'] ?? null;
+        $quantity = isset($data['quantity']) ? intval($data['quantity']) : null;
         $userID = $data['userID'] ?? null;
         $cartID = $data['cartID'] ?? null;
 
-        if ($itemID && $userID  && $cartID) {
+        if ($itemID && $quantity !== null && $userID && $cartID) {
             try {
-                
-                    // delete the item from the cart database table
-                    $query = "DELETE FROM cart WHERE UserID = :UserID AND ItemID = :ItemID AND CartID = :CartID";
+                    // update quantity in the cart db
+                    $query = "UPDATE cart SET Quantity = :Quantity WHERE UserID = :UserID AND ItemID = :ItemID AND CartID = :CartID";
                     $stmt = $db->prepare($query);
+                    $stmt->bindParam(':Quantity', $quantity);
                     $stmt->bindParam(':UserID', $userID);
                     $stmt->bindParam(':ItemID', $itemID);
                     $stmt->bindParam(':CartID', $cartID);
 
                     if ($stmt->execute()) {
                         $response['status'] = 'success';
-                        $response['message'] = 'Item deleted successfully from the cart';
+                        $response['message'] = 'Quantity updated successfully';
                     } else {
-                        $response['message'] = 'Database error: Unable to delete item';
+                        $response['message'] = 'Database error: Unable to update quantity';
                     }
-                
             } catch (Exception $e) {
                 $response['message'] = 'An error occurred: ' . $e->getMessage();
             }

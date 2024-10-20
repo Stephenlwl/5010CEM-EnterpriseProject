@@ -88,10 +88,10 @@ if (isset($_SESSION['user_id'])) {
                                 </li>
                                 <label for="profile">Goodies</label>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="" target="profile-iframe">Goodies</a>
-                                <label for="profile">Favorite List</label>
+                                    <a class="nav-link" href="menu/itemMenu.php" target="profile-iframe">Goodies</a>
+                                    <label for="profile">Favorite & Preference</label>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="" target="profile-iframe">Favorites</a>
+                                    <a class="nav-link profile-settings-nav" href="profile.php?page=favouriteList">Favorite List</a>
                                 </li>
                             </ul>
                         </div>

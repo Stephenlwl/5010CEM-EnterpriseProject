@@ -74,95 +74,99 @@ try {
 
             <!-- Main Content -->
             <div class="col-md-10">
-                <?php if (isset($error)): ?>
-                    <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
-                <?php endif; ?>
+                <div class="main-content">
+                <h1 class="mb-3">Product Setting Dashboard</h1>
+                <hr>
+                    <?php if (isset($error)): ?>
+                        <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
+                    <?php endif; ?>
 
-                <!-- Products Table -->
-                <div class="row mb-4">
-                    <div class="col-12 shadow p-3 rounded">
-                        <h4 class="mb-3">Product Setting Dashboard</h4>
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Products</th>
-                                    <th>Price</th>
-                                    <th>Quantity</th>
-                                    <th>Type</th>
-                                    <th>Image</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php if (!empty($menu)): ?>
-                                    <?php foreach ($menu as $product): ?>
-                                        <tr>
-                                            <td><?= htmlspecialchars($product['ItemID']) ?></td>
-                                            <td><?= htmlspecialchars($product['ItemName']) ?></td>
-                                            <td>RM<?= number_format($product['ItemPrice'], 2) ?></td>
-                                            <td><?= htmlspecialchars($product['ItemQuantity']) ?></td>
-                                            <td><?= htmlspecialchars($product['ItemType']) ?></td>
-                                            <td>
-                                                <img src="<?= htmlspecialchars($product['ImagePath']) ?>" 
-                                                     alt="<?= htmlspecialchars($product['ItemName']) ?>" 
-                                                     class="img-thumbnail" 
-                                                     style="max-width: 100px;">
-                                            </td>
-                                            <td>
-                                                <button class="btn btn-danger btn-sm" 
-                                                        data-bs-toggle="modal" 
-                                                        data-bs-target="#removeProductModal" 
-                                                        onclick="setProductID('<?= $product['ItemID'] ?>')">
-                                                    <i class="bi bi-trash"></i> Delete
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    <?php endforeach; ?>
-                                <?php else: ?>
-                                    <tr><td colspan="7" class="text-center">No products found.</td></tr>
-                                <?php endif; ?>
-                            </tbody>
-                        </table>
-                        <?php renderPagination($currentPage, $totalPages); ?>
+                    <!-- Products Table -->
+                    <div class="row mb-4">
+                        <div class="col-12 shadow p-3 rounded">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Products</th>
+                                        <th>Price</th>
+                                        <!-- <th>Quantity</th> -->
+                                        <th>Type</th>
+                                        <th>Image</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php if (!empty($menu)): ?>
+                                        <?php foreach ($menu as $product): ?>
+                                            <tr>
+                                                <td><?= htmlspecialchars($product['ItemID']) ?></td>
+                                                <td><?= htmlspecialchars($product['ItemName']) ?></td>
+                                                <td>RM<?= number_format($product['ItemPrice'], 2) ?></td>
+                                                <!-- <td><?= htmlspecialchars($product['ItemQuantity']) ?></td> -->
+                                                <td><?= htmlspecialchars($product['ItemType']) ?></td>
+                                                <td>
+                                                    <img src="<?= htmlspecialchars($product['ImagePath']) ?>" 
+                                                        alt="<?= htmlspecialchars($product['ItemName']) ?>" 
+                                                        class="img-thumbnail" 
+                                                        style="max-width: 100px;">
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-danger btn-sm" 
+                                                            data-bs-toggle="modal" 
+                                                            data-bs-target="#removeProductModal" 
+                                                            onclick="setProductID('<?= $product['ItemID'] ?>')">
+                                                        <i class="bi bi-trash"></i> Delete
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    <?php else: ?>
+                                        <tr><td colspan="7" class="text-center">No products found.</td></tr>
+                                    <?php endif; ?>
+                                </tbody>
+                            </table>
+                            <?php renderPagination($currentPage, $totalPages); ?>
+                        </div>
                     </div>
-                </div>
 
-                <!-- Add Product Form -->
-                <div class="row mb-4">
-                    <div class="col-md-6 shadow p-4 rounded">
-                        <h4 class="mb-3">Add New Product</h4>
-                        <form id="addProductForm">
-                            <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
-                            <div class="mb-3">
-                                <label for="ItemName" class="form-label">Product Name</label>
-                                <input type="text" class="form-control" id="ItemName" name="ItemName" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="ItemPrice" class="form-label">Product Price (RM)</label>
-                                <input type="number" class="form-control" id="ItemPrice" name="ItemPrice" step="0.01" min="0" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="ItemQuantity" class="form-label">Product Quantity</label>
-                                <input type="number" class="form-control" id="ItemQuantity" name="ItemQuantity" min="0" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="ItemType" class="form-label">Product Type</label>
-                                <select class="form-control" id="ItemType" name="ItemType" required>
-                                    <option value="">Select Type</option>
-                                    <option value="Food">Food</option>
-                                    <option value="Beverage">Beverage</option>
-                                    <option value="Dessert">Dessert</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label for="ImagePath" class="form-label">Product Image URL</label>
-                                <input type="url" class="form-control" id="ImagePath" name="ImagePath" required>
-                            </div>
-                            <button type="submit" class="btn btn-primary">
-                                <i class="bi bi-plus-circle"></i> Add Product
-                            </button>
-                        </form>
+
+                    <!-- Add Product Form -->
+                    <div class="row mb-4">
+                        <div class="col-md-6 shadow p-4 rounded">
+                            <h4 class="mb-3">Add New Product</h4>
+                            <form id="addProductForm">
+                                <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
+                                <div class="mb-3">
+                                    <label for="ItemName" class="form-label">Product Name</label>
+                                    <input type="text" class="form-control" id="ItemName" name="ItemName" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="ItemPrice" class="form-label">Product Price (RM)</label>
+                                    <input type="number" class="form-control" id="ItemPrice" name="ItemPrice" step="0.01" min="1" max="299" required>
+                                </div>
+                                <!-- <div class="mb-3">
+                                    <label for="ItemQuantity" class="form-label">Product Quantity</label>
+                                    <input type="number" class="form-control" id="ItemQuantity" name="ItemQuantity" min="1" max="100" required>
+                                </div> -->
+                                <div class="mb-3">
+                                    <label for="ItemType" class="form-label">Product Type</label>
+                                    <select class="form-control" id="ItemType" name="ItemType" required>
+                                        <option value="">Select Type</option>
+                                        <option value="food">Food</option>
+                                        <option value="coffee">Coffee</option>
+                                        <option value="item">Item</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="ImagePath" class="form-label">Product Image URL</label>
+                                    <input type="url" class="form-control" id="ImagePath" name="ImagePath" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="bi bi-plus-circle"></i> Add Product
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>

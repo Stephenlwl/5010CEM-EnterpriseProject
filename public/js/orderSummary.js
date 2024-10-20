@@ -289,9 +289,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                 }
                                 return JSON.parse(promoText);
                             }).then(promoData => {
-                                if (promoData.success) {
-                                    // Handle promo code success logic if necessary
-                                    alert('Promo code applied successfully!');
+                                if (promoData.success) {                      
                                 } else {
                                     alert('Error applying promo code: ' + promoData.message);
                                 }
@@ -348,8 +346,31 @@ document.addEventListener('DOMContentLoaded', function () {
                 return JSON.parse(cartText);
             }).then(data => {
                 if (data.success) {
-                    // navigate to order tracking for user easier to track their order
-                    window.location.href = 'profile.php?page=orderTracking';
+                    const itemIDs = cartItems.map(item => ({
+                        ItemID: item.ItemID,
+                        orderedQuantity: item.Quantity,
+                        currentStock: item.ItemQuantity
+                    }));
+                                     
+                    return fetch('auth/api/deduct_stock.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ items: itemIDs })// Send the cart items to deduct stock
+                    }).then(deductResponse => deductResponse.text().then(deductText => {
+                        if (!deductResponse.ok) {
+                            throw new Error(`HTTP error! status: ${deductResponse.status} - ${deductText}`);
+                        }
+                        return JSON.parse(deductText);
+                    })).then(deductData => {
+                        if (deductData.status === 'success') {
+                            // navigate to order tracking for user easier to track their order
+                            window.location.href = 'profile.php?page=orderTracking';
+                        } else {
+                            alert('Error deducting stock: ' + deductData.message);
+                        }
+                    });
                 } else {
                     alert('Error removing cart items: ' + data.message);
                 }

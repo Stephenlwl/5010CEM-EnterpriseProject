@@ -42,7 +42,7 @@ $promoCodes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Fetch cart items for the logged-in user
 $query = "SELECT c.CartID, c.ItemID, c.Quantity, c.PersonalItemID, m.ItemName, m.ItemPrice,
-                 pi.Temperature, pi.MilkType, pi.CoffeeBeanType, pi.Sweetness, pi.AddShot
+                 pi.Temperature, pi.MilkType, pi.CoffeeBeanType, pi.Sweetness, pi.AddShot, m.ItemQuantity
           FROM cart AS c
           JOIN menu AS m ON c.ItemID = m.ItemID
           LEFT JOIN personal_item pi ON c.PersonalItemID = pi.PersonalItemID
