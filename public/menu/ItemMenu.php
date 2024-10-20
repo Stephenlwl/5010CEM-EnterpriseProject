@@ -17,12 +17,11 @@ $query = "SELECT
           FROM menu
           WHERE ItemType = 'coffeebean'
           ORDER BY ItemType";  
-          
+
 $stmt = $db->prepare($query);
 $stmt->execute();
 $menuItems = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Since we are now only fetching coffeebean items, no need to group by type
 $coffeeBeanItems = $menuItems;
 
 ?>
