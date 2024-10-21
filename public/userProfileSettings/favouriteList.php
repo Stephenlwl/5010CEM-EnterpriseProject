@@ -85,7 +85,7 @@ try {
         <?php foreach ($favoriteItems as $item): ?>
             <div class="favorite-item" data-personalitemid="<?php echo htmlspecialchars($item['PersonalItemID']); ?>">
                 <h2><?php echo htmlspecialchars($item['ItemName'] ?? 'Unknown Item'); ?></h2>
-                <p><strong>Price:</strong> $<?php echo number_format($item['ItemPrice'] ?? 0, 2); ?></p>
+                <p><strong>Price:</strong> RM<?php echo number_format($item['ItemPrice'] ?? 0, 2); ?></p>
                 <p><strong>Type:</strong> <?php echo htmlspecialchars($item['ItemType'] ?? 'N/A'); ?></p>
                 <p><strong>Temperature:</strong> <?php echo htmlspecialchars($item['Temperature'] ?? 'N/A'); ?></p>
                 <p><strong>Sweetness:</strong> <?php echo htmlspecialchars($item['Sweetness'] ?? 'N/A'); ?></p>
