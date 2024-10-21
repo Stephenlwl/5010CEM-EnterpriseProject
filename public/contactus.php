@@ -11,29 +11,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Lora:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/publicDefault.css">
     <link rel="stylesheet" href="css/contactus.css">
+    <script src="js/contactus.js"></script>
 </head>
 <body>
     <?php
         $IPATH = $_SERVER["DOCUMENT_ROOT"] . "/RimberioCafeWebsite/5010CEM-EnterpriseProject/public/inc/";
         include($IPATH . "nav.php");
-
-        // Form processing
-        $success_message = '';
-        $error_message = '';
-        
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            $firstName = filter_input(INPUT_POST, 'first-name', FILTER_SANITIZE_STRING);
-            $lastName = filter_input(INPUT_POST, 'last-name', FILTER_SANITIZE_STRING);
-            $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
-            $message = filter_input(INPUT_POST, 'message', FILTER_SANITIZE_STRING);
-            
-            if (!empty($firstName) && !empty($lastName) && !empty($email) && !empty($message)) {
-                // Here you would typically send an email or save to database
-                $success_message = "Thank you for your message! We'll get back to you soon.";
-            } else {
-                $error_message = "Please fill in all required fields.";
-            }
-        }
     ?>
 
     <!-- Contact Section -->
@@ -74,14 +57,8 @@
 
             <div class="contact-form">
                 <h3>Send us a message</h3>
-                <?php if ($success_message): ?>
-                    <div class="alert alert-success"><?php echo $success_message; ?></div>
-                <?php endif; ?>
-                <?php if ($error_message): ?>
-                    <div class="alert alert-danger"><?php echo $error_message; ?></div>
-                <?php endif; ?>
-                
-                <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" id="contactForm">
+                <p style="color: #252525";>Have any questions or feedback? Feel free to send us a message.</p>                
+                <form id="contactForm">
                     <div class="form-group">
                         <label for="first-name">First Name <span class="required">*</span></label>
                         <input type="text" id="first-name" name="first-name" required 
