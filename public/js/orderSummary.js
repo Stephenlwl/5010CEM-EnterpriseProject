@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const paymentOptions = document.getElementsByName('paymentOption');
     const paypalContainer = document.getElementById('paypal-button-container');
     const userId = document.getElementById('userId').value;
-    let paymentOption = document.querySelector('input[name="paymentOption"]:checked').value;  
+    // let paymentOption = document.querySelector('input[name="paymentOption"]:checked').value;  
     const addressOptions = document.getElementById('addressOptions');
     const addressSection = document.getElementById('addressSection');
     const storeAddressOptions = document.getElementById('storeAddressOptions');
@@ -17,17 +17,34 @@ document.addEventListener('DOMContentLoaded', function () {
     const promoButtons = document.querySelectorAll('.promo-button'); 
 
     promoButtons.forEach(button => {
-        button.addEventListener('change', function() {
+        button.addEventListener('click', function() {
+            const isSelected = this.getAttribute('data-selected') === 'true'; // check if selected
             const promoCode = this.getAttribute('value');
             const discountValue = parseFloat(this.getAttribute('data-discount'));
             const discountType = this.getAttribute('data-discounttype');
-
-            // update the displayed total based on the selected promo code
-            applyPromoCode(promoCode, discountValue, discountType);
+    
+            if (isSelected) {
+                // if button is selected then set it unselect
+                this.setAttribute('data-selected', 'false');
+                removePromoCode(); 
+                this.checked = false;
+            } else {
+                applyPromoCode(promoCode, discountValue, discountType, this);
+                
+            }
         });
     });
 
-    function applyPromoCode(promoCode, discountValue, discountType) {
+    function removePromoCode() {
+        const discountSection = document.getElementById('discount-section');
+        // reset the total to the ori total
+        document.getElementById('final-total').innerText = `RM ${totalAmount.toFixed(2)}`;
+        // hide the discount section
+        discountSection.style.display = 'none';
+    }
+
+
+    function applyPromoCode(promoCode, discountValue, discountType, button) {
         let discountedTotal = totalAmount; // set default discounted total to current total
         
         // calculate the discounted total based on promo type
@@ -36,6 +53,23 @@ document.addEventListener('DOMContentLoaded', function () {
             discountedTotal = totalAmount - discountValue;
         } else if (discountType === 'fixed') {
             discountedTotal = totalAmount - discountValue;
+        }
+
+        if (discountedTotal < 1) {
+            alert ("This discount is not applicable for this order. Please check the terms and conditions. Due to your order total should at least RM1.00");
+            if (button.checked) {
+                button.setAttribute('data-selected', 'true');
+                button.checked = true;
+            } else{
+                button.setAttribute('data-selected', 'false');
+                button.checked = false;
+            }
+            
+            return;
+        } else {
+            // button is not selected then only apply the promo code
+            button.setAttribute('data-selected', 'true');
+            button.checked = true; 
         }
 
         // update the final total displayed

@@ -248,12 +248,12 @@ $total = $subTotal + $sst;
                         <!-- Payment Option Section -->
                         <h5>Payment Option</h5>
                         <div class="payment-option">
-                            <div class="form-check card p-2 mb-2 shadow-sm">
+                            <!-- <div class="form-check card p-2 mb-2 shadow-sm">
                                 <input class="form-check-input" type="radio" name="paymentOption" id="paymentCard" value="Card" checked>
                                 <label class="form-check-label" for="paymentCard">
                                     <i class="bi bi-credit-card me-2"></i>Credit/Debit Card
                                 </label>
-                            </div>
+                            </div> -->
                             <div class="form-check card p-2 mb-2 shadow-sm">
                                 <input class="form-check-input" type="radio" name="paymentOption" id="paymentPaypal" value="Paypal">
                                 <label class="form-check-label" for="paymentPaypal">
@@ -262,12 +262,12 @@ $total = $subTotal + $sst;
                                 <!-- PayPal Button Container -->
                                 <div id="paypal-button-container" class="mt-2" style="display:none;"></div>
                             </div>
-                            <div class="form-check card p-2 mb-2 shadow-sm">
+                            <!-- <div class="form-check card p-2 mb-2 shadow-sm">
                                 <input class="form-check-input" type="radio" name="paymentOption" id="paymentTNG" value="E-Wallet">
                                 <label class="form-check-label" for="paymentTNG">
                                     <i class="bi bi-wallet me-2"></i>Touch 'n Go eWallet
                                 </label>
-                            </div>
+                            </div> -->
                         </div>
                     <?php endif; ?>
                 </div>
