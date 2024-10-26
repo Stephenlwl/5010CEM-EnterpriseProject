@@ -31,14 +31,6 @@
             <div class="login-form w-100" style="max-width: 400px;">
                 <p class="text-right">Don't have an account? <a href="signup.php">Sign up</a></p>
                 <h2 class="text-center mb-4">Login</h2>
-                
-                <button class="google-btn">
-                    <img src="https://cdn1.iconfinder.com/data/icons/google-s-logo/150/Google_Icons-09-512.png" alt="Google Logo" width="20px" height="20px">
-                        Continue with Google
-                </button>
-
-                <p class="separator text-center"><span>OR</span></p>
-
                 <form id="login-form" onsubmit="userLogin(event)">
                         <div class="mb-3">
                             <label for="email" class="form-label">Email:</label>

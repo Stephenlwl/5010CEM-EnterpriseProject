@@ -34,12 +34,6 @@ include($IPATH."nav.php");
             <div class="login-form mt-5">
                 <p class="text-right">Already have an account? <a href="login.php">Login</a></p>
                 <h2 class="text-center mb-4">Signup</h2>
-                <a href="google_login.php" class="btn google-btn">
-                    <img src="https://cdn1.iconfinder.com/data/icons/google-s-logo/150/Google_Icons-09-512.png" alt="Google Logo" width="20px" height="20px">
-                    Continue with Google
-                </a>
-                <p class="separator text-center"><span>OR</span></p>
-
                 <form id="signup_form">
                     <div class="mb-3">
                         <label for="username" class="form-label">Username:</label>
