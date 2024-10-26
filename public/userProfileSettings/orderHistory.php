@@ -133,7 +133,7 @@ $order_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             "><?= htmlspecialchars($order['OrderStatus']) ?></span>
                             </div>
                             <label class="form-label">Receipt</label>
-                            <button type="button" class="btn btn-primary btn-sm me-2" onclick="window.open('print_receipt.php?receipt_id=<?= $order['ReceiptID'] ?>', '_blank')">Print</button>                            
+                            <button type="button" class="btn btn-primary btn-sm me-2" onclick="window.open('print_receipt.php?receipt_id=<?= $order['ReceiptID'] ?>', '_blank')"><i class="bi-printer-fill"> Print</i></button>                            
                         </div>
                     </div>
                     <hr>

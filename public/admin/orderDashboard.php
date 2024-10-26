@@ -163,7 +163,7 @@ $order_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                 border-radius: 5px;
                                             "><?= htmlspecialchars($firstItem['OrderStatus']) ?></span>
                                             <button class="btn btn-primary btn-sm mt-3 shadow-sm" onclick="window.open('../userProfileSettings/print_receipt.php?receipt_id=<?= htmlspecialchars($firstItem['ReceiptID']) ?>', '_blank')">
-                                                Print Receipt
+                                                <i class="bi-printer-fill"> Print Receipt</i>
                                             </button>
                                             <label class="text-muted">
                                                 <?= htmlspecialchars($firstItem['ReceiveMethod']) ?>

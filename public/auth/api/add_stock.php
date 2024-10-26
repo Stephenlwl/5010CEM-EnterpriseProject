@@ -51,7 +51,7 @@ try {
             if ($itemID && $newQuantity !== null && $stockThreshold) {
                 try {
                     // update quantity in the menu db
-                    $query = "UPDATE menu SET ItemQuantity = :newQuantity, StockThreshold = :stockThreshold, AutoRestockQuantity = :autoRestockQuantity  WHERE ItemID = :ItemID";
+                    $query = "UPDATE menu SET ItemQuantity = :newQuantity, StockThreshold = :stockThreshold, AutoRestockQuantity = :autoRestockQuantity,  RestockDate = NOW() WHERE ItemID = :ItemID";
                     $stmt = $db->prepare($query);
                     $stmt->bindParam(':newQuantity', $newQuantity);
                     $stmt->bindParam(':ItemID', $itemID);

@@ -118,16 +118,6 @@
     </div>
 </section>
 
-
-
-
-    <!-- Temporary Extra Section for Testing Scroll -->
-    <section class="extra-section">
-        <div class="container">
-            <h1>SPARE PAGE</h1>
-        </div>
-    </section>
-
     <script>
     let currentIndex = 0;
     const slides = document.querySelectorAll('.slide');

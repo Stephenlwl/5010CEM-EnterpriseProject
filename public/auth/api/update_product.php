@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $updatedImagePath = $newImagePath ?: $existingProduct['ImagePath'];
 
                 // Update the product with the new or existing values
-                $query = "UPDATE menu SET ItemName = :ItemName, ItemPrice = :ItemPrice, ImagePath = :ImagePath WHERE ItemID = :ItemID";
+                $query = "UPDATE menu SET ItemName = :ItemName, ItemPrice = :ItemPrice, ImagePath = :ImagePath, UpdatedAt = :NOW() WHERE ItemID = :ItemID";
                 $stmt = $db->prepare($query);
                 $stmt->bindParam(':ItemName', $updatedProductName);
                 $stmt->bindParam(':ItemPrice', $updatedProductPrice);

@@ -69,7 +69,7 @@ $adminData = $stmt->fetch(PDO::FETCH_ASSOC);
                 </li>
                 <hr>
                 <li class="nav-item">
-                    <a href="reports.php" class="nav-link text-white text-start">
+                    <a href="generateReport.php" class="nav-link text-white text-start">
                         <i class="bi bi-file-earmark-text"></i> Reports
                     </a>
                 </li>

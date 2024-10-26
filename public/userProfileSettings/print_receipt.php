@@ -53,6 +53,7 @@ $sst = $subTotal * 0.08;
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Receipt</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../css/print_receipt.css">
 </head>
 <body>
@@ -111,7 +112,7 @@ $sst = $subTotal * 0.08;
         <h4 class="mt-4 text-end">Total: RM <?= number_format($receipt_data[0]['TotalPrice'], 2) ?></h4>
 
         <div class="footer">
-            <button onclick="window.print();" class="btn btn-primary mt-3">Print Receipt</button>
+            <button onclick="window.print();" class="btn btn-primary mt-3"><i class="bi-printer-fill"> Print Receipt</i></button>
         </div>
     </div>
 </body>

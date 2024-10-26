@@ -51,7 +51,7 @@ function autoRestock($itemID, $restockAmount) {
     $newQuantity = $currentStock + $restockAmount;
     
     // update the stock quantity in db
-    $updateQuery = "UPDATE menu SET ItemQuantity = :newQuantity WHERE ItemID = :itemID";
+    $updateQuery = "UPDATE menu SET ItemQuantity = :newQuantity, RestockDate = NOW() WHERE ItemID = :itemID";
     $updateStmt = $db->prepare($updateQuery);
     $updateStmt->bindParam(':newQuantity', $newQuantity);
     $updateStmt->bindParam(':itemID', $itemID);
