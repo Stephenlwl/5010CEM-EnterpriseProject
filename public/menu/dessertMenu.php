@@ -58,6 +58,8 @@ $foodItems = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <!-- Food Section -->
     <div class="section-title">Taste of Rimberio</div>
     <div class="menu-container">
+    <input type="hidden" id="userId" value="<?php echo htmlspecialchars($UserID); ?>">
+
         <?php
         if ($foodItems) {
             foreach ($foodItems as $item) {
@@ -76,7 +78,7 @@ $foodItems = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 
                 if ($item["ItemQuantity"] > 0 && ($item["Quantity"] < $item["ItemQuantity"])) {
                     // Add to Cart button
-                    echo "<button type='button' class='btn btn-primary me-2 rounded' onclick='addToCart(" . $item["ItemID"] . ", " . htmlspecialchars($item["ItemQuantity"]) . ", " . htmlspecialchars($item["Quantity"]) .")'>Add to Cart</button>";
+                    echo "<button type='button' class='btn btn-primary me-2 rounded' onclick='addFoodToCart(" . $item["ItemID"] . ", " . htmlspecialchars($item["ItemQuantity"]) . ", " . htmlspecialchars($item["Quantity"]) .")'>Add to Cart</button>";
                 } else {
                     // Out of Stock message
                     echo "<button type='button' class='btn btn-secondary rounded' disabled>Out of Stock</button>";

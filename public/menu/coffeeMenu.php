@@ -89,7 +89,7 @@ foreach ($menuItems as $item) {
                 
                 if ($item["ItemQuantity"] > 0 && ($item["Quantity"] < $item["ItemQuantity"])) {
                     // Add to Cart button
-                    echo "<button type='button' class='btn btn-primary me-2 rounded' onclick='addToCart(" . $item["ItemID"] . ", " . htmlspecialchars($item["ItemQuantity"]) . ", " . htmlspecialchars($item["Quantity"]) .")'>Add to Cart</button>";
+                    echo "<button type='button' class='btn btn-primary me-2 rounded' onclick='addCoffeeToCart(" . $item["ItemID"] . ", " . htmlspecialchars($item["ItemQuantity"]) . ", " . htmlspecialchars($item["Quantity"]) .")'>Add to Cart</button>";
                     // Customize button
                     echo "<button type='button' class='btn btn-secondary rounded' data-bs-toggle='modal' data-bs-target='#itemModal' onclick='showDetails(\"" . htmlspecialchars($item["ItemName"]) . "\", " . $item["ItemPrice"] . ", " . $item["ItemID"] . ")'>Customize</button>";
                 } else {

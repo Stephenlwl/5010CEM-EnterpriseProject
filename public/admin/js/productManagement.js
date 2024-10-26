@@ -1,8 +1,8 @@
-let productIDToRemove = '';
+let productNameToRemove = '';
 
-function setProductID(productID) {
-    productIDToRemove = productID;
-    document.getElementById('productIDToRemove').innerText = productID;
+function setProductName(productName) {
+    productNameToRemove = productName;
+    document.getElementById('productNameToRemove').innerText = productName;
 }
 
 function showAlert(message, type = 'success') {
@@ -54,6 +54,51 @@ function removeProduct() {
     });
 }
 
+function editProduct(itemID, productName, productPrice, productImagePath) {
+    document.getElementById('itemID').value = itemID;
+    document.getElementById('currentProductName').value = productName;
+    document.getElementById('productName').textContent = productName;
+    document.getElementById('currentPrice').value = productPrice;
+    document.getElementById('currentImagePath').value = productImagePath;
+}
+
+function updateProduct(event) {
+    event.preventDefault(); 
+
+    const itemID = document.getElementById('itemID').value;
+    const newProductName = document.getElementById('newProductName').value;
+    const newProductPrice = document.getElementById('newProductPrice').value;
+    const newImagePath = document.getElementById('currentImagePath').value;
+
+    // prepare data object with only modified fields
+    const data = { itemID: itemID };
+    if (newProductName) data.newProductName = newProductName;
+    if (newProductPrice) data.newProductPrice = newProductPrice;
+    if (newImagePath) data.newImagePath = newImagePath;
+
+    // Send the update request
+    fetch('../auth/api/update_product.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+    })
+    .then(response => {
+        if (!response.ok) throw new Error('Network response was not ok');
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            alert(data.message);
+            window.location.reload();
+        } else {
+            alert(data.message);
+        }
+    })
+    .catch(error => {
+        alert('An unexpected error occurred: ' + error.message);
+    });
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('addProductForm');
     
@@ -65,7 +110,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const productData = {
             ItemName: formData.get('ItemName').trim(),
             ItemPrice: parseFloat(formData.get('ItemPrice')),
-            // ItemQuantity: parseInt(formData.get('ItemQuantity')),
             ItemType: formData.get('ItemType').trim(),
             ImagePath: formData.get('ImagePath').trim(),
             csrf_token: formData.get('csrf_token')

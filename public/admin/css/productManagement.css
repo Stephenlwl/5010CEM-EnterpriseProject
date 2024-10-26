@@ -94,8 +94,13 @@ button[type="submit"]:hover {
 }
 
 /* Modal Styling */
-.modal-header {
+.modal-header-remove {
     background-color: #dc3545;
+    color: #ffffff;
+}
+
+.modal-header-edit {
+    background-color: #218838;
     color: #ffffff;
 }
 

@@ -90,7 +90,6 @@ try {
                                         <th>ID</th>
                                         <th>Products</th>
                                         <th>Price</th>
-                                        <!-- <th>Quantity</th> -->
                                         <th>Type</th>
                                         <th>Image</th>
                                         <th>Actions</th>
@@ -103,7 +102,6 @@ try {
                                                 <td><?= htmlspecialchars($product['ItemID']) ?></td>
                                                 <td><?= htmlspecialchars($product['ItemName']) ?></td>
                                                 <td>RM<?= number_format($product['ItemPrice'], 2) ?></td>
-                                                <!-- <td><?= htmlspecialchars($product['ItemQuantity']) ?></td> -->
                                                 <td><?= htmlspecialchars($product['ItemType']) ?></td>
                                                 <td>
                                                     <img src="<?= htmlspecialchars($product['ImagePath']) ?>" 
@@ -112,10 +110,16 @@ try {
                                                         style="max-width: 100px;">
                                                 </td>
                                                 <td>
+                                                    <button class="btn btn-success btn-sm" 
+                                                            data-bs-toggle="modal" 
+                                                            data-bs-target="#editProductModal" 
+                                                            onclick="editProduct('<?= $product['ItemID'] ?>', '<?= $product['ItemName'] ?>', '<?= $product['ItemPrice'] ?>', '<?= $product['ImagePath'] ?>')">
+                                                        <i class="bi bi-pen"></i> Edit
+                                                    </button>
                                                     <button class="btn btn-danger btn-sm" 
                                                             data-bs-toggle="modal" 
                                                             data-bs-target="#removeProductModal" 
-                                                            onclick="setProductID('<?= $product['ItemID'] ?>')">
+                                                            onclick="setProductName('<?= $product['ItemName'] ?>')">
                                                         <i class="bi bi-trash"></i> Delete
                                                     </button>
                                                 </td>
@@ -145,10 +149,6 @@ try {
                                     <label for="ItemPrice" class="form-label">Product Price (RM)</label>
                                     <input type="number" class="form-control" id="ItemPrice" name="ItemPrice" step="0.01" min="1" max="299" required>
                                 </div>
-                                <!-- <div class="mb-3">
-                                    <label for="ItemQuantity" class="form-label">Product Quantity</label>
-                                    <input type="number" class="form-control" id="ItemQuantity" name="ItemQuantity" min="1" max="100" required>
-                                </div> -->
                                 <div class="mb-3">
                                     <label for="ItemType" class="form-label">Product Type</label>
                                     <select class="form-control" id="ItemType" name="ItemType" required>
@@ -168,6 +168,48 @@ try {
                             </form>
                         </div>
                     </div>
+
+                     <!-- Edit Product Modal -->
+                    <div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header-edit">
+                                    <button type="button" class="btn-close m-1" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    <h5 class="modal-title m-2" id="editProductModalLabel">Edit 
+                                        <span id="productName" name="productName"></span>
+                                    </h5>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="editProductForm" onsubmit="updateProduct(event)">
+                                        <input type="hidden" id="itemID" name="itemID">
+                                        <div class="mb-3">
+                                            <label for="currentProductName" class="form-label">Current Product Name</label>
+                                            <input type="text" class="form-control" id="currentProductName" name="currentProductName" readonly>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="newProductName" class="form-label">Change Product Name</label>
+                                            <input type="text" class="form-control" id="newProductName" name="newProductName">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="currentPrice" class="form-label">Current Price (RM)</label>
+                                            <input type="number" class="form-control" id="currentPrice" name="currentPrice" readonly>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="newProductPrice" class="form-label">New Product Price (RM)</label>
+                                            <input type="number" class="form-control" id="newProductPrice" name="newProductPrice">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="currentImagePath" class="form-label">Product Image URL</label>
+                                            <input type="url" class="form-control" id="currentImagePath" name="currentImagePath">
+                                        </div>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                        <button type="submit" class="btn btn-primary">Update</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
                 </div>
             </div>
         </div>
@@ -177,12 +219,12 @@ try {
     <div class="modal fade" id="removeProductModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Remove Product</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-header-remove">
+                    <button type="button" class="btn-close m-1" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title m-2">Remove Product</h5>
                 </div>
                 <div class="modal-body">
-                    Are you sure you want to remove product #<span id="productIDToRemove"></span>?
+                    Are you sure you want to remove product *<span class="text-danger" id="productNameToRemove"></span>?
                     This action cannot be undone.
                 </div>
                 <div class="modal-footer">
