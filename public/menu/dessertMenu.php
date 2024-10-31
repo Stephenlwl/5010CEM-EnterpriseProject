@@ -66,11 +66,11 @@ $foodItems = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 echo "<div class='menu-item'>";
                 echo "<input type='hidden' id='item-stock-quantity-" . $item['ItemID'] . "' value='" . htmlspecialchars($item['ItemQuantity']) . "'>";
                 echo "<input type='hidden' id='item-quantity-in-cart-" . $item['ItemID'] . "' value='" . htmlspecialchars($item['Quantity']) . "'>";
-                
-                echo "<img src='" . htmlspecialchars($item['ImagePath'] ?? '../img/food-placeholder.jpg') . "' 
-                        alt='" . htmlspecialchars($item['ItemName']) . "' 
-                        class='img-thumbnail' 
-                        style='max-width: 200px; max-height: 200px;'>";
+                echo "<img src='../auth/api/get_image_from_menu.php?ItemID=" . htmlspecialchars($item['ItemID']) . "'  
+                    onerror=\"this.onerror=null; this.src='../img/coffee-placeholder.jpg';\"
+                    alt='" . htmlspecialchars($item['ItemName']) . "'
+                    class='img-thumbnail' 
+                    style='max-width: 200px;'>";
                 
                 echo "<h2>" . htmlspecialchars($item["ItemName"]) . "</h2>";
                 echo "<p class='price'>RM" . number_format($item["ItemPrice"], 2) . "</p>";
@@ -91,42 +91,6 @@ $foodItems = $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
         ?>
     </div>
-
-    <script>
-    function addToCart(itemId, stockQuantity, cartQuantity) {
-        // Check if the item is in stock
-        if (stockQuantity > 0 && cartQuantity < stockQuantity) {
-            // AJAX call to add item to cart
-            fetch('../actions/add_to_cart.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: 'item_id=' + itemId
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert('Item added to cart successfully!');
-                    // Update the quantity in cart
-                    document.getElementById('item-quantity-in-cart-' + itemId).value = parseInt(cartQuantity) + 1;
-                    // Disable button if stock is depleted
-                    if (parseInt(cartQuantity) + 1 >= stockQuantity) {
-                        document.querySelector('button[onclick="addToCart(' + itemId + ', ' + stockQuantity + ', ' + cartQuantity + ')"]').disabled = true;
-                    }
-                } else {
-                    alert('Failed to add item to cart. Please try again.');
-                }
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-                alert('An error occurred. Please try again.');
-            });
-        } else {
-            alert('This item is out of stock.');
-        }
-    }
-    </script>
 </body>
 
 </html>

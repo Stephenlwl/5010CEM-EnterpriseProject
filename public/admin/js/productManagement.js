@@ -1,7 +1,9 @@
 let productNameToRemove = '';
+let productIDToRemove = 0;
 
-function setProductName(productName) {
+function setProductName(productName, productID) {
     productNameToRemove = productName;
+    productIDToRemove = productID;
     document.getElementById('productNameToRemove').innerText = productName;
 }
 
@@ -26,11 +28,9 @@ function removeProduct() {
         method: 'POST',
         headers: { 
             'Content-Type': 'application/json',
-            'X-CSRF-Token': document.querySelector('input[name="csrf_token"]').value
         },
         body: JSON.stringify({ 
-            productID: productIDToRemove,
-            csrf_token: document.querySelector('input[name="csrf_token"]').value
+            productID: productIDToRemove
         })
     })
     .then(response => {
@@ -54,12 +54,12 @@ function removeProduct() {
     });
 }
 
-function editProduct(itemID, productName, productPrice, productImagePath) {
+function editProduct(itemID, productName, productPrice, currentImagePath) {
     document.getElementById('itemID').value = itemID;
     document.getElementById('currentProductName').value = productName;
     document.getElementById('productName').textContent = productName;
     document.getElementById('currentPrice').value = productPrice;
-    document.getElementById('currentImagePath').value = productImagePath;
+    document.getElementById('currentImagePath').value = currentImagePath;
 }
 
 function updateProduct(event) {
@@ -68,19 +68,19 @@ function updateProduct(event) {
     const itemID = document.getElementById('itemID').value;
     const newProductName = document.getElementById('newProductName').value;
     const newProductPrice = document.getElementById('newProductPrice').value;
-    const newImagePath = document.getElementById('currentImagePath').value;
+    const newImagePath = document.getElementById('currentImagePath').files[0];
 
     // prepare data object with only modified fields
-    const data = { itemID: itemID };
-    if (newProductName) data.newProductName = newProductName;
-    if (newProductPrice) data.newProductPrice = newProductPrice;
-    if (newImagePath) data.newImagePath = newImagePath;
+    const formData = new FormData();
+    formData.append('itemID', itemID);
+    if (newProductName) formData.append('newProductName', newProductName);
+    if (newProductPrice) formData.append('newProductPrice', newProductPrice);
+    if (newImagePath) formData.append('newImagePath', newImagePath);
 
     // Send the update request
     fetch('../auth/api/update_product.php', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
+        body: formData
     })
     .then(response => {
         if (!response.ok) throw new Error('Network response was not ok');
@@ -101,43 +101,35 @@ function updateProduct(event) {
 
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('addProductForm');
-    
+
     form.addEventListener('submit', function(event) {
         event.preventDefault();
 
-        // Basic form validation
-        const formData = new FormData(form);
-        const productData = {
-            ItemName: formData.get('ItemName').trim(),
-            ItemPrice: parseFloat(formData.get('ItemPrice')),
-            ItemType: formData.get('ItemType').trim(),
-            ImagePath: formData.get('ImagePath').trim(),
-            csrf_token: formData.get('csrf_token')
-        };
+        // Create a FormData object
+        const formData = new FormData();
 
-        // Validate data
-        if (!productData.ItemName || !productData.ItemType || !productData.ImagePath) {
+        // Append fields one by one
+        formData.append('ItemName', form['ItemName'].value.trim());
+        formData.append('ItemPrice', form['ItemPrice'].value);
+        formData.append('ItemType', form['ItemType'].value.trim());
+        formData.append('ImagePath', form['ImagePath'].files[0]); // Append the file directly
+        // formData.append('csrf_token', form['csrf_token'].value);
+
+        // Basic form validation
+        if (!formData.get('ItemName') || !formData.get('ItemType') || !formData.get('ImagePath')) {
             showAlert('Please fill in all required fields.', 'warning');
             return;
         }
 
-        if (productData.ItemPrice < 0) {
+        if (parseFloat(formData.get('ItemPrice')) < 0) {
             showAlert('Price cannot be negative.', 'warning');
             return;
         }
 
-        if (productData.ItemQuantity < 0) {
-            showAlert('Quantity cannot be negative.', 'warning');
-            return;
-        }
-
+        // Use fetch to submit the form data including the file
         fetch('../auth/api/add_product.php', {
             method: 'POST',
-            headers: { 
-                'Content-Type': 'application/json',
-                'X-CSRF-Token': productData.csrf_token
-            },
-            body: JSON.stringify(productData)
+            body: formData // Send FormData directly
         })
         .then(response => {
             if (!response.ok) {

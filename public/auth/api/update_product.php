@@ -16,13 +16,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $database = new Database_Auth();
         $db = $database->getConnection();
 
-        // Get the POST data from JSON input
-        $data = json_decode(file_get_contents("php://input"), true);
-        
-        $itemID = $data['itemID'];
-        $newProductName = $data['newProductName']?? null;
-        $newProductPrice = $data['newProductPrice']?? null;
-        $newImagePath = $data['newImagePath']?? null;
+        $itemID = $_POST['itemID'];
+        $newProductName = $_POST['newProductName'] ?? null;
+        $newProductPrice = $_POST['newProductPrice'] ?? null;
+       
+        // handle the file upload as binary data
+        $newImagePath = null;
+        if (isset($_FILES['newImagePath']) && $_FILES['newImagePath']['error'] === UPLOAD_ERR_OK) {
+            $file = $_FILES['newImagePath'];
+            $newImagePath = file_get_contents($file['tmp_name']); // Read the file as binary data
+        }
 
         // Check if itemID is provided
         if ($itemID) {
@@ -40,11 +43,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $updatedImagePath = $newImagePath ?: $existingProduct['ImagePath'];
 
                 // Update the product with the new or existing values
-                $query = "UPDATE menu SET ItemName = :ItemName, ItemPrice = :ItemPrice, ImagePath = :ImagePath, UpdatedAt = :NOW() WHERE ItemID = :ItemID";
+                $query = "UPDATE menu SET ItemName = :ItemName, ItemPrice = :ItemPrice, ImagePath = :ImagePath, UpdatedAt = NOW() WHERE ItemID = :ItemID";
                 $stmt = $db->prepare($query);
                 $stmt->bindParam(':ItemName', $updatedProductName);
                 $stmt->bindParam(':ItemPrice', $updatedProductPrice);
-                $stmt->bindParam(':ImagePath', $updatedImagePath);
+                $stmt->bindParam(':ImagePath', $updatedImagePath, PDO::PARAM_LOB);
                 $stmt->bindParam(':ItemID', $itemID);
 
                 if ($stmt->execute()) {

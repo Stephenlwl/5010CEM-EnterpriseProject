@@ -5,9 +5,9 @@ require_once '../auth/config/database.php';
 require_once '../auth/objects/pagination.php';
 
 // Generate CSRF token if not exists
-if (empty($_SESSION['csrf_token'])) {
-    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-}
+// if (empty($_SESSION['csrf_token'])) {
+//     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+// }
 
 $database = new Database_Auth();
 $db = $database->getConnection();
@@ -104,22 +104,23 @@ try {
                                                 <td>RM<?= number_format($product['ItemPrice'], 2) ?></td>
                                                 <td><?= htmlspecialchars($product['ItemType']) ?></td>
                                                 <td>
-                                                    <img src="<?= htmlspecialchars($product['ImagePath']) ?>" 
-                                                        alt="<?= htmlspecialchars($product['ItemName']) ?>" 
-                                                        class="img-thumbnail" 
-                                                        style="max-width: 100px;">
+                                                <img src="../auth/api/get_image_from_menu.php?ItemID=<?= htmlspecialchars($product['ItemID'] ?? '') ?>" 
+                                                    onerror="this.onerror=null; this.src='../img/coffee-placeholder.jpg';"
+                                                    alt="<?= htmlspecialchars($product['ItemName']) ?>"
+                                                    class="img-thumbnail" 
+                                                    style="max-width: 100px;">
                                                 </td>
                                                 <td>
                                                     <button class="btn btn-success btn-sm" 
                                                             data-bs-toggle="modal" 
                                                             data-bs-target="#editProductModal" 
-                                                            onclick="editProduct('<?= $product['ItemID'] ?>', '<?= $product['ItemName'] ?>', '<?= $product['ItemPrice'] ?>', '<?= $product['ImagePath'] ?>')">
-                                                        <i class="bi bi-pen"></i> Edit
+                                                            onclick="editProduct('<?= $product['ItemID'] ?>', '<?= htmlspecialchars($product['ItemName'], ENT_QUOTES) ?>', '<?= $product['ItemPrice'] ?>', '<?= htmlspecialchars($product['ImagePath'], ENT_QUOTES) ?>')">
+                                                            <i class="bi bi-pen"></i> Edit
                                                     </button>
                                                     <button class="btn btn-danger btn-sm" 
                                                             data-bs-toggle="modal" 
                                                             data-bs-target="#removeProductModal" 
-                                                            onclick="setProductName('<?= $product['ItemName'] ?>')">
+                                                            onclick="setProductName('<?= $product['ItemName'] ?>', '<?= $product['ItemID'] ?> ')">
                                                         <i class="bi bi-trash"></i> Delete
                                                     </button>
                                                 </td>
@@ -140,7 +141,6 @@ try {
                         <div class="col-md-6 shadow p-4 rounded">
                             <h4 class="mb-3">Add New Product</h4>
                             <form id="addProductForm">
-                                <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
                                 <div class="mb-3">
                                     <label for="ItemName" class="form-label">Product Name</label>
                                     <input type="text" class="form-control" id="ItemName" name="ItemName" required>
@@ -155,12 +155,13 @@ try {
                                         <option value="">Select Type</option>
                                         <option value="food">Food</option>
                                         <option value="coffee">Coffee</option>
-                                        <option value="item">Item</option>
+                                        <option value="item">Merchandise </option>
+                                        <option value="coffeeBean">Coffee Bean</option>
                                     </select>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="ImagePath" class="form-label">Product Image URL</label>
-                                    <input type="url" class="form-control" id="ImagePath" name="ImagePath" required>
+                                    <label for="ImagePath" class="form-label">Product Image</label>
+                                    <input type="file" class="form-control" id="ImagePath" name="ImagePath" accept="image/*" required>
                                 </div>
                                 <button type="submit" class="btn btn-primary">
                                     <i class="bi bi-plus-circle"></i> Add Product
@@ -200,7 +201,7 @@ try {
                                         </div>
                                         <div class="mb-3">
                                             <label for="currentImagePath" class="form-label">Product Image URL</label>
-                                            <input type="url" class="form-control" id="currentImagePath" name="currentImagePath">
+                                            <input type="file" class="form-control" id="currentImagePath" name="currentImagePath" accept="image/*">
                                         </div>
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                                         <button type="submit" class="btn btn-primary">Update</button>

@@ -21,9 +21,9 @@ try {
         error_log("Received data: " . print_r($data, true));
 
         // Validate CSRF token
-        if (empty($data['csrf_token']) || $data['csrf_token'] !== $_SESSION['csrf_token']) {
-            throw new Exception('Invalid CSRF token');
-        }
+        // if (empty($data['csrf_token']) || $data['csrf_token'] !== $_SESSION['csrf_token']) {
+        //     throw new Exception('Invalid CSRF token');
+        // }
 
         // Validate product ID
         if (empty($data['productID'])) {

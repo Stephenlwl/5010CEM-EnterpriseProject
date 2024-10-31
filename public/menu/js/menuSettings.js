@@ -166,6 +166,46 @@ function addFoodToCart(itemID) {
     });
 }
 
+function addFavouriteToCart(itemID) {
+    
+    const userID = document.getElementById('userId').value;
+    let personalItemID = document.getElementById('favouriteId').value;
+
+    if (userID === "" || userID === null || userID === "guest") {
+        alert('Please login to add product to your cart!');
+        return;
+    }
+
+    // Create data object to send
+    const cartData = {
+        itemID: itemID,
+        userID: userID,
+        personalItemID: personalItemID,
+        customization: false
+    };
+
+    fetch('../auth/api/add_to_cart.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(cartData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            alert('Item added to cart successfully!');
+            location.reload(); 
+        } else {
+            alert('Failed to add item: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while adding the item to the cart.');
+    });
+}
+
 function addToFavourite() {
     const itemID = document.getElementById("modalItemID").value;
     const userID = document.getElementById("userId").value;

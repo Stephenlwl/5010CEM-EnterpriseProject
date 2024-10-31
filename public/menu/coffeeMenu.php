@@ -77,12 +77,13 @@ foreach ($menuItems as $item) {
                 echo "<input type='hidden' id='item-stock-quantity-" . $item['ItemID'] . "' value='" . htmlspecialchars($item['ItemQuantity']) . "'>";
                 echo "<input type='hidden' id='item-quantity-in-cart-" . $item['ItemID'] . "' value='" . htmlspecialchars($item['Quantity']) . "'>";
                 
-                // Placeholder image, replace with actual image paths for coffee items
-                echo "<img src='" . htmlspecialchars($item['ImagePath'] ?? '../img/coffee-placeholder.jpg') . "' 
-                        alt='" . htmlspecialchars($item['ItemName']) . "' 
-                        class='img-thumbnail' 
-                        style='max-width: 200px; max-height: 200px;'>";
-                
+                echo "<img src='../auth/api/get_image_from_menu.php?ItemID=" . htmlspecialchars($item['ItemID']) . "'  
+                    onerror=\"this.onerror=null; this.src='../img/coffee-placeholder.jpg';\"
+                    alt='" . htmlspecialchars($item['ItemName']) . "'
+                    class='img-thumbnail' 
+                    style='max-width: 200px;'>";
+          
+
                 echo "<h2>" . htmlspecialchars($item["ItemName"]) . "</h2>";
                 echo "<p class='price'>RM" . number_format($item["ItemPrice"], 2) . "</p>";
                 echo "<p class='type'>" . htmlspecialchars($item["ItemType"]) . "</p>";
