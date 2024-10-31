@@ -27,7 +27,7 @@
                 <h3>Contact Info</h3>
                 <div class="info-item">
                     <i class="bi bi-envelope"></i>
-                    <p><strong>Email:</strong> RimberioCafe@email.com</p>
+                    <p><strong>Email:</strong> RimberioCafe@gmail.com</p>
                 </div>
                 <div class="info-item">
                     <i class="bi bi-telephone"></i>
