@@ -130,7 +130,7 @@ $total = $subTotal + $sst;
                                             <?= !empty($item['MilkType']) ? '| ' . htmlspecialchars($item['MilkType']) : '' ?> 
                                             <?= !empty($item['CoffeeBeanType']) ? '| ' . htmlspecialchars($item['CoffeeBeanType']) : '' ?> 
                                             <?= !empty($item['Sweetness']) ? '| ' . htmlspecialchars($item['Sweetness']) : '' ?> 
-                                            <?= !empty($item['AddShot']) ? '| Add Shot' : '' ?>
+                                            <?= !empty($item['AddShot']) ? '| ' . htmlspecialchars($item['AddShot']) : '' ?>
                                         </small>
                                     </td>
                                     <td><?= number_format($item['ItemPrice'], 2) ?></td>

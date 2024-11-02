@@ -240,15 +240,15 @@ function addToFavourite() {
     })
     .then(response => response.json())
     .then(data => {
-        if (data.success === true) {
-            alert('Item added to cart successfully!');
+        if (data.status === "success") {
+            alert(data.message);
             location.reload();    
         } else {
-            alert('Failed to add item: ' + data.message);
+            alert('Failed to add item to your favourite list: ' + data.message);
         }
     })
     .catch(error => {
         console.error('Error:', error);
-        alert('An error occurred while adding the item to the cart.');
+        alert('An error occurred while adding the item to your favourite list.');
     });
 }

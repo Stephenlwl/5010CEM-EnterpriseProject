@@ -108,7 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                         ${item.MilkType ? '| ' + item.MilkType : ''} 
                                         ${item.CoffeeBeanType ? '| ' + item.CoffeeBeanType : ''} 
                                         ${item.Sweetness ? '| ' + item.Sweetness : ''} 
-                                        ${item.AddShot ? '| Add Shot' : ''}
+                                        ${item.AddShot ? '| ' + item.AddShot : ''}
                                     </small>
                                 </div>
                                 <div class="col-4 col-sm-4 text-start">

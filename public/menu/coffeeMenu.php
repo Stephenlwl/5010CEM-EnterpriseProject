@@ -141,8 +141,8 @@ foreach ($menuItems as $item) {
                             <div class="col-sm-3">           
                                 <label for="AddShot">Add Shot:</label>
                                 <select id="AddShot" class="form-select">
-                                    <option value="True">Yes</option>
-                                    <option value="False">No</option>
+                                    <option value="No Add Shot">No</option>
+                                    <option value="Add Shot">Yes</option>
                                 </select>
                             </div>
                         </div>

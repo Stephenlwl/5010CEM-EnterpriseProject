@@ -191,7 +191,7 @@ $order_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                                 <?= !empty($item['MilkType']) ? '| ' . htmlspecialchars($item['MilkType']) : '' ?> 
                                                                 <?= !empty($item['CoffeeBeanType']) ? '| ' . htmlspecialchars($item['CoffeeBeanType']) : '' ?> 
                                                                 <?= !empty($item['Sweetness']) ? '| ' . htmlspecialchars($item['Sweetness']) : '' ?> 
-                                                                <?= !empty($item['AddShot']) ? '| Add Shot' : '' ?>
+                                                                <?= !empty($item['AddShot']) ? '| ' . htmlspecialchars($item['AddShot']) : '' ?>
                                                             </small>
                                                         </td>
                                                         <td><?= htmlspecialchars($item['ItemQuantity']) ?></td>
