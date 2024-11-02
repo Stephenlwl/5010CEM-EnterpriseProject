@@ -80,14 +80,6 @@ function addToCartWithCustomization() {
     });
 }
 
-// Close the modal when clicking outside of it
-window.onclick = function (event) {
-    var modal = document.getElementById('itemModal');
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
-}
-
 function addCoffeeToCart(itemID) {
     
     const userID = document.getElementById('userId').value;
@@ -242,7 +234,6 @@ function addToFavourite() {
     .then(data => {
         if (data.status === "success") {
             alert(data.message);
-            location.reload();    
         } else {
             alert('Failed to add item to your favourite list: ' + data.message);
         }

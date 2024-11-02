@@ -118,11 +118,11 @@ foreach ($menuItems as $item) {
                 <div class="modal-body">
                     <h2 id="modalItemName"></h2>
                     <p>RM <span id="modalItemPrice"></span></p>
-                    <input type="hidden" id="modalItemID">
-                    <input type="hidden" id="userId" value="<?php echo htmlspecialchars($UserID); ?>">
 
                     <!-- Customization form -->
                     <form class="customization-form">
+                    <input type="hidden" id="modalItemID">
+                    <input type="hidden" id="userId" value="<?php echo htmlspecialchars($UserID); ?>">
                         <div class="row mt-3">
                             <div class="col-sm-4">
                                 <label for="Temperature">Temperature:</label>
@@ -172,8 +172,8 @@ foreach ($menuItems as $item) {
                             </div>
                         </div>
                         <div class="modal-footer mt-3">
-                            <button type="button" class="btn btn-secondary" onclick="addToFavourite()">Favourite</button>
-                            <button type="button" class="btn btn-primary" onclick="addToCartWithCustomization()">Add to Cart</button>
+                        <button type="button" class="btn btn-secondary" id="favouriteButton" onclick="addToFavourite()">Add to Favourite</button>
+                        <button type="button" class="btn btn-primary" onclick="addToCartWithCustomization()">Add to Cart</button>
                         </div>
                     </form>
                 </div>

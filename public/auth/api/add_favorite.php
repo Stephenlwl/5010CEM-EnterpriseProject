@@ -32,59 +32,91 @@ try {
         $milkType = isset($data['MilkType']) ? $data['MilkType'] : null;  
         $coffeeBean = isset($data['CoffeeBean']) ? $data['CoffeeBean'] : null;  
 
-        // Check if the item is already marked as favorite
-        $checkQuery = "SELECT * FROM personal_item WHERE UserID = :userID AND ItemID = :itemID";
+        // check for the item is already marked as favorite
+        $checkQuery = "SELECT * FROM personal_item 
+               WHERE ItemID = :itemID 
+               AND UserID = :userID 
+               AND Temperature = :temperature 
+               AND Sweetness = :sweetness 
+               AND AddShot = :addShot 
+               AND MilkType = :milkType 
+               AND CoffeeBeanType = :coffeeBean";
         $checkStmt = $db->prepare($checkQuery);
-        $checkStmt->bindParam(':userID', $userID);
         $checkStmt->bindParam(':itemID', $itemID);
+        $checkStmt->bindParam(':userID', $userID);
+        $checkStmt->bindParam(':temperature', $temperature);
+        $checkStmt->bindParam(':sweetness', $sweetness);
+        $checkStmt->bindParam(':addShot', $addShot);
+        $checkStmt->bindParam(':milkType', $milkType);
+        $checkStmt->bindParam(':coffeeBean', $coffeeBean);
         $checkStmt->execute();
 
         if ($checkStmt->rowCount() > 0) {
-            // Item exists, toggle the favorite status
+            // Item exists, check if attributes match
             $row = $checkStmt->fetch(PDO::FETCH_ASSOC);
-            if ($row['Favourite'] == 1) {
-                // If currently a favorite, remove it (set Favourite to 0 or delete)
-                $deleteQuery = "DELETE FROM personal_item WHERE UserID = :userID AND ItemID = :itemID";
-                $deleteStmt = $db->prepare($deleteQuery);
-                $deleteStmt->bindParam(':userID', $userID);
-                $deleteStmt->bindParam(':itemID', $itemID);
-
-                if ($deleteStmt->execute()) {
+            
+            // Check if all attributes match the existing favorite item
+            $isSameFavorite = (
+                $row['Temperature'] == $temperature &&
+                $row['Sweetness'] == $sweetness &&
+                $row['AddShot'] == $addShot &&
+                $row['MilkType'] == $milkType &&
+                $row['CoffeeBeanType'] == $coffeeBean &&
+                $row['ItemID'] == $itemID &&
+                $row['UserID'] == $userID
+            );
+            
+            if ($isSameFavorite) {
+                // toggle the Favourite attribute between 0 and 1
+                $personalItemID = $row['PersonalItemID'];
+                $currentFavoriteStatus = $row['Favourite'];
+                
+                if ($currentFavoriteStatus == 1) {
                     $response['status'] = 'success';
-                    $response['message'] = 'Item removed from favorites';
+                    $response['message'] = 'This Item is already added in your favorite list';
                 } else {
-                    $response['status'] = 'error';
-                    $response['message'] = 'Failed to remove favorite item';
+                    $newFavoriteStatus = 1; // set as favorite
+                    $toggleQuery = "UPDATE personal_item SET Favourite = :newFavoriteStatus WHERE PersonalItemID = :personalItemID";
+                
+                    $toggleStmt = $db->prepare($toggleQuery);
+                    $toggleStmt->bindParam(':newFavoriteStatus', $newFavoriteStatus);
+                    $toggleStmt->bindParam(':personalItemID', $personalItemID);
+                
+                    if ($toggleStmt->execute()) {
+                        $response['status'] = 'success';
+                        $response['message'] = 'Item added to favorites';
+                    } else {
+                        $response['status'] = 'error';
+                        $response['message'] = 'Failed to add item to favorites';
+                    }
                 }
             } else {
-                // If not marked as favorite, update it to favorite
-                $updateQuery = "UPDATE personal_item 
-                                SET Temperature = :temperature, Sweetness = :sweetness, AddShot = :addShot, 
-                                    MilkType = :milkType, CoffeeBeanType = :coffeeBean, Favourite = 1
-                                WHERE UserID = :userID AND ItemID = :itemID";
-
-                $updateStmt = $db->prepare($updateQuery);
-                $updateStmt->bindParam(':temperature', $temperature);
-                $updateStmt->bindParam(':sweetness', $sweetness);
-                $updateStmt->bindParam(':addShot', $addShot);
-                $updateStmt->bindParam(':milkType', $milkType);
-                $updateStmt->bindParam(':coffeeBean', $coffeeBean);
-                $updateStmt->bindParam(':userID', $userID);
-                $updateStmt->bindParam(':itemID', $itemID);
-
-                if ($updateStmt->execute()) {
-                    $response['status'] = 'success';
-                    $response['message'] = 'Item added to favorite';
+                // attributes not match, add a new favorite entry
+                $query = "INSERT INTO personal_item (ItemID, UserID, Temperature, Sweetness, AddShot, MilkType, CoffeeBeanType, Favourite)
+                          VALUES (:itemID, :userID, :temperature, :sweetness, :addShot, :milkType, :coffeeBean, 1)";
+                
+                $stmt = $db->prepare($query);
+                $stmt->bindParam(':itemID', $itemID);
+                $stmt->bindParam(':userID', $userID);
+                $stmt->bindParam(':temperature', $temperature);
+                $stmt->bindParam(':sweetness', $sweetness);
+                $stmt->bindParam(':addShot', $addShot);
+                $stmt->bindParam(':milkType', $milkType);
+                $stmt->bindParam(':coffeeBean', $coffeeBean);
+        
+                if ($stmt->execute()) {
+                    $response['status'] = 'success'; 
+                    $response['message'] = 'New item added to favorite';
                 } else {
                     $response['status'] = 'error';
-                    $response['message'] = 'Failed to update favorite item';
+                    $response['message'] = 'Failed to add favorite item';
                 }
             }
         } else {
-            // Item does not exist, insert as a new favorite
+            // item not exist, insert as a new favorite
             $query = "INSERT INTO personal_item (ItemID, UserID, Temperature, Sweetness, AddShot, MilkType, CoffeeBeanType, Favourite)
                       VALUES (:itemID, :userID, :temperature, :sweetness, :addShot, :milkType, :coffeeBean, 1)";
-
+        
             $stmt = $db->prepare($query);
             $stmt->bindParam(':itemID', $itemID);
             $stmt->bindParam(':userID', $userID);
@@ -93,10 +125,10 @@ try {
             $stmt->bindParam(':addShot', $addShot);
             $stmt->bindParam(':milkType', $milkType);
             $stmt->bindParam(':coffeeBean', $coffeeBean);
-
+        
             if ($stmt->execute()) {
-               $response['status'] = 'success'; 
-               $response['message'] = 'Item added to favorite';
+                $response['status'] = 'success'; 
+                $response['message'] = 'Item added to favorite';
             } else {
                 $response['status'] = 'error';
                 $response['message'] = 'Failed to add favorite item';

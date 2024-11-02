@@ -66,19 +66,19 @@ $favoriteItems = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <input type="hidden" id="item-stock-quantity-<?php echo htmlspecialchars($item['ItemID']); ?>" value="<?php echo htmlspecialchars($item['ItemQuantity']); ?>">
                 <input type="hidden" id="item-quantity-in-cart-<?php echo htmlspecialchars($item['ItemID']); ?>" value="<?php echo htmlspecialchars($item['Quantity'] ?? 0); ?>">
 
-                <div class="menu-item card m-2 p-3" style="width: 18rem;">
+                <div class="menu-item card m-2 p-3" style="width: 15rem;">
                     <div class="card-body">
                         <img src="../auth/api/get_image_from_menu.php?ItemID=<?php echo htmlspecialchars($item['ItemID']); ?>" 
                             onerror="this.onerror=null; this.src='../img/coffee-placeholder.jpg';" 
                             alt="<?php echo htmlspecialchars($item['ItemName']); ?>" 
                             class="img-thumbnail mb-3" 
-                            style="max-width: 200px;">
+                            style="max-width: 170px;">
                         <input type="hidden" id="favouriteId" value="<?php echo htmlspecialchars($item['PersonalItemID']); ?>">
                         <h5 class="card-title"><?php echo htmlspecialchars($item['ItemName']); ?></h5>
                         <p class="card-text">Price: RM<?php echo number_format($item['ItemPrice'], 2); ?></p>
                         <p class="card-text">Temperature: <?php echo htmlspecialchars($item['Temperature']); ?></p>
                         <p class="card-text">Sweetness: <?php echo htmlspecialchars($item['Sweetness']); ?></p>
-                        <p class="card-text">Extra Shot: <?php echo $item['AddShot'] ? 'Yes' : 'No'; ?></p>
+                        <p class="card-text">Extra Shot: <?php echo htmlspecialchars($item['AddShot'] ?? 'N/A'); ?></p>
                         <p class="card-text">Milk Type: <?php echo htmlspecialchars($item['MilkType']); ?></p>
                         <p class="card-text">Coffee Bean: <?php echo htmlspecialchars($item['CoffeeBeanType']); ?></p>
                         
