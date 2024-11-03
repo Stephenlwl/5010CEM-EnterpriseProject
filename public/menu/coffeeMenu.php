@@ -62,6 +62,7 @@ foreach ($menuItems as $item) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../css/allMenu.css">
     <script src="js/menuSettings.js"></script>
 </head>
@@ -117,7 +118,7 @@ foreach ($menuItems as $item) {
                 </div>
                 <div class="modal-body">
                     <h2 id="modalItemName"></h2>
-                    <p>RM <span id="modalItemPrice"></span></p>
+                    <h5 class="text-danger">RM <span id="modalItemPrice"></span></h5>
 
                     <!-- Customization form -->
                     <form class="customization-form">
@@ -125,21 +126,21 @@ foreach ($menuItems as $item) {
                     <input type="hidden" id="userId" value="<?php echo htmlspecialchars($UserID); ?>">
                         <div class="row mt-3">
                             <div class="col-sm-4">
-                                <label for="Temperature">Temperature:</label>
+                                <label for="Temperature"><i class="bi bi-thermometer-half me-1"></i>Temperature:</label>
                                 <select id="Temperature" class="form-select">
                                     <option value="Hot">Hot</option>
                                     <option value="Iced">Iced</option>
                                 </select>
                             </div>
                             <div class="col-sm-4">
-                                <label for="Sweetness">Sweetness:</label>
+                                <label for="Sweetness"><i class="bi bi-droplet-half me-1"></i>Sweetness:</label>
                                 <select id="Sweetness" class="form-select">
                                     <option value="Regular">Regular</option>
                                     <option value="Less Sweet">Less Sweet</option>
                                 </select>
                             </div>
                             <div class="col-sm-3">           
-                                <label for="AddShot">Add Shot:</label>
+                                <label for="AddShot"><i class="bi bi-cup-straw me-1"></i>Add Shot:</label>
                                 <select id="AddShot" class="form-select">
                                     <option value="No Add Shot">No</option>
                                     <option value="Add Shot">Yes</option>
@@ -148,16 +149,22 @@ foreach ($menuItems as $item) {
                         </div>
                         <div class="row mt-3">
                             <div class="col-sm-4">
-                                <label for="MilkType">Milk:</label>
+                                <label for="MilkType"><i class="bi bi-cup-hot me-1"></i>Milk:</label>
                                 <select id="MilkType" class="form-select">
-                                    <option value="Diary">Diary</option>
+                                    <option value="Dairy">Dairy</option>
                                     <option value="Soy">Soy</option>
                                     <option value="Almond">Almond</option>
                                     <option value="Oatly">Oatly</option>
                                 </select>
                             </div>
                             <div class="col-sm-4">
-                                <label for="CoffeeBean">Coffee Bean:</label>
+                                <label for="CoffeeBean">
+                                    <!-- Custom SVG for Coffee Bean Icon -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="me-1" viewBox="0 0 16 16">
+                                        <path d="M4 0C2.36 0 1 1.35 1 3 1 8 8 16 13 16c1.65 0 3-1.36 3-3C16 8 8 0 4 0zm8.8 13.5c-.62 0-1.25-.12-1.85-.36C8.87 11.78 6.04 9.23 3.1 5.3a6.7 6.7 0 0 1-.44-.6c1.3-.33 2.67-.5 4.04-.5 3.56 0 6.56 1.5 8.06 3.64.29.44.5.92.6 1.42-.33 1.5-1.98 3.24-3.56 3.24z"/>
+                                    </svg>
+                                    Coffee Bean:
+                                </label>
                                 <select id="CoffeeBean" class="form-select">
                                     <option value="Boss">Boss</option>
                                     <option value="Roasted">Roasted</option>
@@ -167,7 +174,7 @@ foreach ($menuItems as $item) {
                         </div>
                         <div class="row mt-3">
                             <div class="col-sm-6">
-                                <label for="Quantity">Quantity</label>
+                                <label for="Quantity"><i class="bi bi-basket me-1"></i>Quantity:</label>
                                 <input id="Quantity" value="1" type="number" min="1" max="10" class="form-control" placeholder="Enter Quantity (min 1, max 10)">
                             </div>
                         </div>
