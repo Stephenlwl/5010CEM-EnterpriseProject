@@ -285,6 +285,7 @@ $total = $subTotal + $sst;
                 </div>
                 <div class="modal-body">
                     <form id="addAddressForm">
+                        <input type="hidden" id="userID" name="user_id" value="<?= $userId ?>">
                         <div class="mb-3">
                             <label for="addAddressName" class="form-label">Address Name</label>
                             <input type="text" class="form-control" id="addAddressName" name="address_name" required>

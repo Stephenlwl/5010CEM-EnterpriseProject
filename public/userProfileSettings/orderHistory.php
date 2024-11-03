@@ -84,8 +84,8 @@ $order_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <div class="col-sm-8 mb-4">
                     <label for="orderIdInput" class="form-label">Search by Order ID:</label>
                     <div class="input-group">
-                        <input type="text" class="form-control" id="orderIdInput" placeholder="E.g., 1, 2, 10" aria-label="Order IDs" aria-describedby="searchOrderButton">
-                        <button class="btn btn-primary" type="button" id="searchOrderButton">Search</button>
+                        <input type="text" class="form-control" id="orderIdInput" placeholder="E.g., 1, 2, 10" aria-label="Order IDs" aria-describedby="submitOrderButton">
+                        <button class="btn btn-primary" type="button" id="submitOrderButton">Search</button>
                     </div>
                     <small class="form-text text-muted mb-4">Enter one or more Order IDs, separated by commas (e.g., 1, 2, 10).</small>
                 </div>

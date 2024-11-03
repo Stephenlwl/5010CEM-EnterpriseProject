@@ -197,7 +197,7 @@ try {
                                         </div>
                                         <div class="mb-3">
                                             <label for="newProductPrice" class="form-label">New Product Price (RM)</label>
-                                            <input type="number" class="form-control" id="newProductPrice" name="newProductPrice">
+                                            <input type="number" class="form-control" id="newProductPrice" name="newProductPrice" step="0.01" min="1" max="299">
                                         </div>
                                         <div class="mb-3">
                                             <label for="currentImagePath" class="form-label">Product Image URL</label>
