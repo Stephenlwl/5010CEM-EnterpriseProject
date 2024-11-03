@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // handle order id search form submission
-    document.getElementById('submitOrderButton').addEventListener('click', function() {
+    document.getElementById('searchOrderButton').addEventListener('click', function() {
         const orderIdInput = document.getElementById('orderIdInput');
         const orderIdValue = orderIdInput.value.trim();
     
