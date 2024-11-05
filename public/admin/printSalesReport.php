@@ -36,7 +36,9 @@ $salesData = $salesStmt->fetchAll(PDO::FETCH_ASSOC);
 </head>
 <body>
     <div class="container mt-5">
-        <h3 class="text-center m-4"><?= htmlspecialchars($date)?> Sales Report ~ Generated Date (<?= date("Y-m-d") ?>)</h3>
+        <span class="text-end text-muted">Generated On (<?= date("Y-m-d") ?>)</span>
+        <img src="../img/logo.png" alt="logo" class="img-fluid" style="width: 250px; height: auto; display: block; margin: 0 auto;">
+        <h3 class="text-center m-4">Sales Report: <?= htmlspecialchars($date)?></h3>
         <table class="table table-bordered">
             <thead>
                 <tr>

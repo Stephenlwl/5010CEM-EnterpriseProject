@@ -31,7 +31,8 @@ $inventoryData = $inventoryStmt->fetchAll(PDO::FETCH_ASSOC);
 </head>
 <body>
     <div class="container mt-5">
-        <h3 class="text-center mb-4">Inventory Report ~ Generated Date (<?= date("Y-m-d H:i:s") ?>)</h3>
+        <img src="../img/logo.png" alt="logo" class="img-fluid" style="width: 250px; height: auto; display: block; margin: 0 auto;">
+        <h3 class="text-center mb-4">Inventory Report: <?= date("Y-m-d H:i:s") ?></h3>
         <button class="btn btn-primary no-print m-4" onclick="window.print()">Print Inventory Report</button>
         <table class="table table-bordered">
             <thead>
