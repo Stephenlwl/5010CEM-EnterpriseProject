@@ -30,7 +30,7 @@ try {
         }
 
         // get the top 3 coffee drinks
-        $queryCoffeeItems = "SELECT m.ItemName, SUM(rd.ItemQuantity) AS TotalCoffeeDrinkSold
+        $queryCoffeeItems = "SELECT m.ItemName, SUM(rd.ItemQuantity) AS TotalCoffeeDrinkSold, m.ItemID
                              FROM receipt_details rd
                              JOIN menu m ON rd.ItemID = m.ItemID
                              WHERE m.ItemType = 'coffee'
@@ -45,7 +45,8 @@ try {
             while ($row = $resultCoffee->fetch(PDO::FETCH_ASSOC)) {
                 $topCoffeeDrink[] = [
                     'ItemName' => $row['ItemName'],
-                    'TotalCoffeeDrinkSold' => (int) $row['TotalCoffeeDrinkSold']
+                    'TotalCoffeeDrinkSold' => (int) $row['TotalCoffeeDrinkSold'],
+                    'ItemID' => $row['ItemID']
                 ];
             }
         } else {
